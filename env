@@ -1,0 +1,7 @@
+今天的任务
+1.安装环境
+  lsb version: core-5.0-amd64:core-5.0-noarch:desktop-5.0-amd64:desktop
+  Description: SUSE Linux Enterprise Server 12 SP5
+  Release:   12.5
+2.下载ora2pg
+3.插件 pg_hint_plan  pg_stats_ments
