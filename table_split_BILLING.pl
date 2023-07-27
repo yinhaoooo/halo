@@ -1,7 +1,7 @@
-open(INPUT, "t_BILLING.sql");
-open(OUTPUT, ">", "billing_table.sql");
-open(OUTPUT2, ">", "billing_constraints.sql");
-open(OUTPUT3, ">", "billing_index.sql"); 
+open(INPUT, "output.sql");
+open(OUTPUT, ">", "table.sql");
+open(OUTPUT2, ">", "constraints.sql");
+open(OUTPUT3, ">", "index.sql"); 
 while(<INPUT>){
   $str.=$_
 }
