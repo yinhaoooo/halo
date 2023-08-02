@@ -1,20 +1,27 @@
-#!/bin/bash
 
+#!/bin/bash
+# 归档地址
 ARCHIVEDIR='/data01/pgsql/archivedir'
-BACKUP_PATH='/data01/backup'
+# 备份地址
+BACKUP_PATH='/home/postgres'
 IP_ADDR='备库地址'
 
 echo "清除前一天归档日志"
 echo 'del starting'
-find /data01/pgsql/archivedir  -type f -mtime +1 - name '000*'|xargs -i rm -rf {} >> $BACKUP_PATH/dellog.log
+find $ARCHIVEDIR -type f -mtime +1 -name '000*'|xargs -i rm -rf {} >> $BACKUP_PATH/dellog.log
 echo 'del stoping' 
 
 echo "创建当天备份文件夹"
-mkdir -p $BACKUP_PATH/`date +%F` 
 export PGPASSWORD=123456
 
+# 先安装 yum install -y pigz  
+# 才可以并发压缩
+echo "开始时间"
 echo `date` > buckuptime.log
-pg_basebackup -F t -X fetch -v -P -h 127.0.0.1 -p 5432 -U replica -D $BACKUP_PATH/`date +%F` | pigz -p 8 > `date +%F`.tar.gz
+pg_basebackup -F t -X fetch -v -P -h 127.0.0.1 -p 5432 -U replica -D - | pigz -p 8 > $BACKUP_PATH/`date +%F`.tar.gz
+echo "结束时间"
 echo `date` >> buckuptime.log
 
-rm -rf $BACKUP_PATH/`date +%F`
+# 在postgres用户下创建crontab 
+crontab -e
+0 12 2 * * bash -x /home/postgres/backup_script.sh > /home/postgres/backup.log 2>$1
