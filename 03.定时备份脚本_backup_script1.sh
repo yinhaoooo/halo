@@ -18,3 +18,10 @@ pg_basebackup -F t -X fetch -v -P -h 127.0.0.1 -p 5432 -U replica -D $BACKUP_PAT
 echo `date` > buckuptime.log
 
 rm -rf $BACKUP_PATH/`date +%F`
+================================================
+[postgres@kwebtmpmgp00002 backup]$ tar -c -I 'zstd -T8' -f 202308.02.tar.zst 2023-08-03
+tar (child): zstd -T8: Cannot exec: No such file or directory
+tar (child): Error is not recoverable: exiting now
+[postgres@kwebtmpmgp00002 backup]$ zstd --version
+*** zstd command line interface 64-bits v1.5.0, by Yann Collet ***
+[postgres@kwebtmpmgp00002 backup]$
