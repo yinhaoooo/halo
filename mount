@@ -1,0 +1,32 @@
+[root@kwebtmpmgp00002 ~]# mount -l
+/dev/mapper/sysvg-lv_root on / type ext4 (rw)
+proc on /proc type proc (rw)
+sysfs on /sys type sysfs (rw)
+devpts on /dev/pts type devpts (rw,gid=5,mode=620)
+tmpfs on /dev/shm type tmpfs (rw)
+/dev/sda1 on /boot type ext4 (rw)
+/dev/mapper/sysvg-home on /home type ext4 (rw)
+/dev/mapper/sysvg-tmp on /tmp type ext4 (rw)
+/dev/mapper/sysvg-log on /var/log type ext4 (rw)
+none on /proc/sys/fs/binfmt_misc type binfmt_misc (rw)
+/dev/mapper/vg1-lv01 on /data01 type ext4 (rw)
+sunrpc on /var/lib/nfs/rpc_pipefs type rpc_pipefs (rw)
+100.80.45.37:/kwe58_08_mpm_volumn_n on /data_bak type nfs (rw,intr,bg,hard,vers=3,addr=100.80.45.37)
+100.80.45.37:/kwe58_08_mpm_volumn_n on /data_bak type nfs (rw,intr,bg,hard,vers=3,addr=100.80.45.37)
+[root@kwebtmpmgp00002 ~]# cat  /proc/mounts
+rootfs / rootfs rw 0 0
+proc /proc proc rw,relatime 0 0
+sysfs /sys sysfs rw,relatime 0 0
+devtmpfs /dev devtmpfs rw,relatime,size=396207240k,nr_inodes=99051810,mode=755 0 0
+devpts /dev/pts devpts rw,relatime,gid=5,mode=620,ptmxmode=000 0 0
+tmpfs /dev/shm tmpfs rw,relatime 0 0
+/dev/mapper/sysvg-lv_root / ext4 rw,relatime,barrier=1,data=ordered 0 0
+/proc/bus/usb /proc/bus/usb usbfs rw,relatime 0 0
+/dev/sda1 /boot ext4 rw,relatime,barrier=1,data=ordered 0 0
+/dev/mapper/sysvg-home /home ext4 rw,relatime,barrier=1,data=ordered 0 0
+/dev/mapper/sysvg-tmp /tmp ext4 rw,relatime,barrier=1,data=ordered 0 0
+/dev/mapper/sysvg-log /var/log ext4 rw,relatime,barrier=1,data=ordered 0 0
+none /proc/sys/fs/binfmt_misc binfmt_misc rw,relatime 0 0
+/dev/mapper/vg1-lv01 /data01 ext4 rw,relatime,barrier=1,data=ordered 0 0
+sunrpc /var/lib/nfs/rpc_pipefs rpc_pipefs rw,relatime 0 0
+100.80.45.37:/kwe58_08_mpm_volumn_n /data_bak nfs rw,relatime,vers=3,rsize=1048576,wsize=1048576,namlen=255,hard,proto=tcp,timeo=600,retrans=2,sec=sys,mountaddr=100.80.45.37,mountvers=3,mountport=2050,mountproto=udp,local_lock=none,addr=100.80.45.37 0 0
