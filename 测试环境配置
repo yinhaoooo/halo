@@ -1,0 +1,10 @@
+jdbc:postgresql://10.28.160.242:5432  
+infodba/infodba
+    /data01/pgsql/tc/infodba_idata
+	/data01/pgsql/tc/infodba_ilog
+	/data01/pgsql/tc/infodba_indx
+	表空间名:（infodba_idata,infodba_ilog,infodba_indx）
+jdbc:postgresql://10.28.160.242:5432  
+cclusterdb/tcclusterdb
+   /data01/pgsql/tc/tcclusterdb_idata   
+   表空间名：tcclusterdb_idata
