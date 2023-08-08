@@ -54,3 +54,5 @@ GROUP BY
     obj_description(obj.oid)
 ORDER BY
     count DESC;
+------------------------------
+create table test4(id int2,id2 int4,id3 int4,id4 int8,id5 bigint,id6 integer,id7 smallint); 
