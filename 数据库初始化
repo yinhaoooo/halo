@@ -1,0 +1,40 @@
+postgres=# \l
+                                   List of databases
+     Name     |  Owner   | Encoding |   Collate   |    Ctype    |   Access privileges
+--------------+----------+----------+-------------+-------------+-----------------------
+ infodba_test | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 |
+ postgres     | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 |
+ tc           | infodba  | UTF8     | C           | en_US.UTF-8 | =Tc/infodba          +
+              |          |          |             |             | infodba=CTc/infodba
+ template0    | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+              |          |          |             |             | postgres=CTc/postgres
+ template1    | postgres | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres          +
+              |          |          |             |             | postgres=CTc/postgres
+(5 rows)
+
+postgres=# \c tc infodba
+You are now connected to database "tc" as user "infodba".
+tc=>
+tc=>
+tc=>
+tc=> show search_path;
+   search_path
+-----------------
+ "$user", public
+(1 row)
+
+tc=> \dn
+  List of schemas
+  Name  |  Owner
+--------+----------
+ public | postgres
+(1 row)
+
+tc=> \du
+                                   List of roles
+ Role name |                         Attributes                         | Member of
+-----------+------------------------------------------------------------+-----------
+ infodba   |                                                            | {}
+ pgrewind  | Superuser                                                  | {}
+ postgres  | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
+ replica   | Replication                                                | {}
