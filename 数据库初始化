@@ -38,3 +38,19 @@ tc=> \du
  pgrewind  | Superuser                                                  | {}
  postgres  | Superuser, Create role, Create DB, Replication, Bypass RLS | {}
  replica   | Replication                                                | {}
+
+
+SELECT
+    obj_description(obj.oid) AS description,
+    count(*) AS count
+FROM
+    pg_catalog.pg_class obj
+JOIN
+    pg_catalog.pg_namespace ns ON ns.oid = obj.relnamespace
+WHERE
+    ns.nspname NOT LIKE 'pg_%'
+    AND ns.nspname <> 'information_schema'
+GROUP BY
+    obj_description(obj.oid)
+ORDER BY
+    count DESC;
