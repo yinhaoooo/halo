@@ -56,3 +56,9 @@ ORDER BY
     count DESC;
 ------------------------------
 create table test4(id int2,id2 int4,id3 int4,id4 int8,id5 bigint,id6 integer,id7 smallint); 
+
+ create user TcClusterDB password 'tcclusterdb';
+ create tablespace TcClusterDB_idata owner TcClusterDB location '/data01/pgsql/tc/tcclusterdb_idata';
+ create database TcClusterDB with owner TcClusterDB encoding 'UTF8' template template0 lc_collate 'C' tablespace TcClusterDB_idata;
+ grant all privileges on database TcClusterDB to TcClusterDB;
+ grant CREATE ON TABLESPACE TcClusterDB_idata to TcClusterDB;
