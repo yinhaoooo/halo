@@ -1,0 +1,1 @@
+rebuild index piph6specialoperationreq_0 error,error:index row size 2808 exceeds btree version 4 maximum 2704 for index "piph6specialoperationreq_0" DETAIL: Index row references tuple (8386,36) in relation "ph6specialoperationreq". HINT: Values larger than 1/3 of a buffer page cannot be indexed. Consider a function index of an MD5 hash of the value, or use full text indexing.
