@@ -12,3 +12,28 @@ AND i.index_type != 'LOB'
 AND i.index_name NOT LIKE 'SYS_%'
 AND i.index_name NOT LIKE 'ISEQ$$_%'
 AND i.index_name NOT LIKE 'SYS_IOT%'
+
+SELECT c.relname AS table_name, i.relname AS index_name
+FROM pg_class c
+JOIN pg_index idx ON c.oid = idx.indrelid
+JOIN pg_class i ON i.oid = idx.indexrelid
+JOIN pg_namespace n ON n.oid = c.relnamespace
+WHERE n.nspname = 'your_schema_name' -- 将 "your_schema_name" 替换为您的架构名称
+  AND c.relkind = 'r' -- 仅包括普通表（排除视图等）
+  AND i.relkind = 'i' -- 仅包括索引
+  AND c.relname NOT LIKE 'pg_%' -- 排除系统表
+  AND c.relname NOT LIKE 'sql_%' -- 排除系统表
+  AND c.relname NOT LIKE 'information_%' -- 排除系统表
+  AND c.relname NOT LIKE 'pg_toast%' -- 排除 TOAST 表
+ORDER BY c.relname, i.relname;
+
+SELECT i.index_name, i.table_name
+FROM all_indexes i
+JOIN all_tables t ON i.table_name = t.table_name
+WHERE t.owner = 'your_username' -- 将 "your_username" 替换为您的用户名
+AND i.owner = 'your_username' -- 将 "your_username" 替换为您的用户名
+AND i.index_type != 'LOB'
+AND i.index_name NOT LIKE 'SYS_%'
+AND i.index_name NOT LIKE 'ISEQ$$_%'
+AND i.index_name NOT LIKE 'SYS_IOT%'
+ORDER BY i.table_name, i.index_name;
