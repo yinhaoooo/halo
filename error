@@ -1,1 +1,8 @@
 rebuild index piph6specialoperationreq_0 error,error:index row size 2808 exceeds btree version 4 maximum 2704 for index "piph6specialoperationreq_0" DETAIL: Index row references tuple (8386,36) in relation "ph6specialoperationreq". HINT: Values larger than 1/3 of a buffer page cannot be indexed. Consider a function index of an MD5 hash of the value, or use full text indexing.
+
+2.索引
+发现 oracle 到 PG14 中关于 ph6specialoperationreq 与 ph6notice1 表的索引创建失败，报了index row size 2808 exceeds btree version 4 maximum 2704 for index 'ph6specialoperationreq_0' and 'ph6notice1_0' 错误，想建上去的话，更改索引类型，gin索引 修改如下：
+
+create extension pg_trgm;
+create index ph6specialoperationreq_0 on ph6specialoperationreq using gin (PVAL_0 gin_trgm_ops);
+create index ph6notice1_0 on ph6notice1 gin (PVAL_0 gin_trgm_ops)
