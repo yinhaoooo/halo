@@ -6,3 +6,9 @@ rebuild index piph6specialoperationreq_0 error,error:index row size 2808 exceeds
 create extension pg_trgm;
 create index ph6specialoperationreq_0 on ph6specialoperationreq using gin (PVAL_0 gin_trgm_ops);
 create index ph6notice1_0 on ph6notice1 gin (PVAL_0 gin_trgm_ops)
+
+
+AND i.index_type != 'LOB'
+AND i.index_name NOT LIKE 'SYS_%'
+AND i.index_name NOT LIKE 'ISEQ$$_%'
+AND i.index_name NOT LIKE 'SYS_IOT%'
