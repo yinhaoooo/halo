@@ -1,0 +1,326 @@
+第一步 修改数据库参数
+1）Oracle数据库修改undo_retention, 增加undo数据文件
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+导出数据之前在ORACLE数据库清除RECYCLEBIN
+
+export ORACLE_SID=oatadb1
+sqlplus / as sysdba
+
+PURGE DBA_RECYCLEBIN;
+
+# 修改undo_retention时间
+alter system set undo_retention=86400;
+# 插入undo空间
+alter tablespace UNDOTBS1 add datafile '+SSDDG' size 10g autoextend on next 2g maxsize 30g;
+alter tablespace UNDOTBS1 add datafile '+SSDDG' size 10g autoextend on next 2g maxsize 30g;
+
+
+2）关闭应用
+关闭应用
+
+==================================================================================================================================================================================
+第二步 安装ora2halo软件
+1）复制配置
+cd /data/ora2halo
+cp ora2halo.conf ora2halo_table.conf
+
+2）修改配置
+vi ora2halo_table.conf
+修改 ora2halo_table.conf 文件如下
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+vi ora2halo_table.conf
+修改如下项
+20行 ORACLE_HOME /opt/oracle/product/19c/dbhome_1 --> ORACLE_HOME /u01/app/oracle/product/11.2.0/db_1
+23行 ORACLE_DSN  dbi:Oracle:host=10.133.98.15;service_name=oatadb;port=1521 --> ORACLE_DSN  dbi:Oracle:host=172.15.6.156;service_name=CTOACSDB;port=1521
+24行 ORACLE_USER test --> ORACLE_USER ecology
+25行 ORACLE_PWD  test --> ORACLE_PWD  xxtgzpt262700@
+49行 SCHEMA    test --> SCHEMA   ECOLOGY_NEW
+174行 TYPE   TABLE,VIEW,SEQUENCE,TRIGGER,FUNCTION,PROCEDURE,TYPE,PACKAGE --> TYPE    TABLE
+612行 OUTPUT   output.sql
+714行 DATA_TYPE  DATE:datetime --> DATA_TYPE DATE:date
+733行 DEFAULT_NUMERIC NUMBER
+853行 DATA_LIMIT 10000
+859行 #BLOB_LIMIT  500 --> BLOB_LIMIT 500
+873行 TRANSACTION  serializable --> TRANSACTION  committed
+896行 #LONGREADLEN 1047552 --> LONGREADLEN  1047552
+1088行 PLSQL_PGSQL 1
+1201行 #UUID_FUNCTION  uuid_generate_v4 -->UUID_FUNCTION  SYS_GUID
+
+3）导入环境变量
+cd /data/ora2halo
+
+export PERL5LIB=${PWD}:${PWD}/perl_lib/perl5_lib:${PWD}/perl_lib/perl5_local_lib:${PWD}/perl_lib/perl5_share:${PWD}/perl_lib/vendor_perl_lib64:${PWD}/perl_lib/vendor_perl_share
+export LD_LIBRARY_PATH=${PWD}/instantclient_12_2/sdk/include/lib:${PWD}/perl_lib/perl5_lib/vendor_perl/auto/DBD/Pg
+export PATH=${PWD}:$PATH
+
+4）导出
+cd export_dir
+# 导出table
+ora2halo -c ./ora2halo_table.conf
+
+
+5）# 导出分区表建表语句
+cd /data/ora2halo
+cp ora2halo_table.conf ora2halo_table_partition.conf
+vi ora2halo_table_partition.conf
+-- 修改内容如下
+TYPE          PARTITION
+
+cd export_dir
+ora2halo -c ./ora2halo_table.conf -o /data/ora2halo/export_dir/partition.sql > /data/ora2halo/export_dir/partition.sql.log
+
+6）产生的 output.sql 文件用 table_split.pl 处理下，将table的创建语句和constraint，index的创建语句分开。 
+table_split.pl 内容如下
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+open(INPUT, "output.sql");
+open(OUTPUT, ">", "table.sql");
+open(OUTPUT2, ">", "constraints.sql");
+open(OUTPUT3, ">", "index.sql"); 
+while(<INPUT>){
+  $str.=$_
+}
+
+@index=$str=~/CREATE\s*(?:UNIQUE)?\s*INDEX\s+\w+\s+ON[^\n]*;\n/igm;
+@constraint=$str=~/ALTER\s*TABLE[^\n]*;\n/igm;
+
+$str=~s/CREATE\s*(?:UNIQUE)?\s*INDEX\s+\w+\s+ON[^\n]*;\n//igm;
+$str=~s/ALTER\s*TABLE[^\n]*;\n//igm;
+print OUTPUT3 @index;
+print OUTPUT2 @constraint;
+
+print OUTPUT $str;
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+==================================================================================================================================================================================
+第三步 创建用户及数据库
+3.创建空库
+1）创建的空库。建库语句如下：
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+# 创建数据库用户、schema和数据库
+CREATE USER 用户名 CONNECTION LIMIT -1 PASSWORD '密码' VALID UNTIL '2039-10-12';
+ALTER USER 用户名 LOGIN;
+ALTER USER 用户名 CREATEDB;
+ALTER USER 用户名 SUPERUSER;
+
+CREATE DATABASE 数据库名 WITH OWNER=用户名 ENCODING UTF8;
+\c 数据库名 用户名;
+==================================================================================================================================================================================
+第四步 导入 table.sql 文件
+在ecology_target库执行 table.sql 文件
+psql -U 用户名 -d 数据库名 -f table.sql > table_output.log 2>&1
+psql -U 用户名 -d 数据库名 -f partition.sql > partition_output.log 2>&1
+
+==================================================================================================================================================================================
+第五步 生成sequence语句文件，修改并导入
+1）复制配置
+cd /data/ora2halo/export_dir
+cp ora2halo_table.conf ora2halo_seq.conf
+
+2）修改配置
+vi ora2halo_seq.conf
+-- 内容修改如下
+TYPE    SEQUENCE
+
+3）执行环境变量
+cd /data/ora2halo
+export PERL5LIB=${PWD}:${PWD}/perl_lib/perl5_lib:${PWD}/perl_lib/perl5_local_lib:${PWD}/perl_lib/perl5_share:${PWD}/perl_lib/vendor_perl_lib64:${PWD}/perl_lib/vendor_perl_share
+export LD_LIBRARY_PATH=${PWD}/instantclient_12_2/sdk/include/lib:${PWD}/perl_lib/perl5_lib/vendor_perl/auto/DBD/Pg
+export PATH=${PWD}:$PATH
+
+4）执行导出
+cd export_dir
+ora2halo  -c ./ora2halo_seq.conf -o /data/ora2halo/export_dir/sequence.sql > /data/ora2halo/export_dir/sequence.sql.log
+
+5）导入到数据库
+psql -U 用户名 -d 数据库名 -f sequence.sql > sequence_output.log 2>&1
+==================================================================================================================================================================================
+第六步 数据文件落地并导入
+1）复制配置
+cd /data/ora2halo/export_dir
+cp ora2halo_table.conf ora2halo_table_copy.conf 
+
+2）修改配置
+vi ora2halo_table_copy.conf 
+-- 内容修改如下
+TYPE  COPY
+
+
+3）执行环境变量
+cd /data/ora2halo
+export PERL5LIB=${PWD}:${PWD}/perl_lib/perl5_lib:${PWD}/perl_lib/perl5_local_lib:${PWD}/perl_lib/perl5_share:${PWD}/perl_lib/vendor_perl_lib64:${PWD}/perl_lib/vendor_perl_share
+export LD_LIBRARY_PATH=${PWD}/instantclient_12_2/sdk/include/lib:${PWD}/perl_lib/perl5_lib/vendor_perl/auto/DBD/Pg
+export PATH=${PWD}:$PATH
+
+4）执行导出
+cd export_dir
+
+nohup ora2halo -c ora2halo_table_copy.conf -a 'X.*' -o /home/halo/ora2halo/export_dir/step6/Thread01/x.sql >/home/halo/ora2halo/export_dir/step6/Thread01/x_output.log 2>&1 &
+
+
+第七步:
+7.比较oracle数据库和halo表数据量的比较
+1）在oracle数据库中执行：
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+declare num number;
+begin
+    select count(1) into num from user_tables where table_name = 'TMP_GET_ACTURAL_TABLE_COUNT';
+    if num > 0 then
+        execute immediate 'drop table TMP_GET_ACTURAL_TABLE_COUNT';
+    end if;
+end;
+/
+
+create table TMP_GET_ACTURAL_TABLE_COUNT(table_name varchar(50),table_cnt int);
+/
+
+CREATE OR REPLACE PROCEDURE "GET_ACTURAL_TABLE_COUNT"(isrun integer) AUTHID CURRENT_USER IS 
+  sqlstr varchar2(4000);
+begin
+    for cursor_sql in(
+      select 'insert into TMP_GET_ACTURAL_TABLE_COUNT(table_name,table_cnt) select '''||table_name||''' as table_name,count(1) as table_cnt from '||table_name as sqlstr1 from user_tables where temporary = 'N' and table_name not like 'SREF_CON_%'
+     ) loop
+          execute immediate (cursor_sql.sqlstr1);
+   commit;
+    end loop;
+end;
+/
+
+truncate table TMP_GET_ACTURAL_TABLE_COUNT;
+/
+
+call GET_ACTURAL_TABLE_COUNT(1);
+/
+
+commit;
+/
+
+select * from TMP_GET_ACTURAL_TABLE_COUNT order by upper(table_name);
+/
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+2）在halo数据库中执行。
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+create table TMP_GET_ACTURAL_TABLE_COUNT(table_name varchar(50),table_cnt int);
+
+CREATE OR REPLACE PROCEDURE GET_ACTURAL_TABLE_COUNT(isrun integer) 
+IS $$ 
+  sqlstr varchar(4000);
+  cursor_sql record;
+begin
+    for cursor_sql in(
+      select 'insert into TMP_GET_ACTURAL_TABLE_COUNT(table_name,table_cnt) select '''||tablename||''' as table_name,count(1) as table_cnt from public.'||tablename as sqlstr1 from pg_tables where schemaname='public' and tablename not like 'sref_con_%'
+     ) loop
+          execute cursor_sql.sqlstr1;
+   commit;
+    end loop;
+end;
+$$;
+
+truncate table TMP_GET_ACTURAL_TABLE_COUNT;
+/
+
+call GET_ACTURAL_TABLE_COUNT(1);
+/
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+==================================================================================================================================================================================
+第八步 导入索引和约束
+psql -U 用户名 -d 数据库名 -f index.sql > index_output.log 2>&1
+psql -U 用户名 -d 数据库名 -f constraints.sql > constraints_output.log 2>&1
+
+==================================================================================================================================================================================
+第九步 获取oracle的Trigger语句
+1）复制配置
+cp ora2halo_table_copy.conf ora2halo_trigger.conf
+
+2）修改配置
+vi ora2halo_trigger.conf
+-- 内容修改如下
+TYPE    TRIGGER
+
+3）执行环境变量
+cd /data/ora2halo
+export PERL5LIB=${PWD}:${PWD}/perl_lib/perl5_lib:${PWD}/perl_lib/perl5_local_lib:${PWD}/perl_lib/perl5_share:${PWD}/perl_lib/vendor_perl_lib64:${PWD}/perl_lib/vendor_perl_share
+export LD_LIBRARY_PATH=${PWD}/instantclient_12_2/sdk/include/lib:${PWD}/perl_lib/perl5_lib/vendor_perl/auto/DBD/Pg
+export PATH=${PWD}:$PATH
+
+4）执行导出
+cd export_dir
+ora2halo  -c ./ora2halo_trigger.conf -o trigger.sql
+
+5）导入到数据库
+psql -U 用户名 -d 数据库名 -f trigger.sql > trigger_output.log 2>&1
+
+==================================================================================================================================================================================
+第十步 获取oracle的Procedure语句
+1）复制配置
+cp ora2halo_table_copy.conf ora2halo_procedure.conf
+
+2）修改配置
+vi ora2halo_procedure.conf
+-- 内容修改如下
+TYPE    PROCEDURE
+
+3）执行环境变量
+cd /data/ora2halo
+export PERL5LIB=${PWD}:${PWD}/perl_lib/perl5_lib:${PWD}/perl_lib/perl5_local_lib:${PWD}/perl_lib/perl5_share:${PWD}/perl_lib/vendor_perl_lib64:${PWD}/perl_lib/vendor_perl_share
+export LD_LIBRARY_PATH=${PWD}/instantclient_12_2/sdk/include/lib:${PWD}/perl_lib/perl5_lib/vendor_perl/auto/DBD/Pg
+export PATH=${PWD}:$PATH
+
+4）执行导出
+cd export_dir
+ora2halo  -c ./ora2halo_procedure.conf -o /data/ora2halo/export_dir/procedure.sql > /data/ora2halo/export_dir/procedure.sql.log
+
+5）导入到数据库
+psql -U 用户名 -d 数据库名 -f procedure.sql > procedure_output.log 2>&1
+
+==================================================================================================================================================================================
+第十一步 获取oracle的function语句
+1）复制配置
+cp ora2halo_table_copy.conf ora2halo_function.conf
+
+2）修改配置
+vi ora2halo_function.conf
+-- 内容修改如下
+TYPE    PROCEDURE
+
+3）执行环境变量
+cd /data/ora2halo
+export PERL5LIB=${PWD}:${PWD}/perl_lib/perl5_lib:${PWD}/perl_lib/perl5_local_lib:${PWD}/perl_lib/perl5_share:${PWD}/perl_lib/vendor_perl_lib64:${PWD}/perl_lib/vendor_perl_share
+export LD_LIBRARY_PATH=${PWD}/instantclient_12_2/sdk/include/lib:${PWD}/perl_lib/perl5_lib/vendor_perl/auto/DBD/Pg
+export PATH=${PWD}:$PATH
+
+4）执行导出
+cd export_dir
+ora2halo  -c ./ora2halo_function.conf -o /data/ora2halo/export_dir/function.sql > /data/ora2halo/export_dir/function.sql.log 2>&1
+
+
+5）导入到数据库
+psql -U 用户名 -d 数据库名 -f function.sql > function_output.log 2>&1
+
+==================================================================================================================================================================================
+第十二步 获取oracle的view语句
+1）复制配置
+cp ora2halo_table_copy.conf ora2halo_view.conf
+
+2）修改配置
+vi ora2halo_view.conf
+-- 内容修改如下
+TYPE    PROCEDURE
+
+3）执行环境变量
+cd /data/ora2halo
+export PERL5LIB=${PWD}:${PWD}/perl_lib/perl5_lib:${PWD}/perl_lib/perl5_local_lib:${PWD}/perl_lib/perl5_share:${PWD}/perl_lib/vendor_perl_lib64:${PWD}/perl_lib/vendor_perl_share
+export LD_LIBRARY_PATH=${PWD}/instantclient_12_2/sdk/include/lib:${PWD}/perl_lib/perl5_lib/vendor_perl/auto/DBD/Pg
+export PATH=${PWD}:$PATH
+
+4）执行导出
+cd export_dir
+ora2halo  -c ./ora2halo_function.conf -o /data/ora2halo/export_dir/function.sql > /data/ora2halo/export_dir/function.sql.log 2>&1
+
+
+5）导入到数据库
+psql -U 用户名 -d 数据库名 -f function.sql > function_output.log 2>&1
+
+剩余其他对象按照相同的方式导出，并导入数据库
