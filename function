@@ -1,0 +1,7 @@
+CREATE OR REPLACE FUNCTION pg_catalog.lpad(bigint, integer, varchar)
+ RETURNS text
+ LANGUAGE sql
+ IMMUTABLE STRICT
+AS $function$
+SELECT pg_catalog.lpad($1::text, $2, $3::text)
+$function$
