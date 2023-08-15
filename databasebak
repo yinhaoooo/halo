@@ -10,3 +10,16 @@
 详见FAQ：https://his.huawei.com/doc/#/page.html?service_code=hrn:his:servicemarket::service:esfs&group_id=f611463300ae492497157ffb14904fca&lang=zh_CN 
 可以参考下esfs的帮助文档：相当于在云主机上直接挂载了一个磁盘，备份还是按照之前的pg_basebackup方式即可。
 8、缺少JAVA/C/AWC JS代码整改的内容，请张坤老师联合开发同事补充下。
+
+SELECT 
+    c.relkind AS object_type,
+    count(*) AS object_count
+FROM 
+    pg_catalog.pg_class c
+JOIN 
+    pg_catalog.pg_namespace n ON c.relnamespace = n.oid
+WHERE 
+    n.nspname <> 'pg_catalog' 
+    AND n.nspname <> 'information_schema'
+GROUP BY 
+    c.relkind;
