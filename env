@@ -5,3 +5,25 @@
   Release:   12.5
 2.下载ora2pg
 3.插件 pg_hint_plan  pg_stats_ments
+
+
+
+SELECT 
+    c.relname AS table_name,
+    a.attname AS column_name,
+    s.relname AS sequence_name
+FROM 
+    pg_class s
+JOIN 
+    pg_depend d ON d.objid = s.oid
+JOIN 
+    pg_class c ON c.oid = d.refobjid
+JOIN 
+    pg_attribute a ON a.attnum = d.refobjsubid AND a.attrelid = d.refobjid
+WHERE 
+    s.relkind = 'S'::"char"
+    AND c.relkind = 'r'::"char"
+    AND c.relname NOT LIKE 'pg_%'
+    AND c.relname NOT LIKE 'sql_%'
+ORDER BY 
+    c.relname, a.attname;
