@@ -5,3 +5,30 @@ CREATE OR REPLACE FUNCTION pg_catalog.lpad(bigint, integer, varchar)
 AS $function$
 SELECT pg_catalog.lpad($1::text, $2, $3::text)
 $function$
+
+
+ create or replace procedure get_actural_index_drop()
+language plpgsql
+as $$
+  declare 
+    cursor_sql record;
+    i int:=0;
+begin
+for cursor_sql in(
+SELECT
+    n.nspname AS schemaname,
+    i.relname AS indexname  
+FROM pg_index x
+    JOIN pg_class c ON c.oid = x.indrelid
+    JOIN pg_class i ON i.oid = x.indexrelid
+    LEFT JOIN pg_namespace n ON n.oid = c.relnamespace
+    LEFT JOIN pg_tablespace t ON t.oid = i.reltablespace
+WHERE (c.relkind = ANY (ARRAY['r'::"char", 'm'::"char"])) AND i.relkind = 'i'::"char" and n.nspname='infodba'
+) loop
+ execute 'drop index '||cursor_sql.schemaname||'.'||cursor_sql.indexname||'';
+ i=i+1;
+ raise notice '%',i;
+ commit;
+end loop;
+end;
+$$;
