@@ -13,17 +13,3 @@ select total.tablespace_name,
 
 
 
-select a.attnum AS "序号",
-c.relname AS "表名",
-cast(obj_description(relfilenode,'pg_class') as varchar) AS "表名描述",
-a.attname AS "列名",
-concat_ws('',t.typname,SUBSTRING(format_type(a.atttypid,a.atttypmod) from '\(.*\)')) as "字段类型",
-d.description AS "备注"
-from pg_class c, pg_attribute a , pg_type t, pg_description d 
-where  c.relname = 't_bt_data'
-and a.attnum>0 
-and a.attrelid = c.oid 
-and a.atttypid = t.oid 
-and  d.objoid=a.attrelid
-and d.objsubid=a.attnum
-ORDER BY c.relname DESC,a.attnum ASC ;
