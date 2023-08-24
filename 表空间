@@ -1,0 +1,11 @@
+SELECT
+    tablespace_name AS "表空间名称",
+    ROUND(SUM(bytes) / 1024 / 1024, 2) AS "表空间大小(MB)",
+    ROUND(SUM(bytes - bytes_free) / 1024 / 1024, 2) AS "已使用空间(MB)",
+    ROUND((SUM(bytes - bytes_free) / SUM(bytes)) * 100, 2) AS "使用比例(%)",
+    ROUND(SUM(bytes_free) / 1024 / 1024, 2) AS "空闲空间(MB)",
+    MAX(block_size) AS "最大块大小"
+FROM
+    dba_free_space
+GROUP BY
+    tablespace_name;
