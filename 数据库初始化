@@ -27,7 +27,8 @@
   2.3删除数据库
   2.4授权
   grant all privileges on database tc to infodba;
-
+ 2.5修改默认表空间
+    alter database tc set tablespace infodba_idata;
 
 
 postgres=# \l
