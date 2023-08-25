@@ -1,0 +1,294 @@
+
+psql:trigger.sql:8: NOTICE:  trigger "fast_sync_add_trigger" for relation "ppom_object" does not exist, skipping
+psql:trigger.sql:20: NOTICE:  trigger "fast_sync_delete_trigger" for relation "ppom_object" does not exist, skipping
+psql:trigger.sql:32: NOTICE:  trigger "insert_object_uid" for relation "ppom_stub" does not exist, skipping
+psql:trigger.sql:59: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:64: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:66: NOTICE:  trigger "locking_delete_1" for relation "ppom_object" does not exist, skipping
+psql:trigger.sql:93: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:98: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:100: NOTICE:  trigger "locking_delete_1039" for relation "pfnd0fileaccessaudit" does not exist, skipping
+psql:trigger.sql:127: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:132: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:134: NOTICE:  trigger "locking_delete_1319" for relation "pcae0simprocessjobdetails" does not exist, skipping
+psql:trigger.sql:161: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:166: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:168: NOTICE:  trigger "locking_delete_1322" for relation "pcae0toolaccesscontrol" does not exist, skipping
+psql:trigger.sql:195: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:200: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:202: NOTICE:  trigger "locking_delete_1323" for relation "pcae0toolenvvariabledetails" does not exist, skipping
+psql:trigger.sql:229: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:234: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:236: NOTICE:  trigger "locking_delete_1324" for relation "pcae0toolenvvariables" does not exist, skipping
+psql:trigger.sql:263: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:268: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:270: NOTICE:  trigger "locking_delete_1325" for relation "pcae0toolfeedbackconfig" does not exist, skipping
+psql:trigger.sql:297: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:302: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:304: NOTICE:  trigger "locking_delete_1326" for relation "pcae0toolgeneralconfig" does not exist, skipping
+psql:trigger.sql:331: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:336: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:338: NOTICE:  trigger "locking_delete_1327" for relation "pcae0toolinputparamdetails" does not exist, skipping
+psql:trigger.sql:365: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:370: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:372: NOTICE:  trigger "locking_delete_1329" for relation "pcae0toollaunchparameters" does not exist, skipping
+psql:trigger.sql:399: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:404: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:406: NOTICE:  trigger "locking_delete_1331" for relation "pcae0tooloutputobjectdetails" does not exist, skipping
+psql:trigger.sql:433: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:438: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:440: NOTICE:  trigger "locking_delete_1333" for relation "pcae0toolruletpdetails" does not exist, skipping
+psql:trigger.sql:467: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:472: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:474: NOTICE:  trigger "locking_delete_1603" for relation "pcae0toolrule" does not exist, skipping
+psql:trigger.sql:501: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:506: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:508: NOTICE:  trigger "locking_delete_162" for relation "pfnd0contextspecificid" does not exist, skipping
+psql:trigger.sql:535: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:540: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:542: NOTICE:  trigger "locking_delete_1641" for relation "pcae0toolattributeconfig" does not exist, skipping
+psql:trigger.sql:569: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:574: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:576: NOTICE:  trigger "locking_delete_1642" for relation "pcae0toolinputconfig" does not exist, skipping
+psql:trigger.sql:603: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:608: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:610: NOTICE:  trigger "locking_delete_1643" for relation "pcae0tooloutputconfig" does not exist, skipping
+psql:trigger.sql:637: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:642: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:644: NOTICE:  trigger "locking_delete_170" for relation "pfnd0digitalsignatureaudit" does not exist, skipping
+psql:trigger.sql:671: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:676: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:678: NOTICE:  trigger "locking_delete_176" for relation "pfnd0generalaudit" does not exist, skipping
+psql:trigger.sql:705: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:710: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:712: NOTICE:  trigger "locking_delete_185" for relation "pfnd0licensechangeaudit" does not exist, skipping
+psql:trigger.sql:739: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:744: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:746: NOTICE:  trigger "locking_delete_186" for relation "pfnd0licenseexportaudit" does not exist, skipping
+psql:trigger.sql:773: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:778: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:780: NOTICE:  trigger "locking_delete_187" for relation "pfnd0licenselogintimes" does not exist, skipping
+psql:trigger.sql:807: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:812: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:814: NOTICE:  trigger "locking_delete_191" for relation "pfnd0loginlicenseinfo" does not exist, skipping
+psql:trigger.sql:841: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:846: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:848: NOTICE:  trigger "locking_delete_193" for relation "pfnd0message_0" does not exist, skipping
+psql:trigger.sql:875: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:880: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:882: NOTICE:  trigger "locking_delete_1938" for relation "pcae0tooloptionalinputdetail" does not exist, skipping
+psql:trigger.sql:909: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:914: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:916: NOTICE:  trigger "locking_delete_199" for relation "pfnd0organizationaudit" does not exist, skipping
+psql:trigger.sql:943: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:948: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:950: NOTICE:  trigger "locking_delete_205" for relation "pfnd0scheduleaudit" does not exist, skipping
+psql:trigger.sql:977: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:982: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:984: NOTICE:  trigger "locking_delete_206" for relation "pfnd0secondaryaudit" does not exist, skipping
+psql:trigger.sql:1011: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1016: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1018: NOTICE:  trigger "locking_delete_207" for relation "pfnd0securityaudit" does not exist, skipping
+psql:trigger.sql:1045: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1050: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1052: NOTICE:  trigger "locking_delete_209" for relation "pfnd0structureaudit" does not exist, skipping
+psql:trigger.sql:1079: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1084: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1086: NOTICE:  trigger "locking_delete_217" for relation "pfnd0workflowaudit" does not exist, skipping
+psql:trigger.sql:1113: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1118: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1120: NOTICE:  trigger "locking_delete_2260" for relation "pfnd0preferencecategory" does not exist, skipping
+psql:trigger.sql:1147: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1152: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1154: NOTICE:  trigger "locking_delete_2261" for relation "pfnd0preferencedefinition" does not exist, skipping
+psql:trigger.sql:1181: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1186: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1188: NOTICE:  trigger "locking_delete_2262" for relation "pfnd0preferencevalue" does not exist, skipping
+psql:trigger.sql:1215: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1220: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1222: NOTICE:  trigger "locking_delete_2263" for relation "pfnd0attrdescriptioninfo" does not exist, skipping
+psql:trigger.sql:1249: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1254: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1256: NOTICE:  trigger "locking_delete_2264" for relation "pawp0favoritesavedsearch" does not exist, skipping
+psql:trigger.sql:1283: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1288: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1290: NOTICE:  trigger "locking_delete_2311" for relation "pfnd0directedlink" does not exist, skipping
+psql:trigger.sql:1317: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1322: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1324: NOTICE:  trigger "locking_delete_2319" for relation "pfnd0oarelement" does not exist, skipping
+psql:trigger.sql:1351: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1356: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1358: NOTICE:  trigger "locking_delete_2320" for relation "pfnd0oarfunction" does not exist, skipping
+psql:trigger.sql:1385: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1390: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1392: NOTICE:  trigger "locking_delete_2321" for relation "pfnd0oaroperation" does not exist, skipping
+psql:trigger.sql:1419: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1424: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1426: NOTICE:  trigger "locking_delete_2322" for relation "pfnd0oaroperationgroup" does not exist, skipping
+psql:trigger.sql:1453: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1458: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1460: NOTICE:  trigger "locking_delete_2323" for relation "pfnd0oarrule" does not exist, skipping
+psql:trigger.sql:1487: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1492: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1494: NOTICE:  trigger "locking_delete_2357" for relation "pfnd0consentrecord" does not exist, skipping
+psql:trigger.sql:1521: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1526: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1528: NOTICE:  trigger "locking_delete_2359" for relation "pfnd0oarophistory" does not exist, skipping
+psql:trigger.sql:1555: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1560: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1562: NOTICE:  trigger "locking_delete_2362" for relation "pmci0pmimetadata" does not exist, skipping
+psql:trigger.sql:1589: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1594: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1596: NOTICE:  trigger "locking_delete_2363" for relation "pmci0pmicharacteristic" does not exist, skipping
+psql:trigger.sql:1623: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1628: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1630: NOTICE:  trigger "locking_delete_530" for relation "pfnd0auditlink" does not exist, skipping
+psql:trigger.sql:1657: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1662: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1664: NOTICE:  trigger "locking_delete_570" for relation "pfnd0tcifeventstore" does not exist, skipping
+psql:trigger.sql:1691: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1696: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1698: NOTICE:  trigger "locking_insert_1" for relation "ppom_object" does not exist, skipping
+psql:trigger.sql:1725: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1730: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1732: NOTICE:  trigger "locking_insert_1039" for relation "pfnd0fileaccessaudit" does not exist, skipping
+psql:trigger.sql:1759: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1764: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1766: NOTICE:  trigger "locking_insert_1319" for relation "pcae0simprocessjobdetails" does not exist, skipping
+psql:trigger.sql:1793: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1798: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1800: NOTICE:  trigger "locking_insert_1322" for relation "pcae0toolaccesscontrol" does not exist, skipping
+psql:trigger.sql:1827: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1832: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1834: NOTICE:  trigger "locking_insert_1323" for relation "pcae0toolenvvariabledetails" does not exist, skipping
+psql:trigger.sql:1861: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1866: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1868: NOTICE:  trigger "locking_insert_1324" for relation "pcae0toolenvvariables" does not exist, skipping
+psql:trigger.sql:1895: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1900: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1902: NOTICE:  trigger "locking_insert_1325" for relation "pcae0toolfeedbackconfig" does not exist, skipping
+psql:trigger.sql:1929: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1934: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1936: NOTICE:  trigger "locking_insert_1326" for relation "pcae0toolgeneralconfig" does not exist, skipping
+psql:trigger.sql:1963: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:1968: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:1970: NOTICE:  trigger "locking_insert_1327" for relation "pcae0toolinputparamdetails" does not exist, skipping
+psql:trigger.sql:1997: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2002: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2004: NOTICE:  trigger "locking_insert_1329" for relation "pcae0toollaunchparameters" does not exist, skipping
+psql:trigger.sql:2031: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2036: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2038: NOTICE:  trigger "locking_insert_1331" for relation "pcae0tooloutputobjectdetails" does not exist, skipping
+psql:trigger.sql:2065: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2070: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2072: NOTICE:  trigger "locking_insert_1333" for relation "pcae0toolruletpdetails" does not exist, skipping
+psql:trigger.sql:2099: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2104: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2106: NOTICE:  trigger "locking_insert_1603" for relation "pcae0toolrule" does not exist, skipping
+psql:trigger.sql:2133: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2138: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2140: NOTICE:  trigger "locking_insert_162" for relation "pfnd0contextspecificid" does not exist, skipping
+psql:trigger.sql:2167: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2172: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2174: NOTICE:  trigger "locking_insert_1641" for relation "pcae0toolattributeconfig" does not exist, skipping
+psql:trigger.sql:2201: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2206: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2208: NOTICE:  trigger "locking_insert_1642" for relation "pcae0toolinputconfig" does not exist, skipping
+psql:trigger.sql:2235: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2240: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2242: NOTICE:  trigger "locking_insert_1643" for relation "pcae0tooloutputconfig" does not exist, skipping
+psql:trigger.sql:2269: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2274: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2276: NOTICE:  trigger "locking_insert_170" for relation "pfnd0digitalsignatureaudit" does not exist, skipping
+psql:trigger.sql:2303: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2308: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2310: NOTICE:  trigger "locking_insert_176" for relation "pfnd0generalaudit" does not exist, skipping
+psql:trigger.sql:2337: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2342: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2344: NOTICE:  trigger "locking_insert_185" for relation "pfnd0licensechangeaudit" does not exist, skipping
+psql:trigger.sql:2371: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2376: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2378: NOTICE:  trigger "locking_insert_186" for relation "pfnd0licenseexportaudit" does not exist, skipping
+psql:trigger.sql:2405: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2410: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2412: NOTICE:  trigger "locking_insert_187" for relation "pfnd0licenselogintimes" does not exist, skipping
+psql:trigger.sql:2439: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2444: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2446: NOTICE:  trigger "locking_insert_191" for relation "pfnd0loginlicenseinfo" does not exist, skipping
+psql:trigger.sql:2473: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2478: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2480: NOTICE:  trigger "locking_insert_193" for relation "pfnd0message_0" does not exist, skipping
+psql:trigger.sql:2507: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2512: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2514: NOTICE:  trigger "locking_insert_1938" for relation "pcae0tooloptionalinputdetail" does not exist, skipping
+psql:trigger.sql:2541: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2546: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2548: NOTICE:  trigger "locking_insert_199" for relation "pfnd0organizationaudit" does not exist, skipping
+psql:trigger.sql:2575: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2580: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2582: NOTICE:  trigger "locking_insert_205" for relation "pfnd0scheduleaudit" does not exist, skipping
+psql:trigger.sql:2609: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2614: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2616: NOTICE:  trigger "locking_insert_206" for relation "pfnd0secondaryaudit" does not exist, skipping
+psql:trigger.sql:2643: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2648: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2650: NOTICE:  trigger "locking_insert_207" for relation "pfnd0securityaudit" does not exist, skipping
+psql:trigger.sql:2677: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2682: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2684: NOTICE:  trigger "locking_insert_209" for relation "pfnd0structureaudit" does not exist, skipping
+psql:trigger.sql:2711: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2716: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2718: NOTICE:  trigger "locking_insert_217" for relation "pfnd0workflowaudit" does not exist, skipping
+psql:trigger.sql:2745: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2750: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2752: NOTICE:  trigger "locking_insert_2260" for relation "pfnd0preferencecategory" does not exist, skipping
+psql:trigger.sql:2779: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2784: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2786: NOTICE:  trigger "locking_insert_2261" for relation "pfnd0preferencedefinition" does not exist, skipping
+psql:trigger.sql:2813: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2818: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2820: NOTICE:  trigger "locking_insert_2262" for relation "pfnd0preferencevalue" does not exist, skipping
+psql:trigger.sql:2847: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2852: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2854: NOTICE:  trigger "locking_insert_2263" for relation "pfnd0attrdescriptioninfo" does not exist, skipping
+psql:trigger.sql:2881: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2886: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2888: NOTICE:  trigger "locking_insert_2264" for relation "pawp0favoritesavedsearch" does not exist, skipping
+psql:trigger.sql:2915: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2920: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2922: NOTICE:  trigger "locking_insert_2311" for relation "pfnd0directedlink" does not exist, skipping
+psql:trigger.sql:2949: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2954: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2956: NOTICE:  trigger "locking_insert_2319" for relation "pfnd0oarelement" does not exist, skipping
+psql:trigger.sql:2983: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:2988: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:2990: NOTICE:  trigger "locking_insert_2320" for relation "pfnd0oarfunction" does not exist, skipping
+psql:trigger.sql:3017: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:3022: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:3024: NOTICE:  trigger "locking_insert_2321" for relation "pfnd0oaroperation" does not exist, skipping
+psql:trigger.sql:3051: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:3056: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:3058: NOTICE:  trigger "locking_insert_2322" for relation "pfnd0oaroperationgroup" does not exist, skipping
+psql:trigger.sql:3085: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:3090: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:3092: NOTICE:  trigger "locking_insert_2323" for relation "pfnd0oarrule" does not exist, skipping
+psql:trigger.sql:3119: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:3124: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:3126: NOTICE:  trigger "locking_insert_2357" for relation "pfnd0consentrecord" does not exist, skipping
+psql:trigger.sql:3153: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:3158: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:3160: NOTICE:  trigger "locking_insert_2359" for relation "pfnd0oarophistory" does not exist, skipping
+psql:trigger.sql:3187: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:3192: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:3194: NOTICE:  trigger "locking_insert_2362" for relation "pmci0pmimetadata" does not exist, skipping
+psql:trigger.sql:3221: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:3226: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:3228: NOTICE:  trigger "locking_insert_2363" for relation "pmci0pmicharacteristic" does not exist, skipping
+psql:trigger.sql:3255: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:3260: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:3262: NOTICE:  trigger "locking_insert_530" for relation "pfnd0auditlink" does not exist, skipping
+psql:trigger.sql:3289: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:3294: ERROR:  syntax error at or near "COMPOUND"
+psql:trigger.sql:3296: NOTICE:  trigger "locking_insert_570" for relation "pfnd0tcifeventstore" does not exist, skipping
+psql:trigger.sql:3323: ERROR:  syntax error at or near "compound"
+psql:trigger.sql:3328: ERROR:  syntax error at or near "COMPOUND"
