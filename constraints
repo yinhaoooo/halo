@@ -1,0 +1,7 @@
+grep ‘psql’ constraints_output.log
+ psql:constraints.sql:53:ERROR:cannot alter system column “xmin”
+ psql:constraints.sql:56:ERROR:cannot alter system column “xmin”
+ psql:constraints.sql:7127:ERROR: multiple primary keys for table “pom_lock_keys”
+ (alter table pom_lock_keys add primary key(puid); )
+ alter table mmv_spatial_cell_index alter column pxmin set not null;
+alter table mmv_spatial_cell_index alter column pxmax set not null;
