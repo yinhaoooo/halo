@@ -33,4 +33,311 @@ end loop;
 end;
 $$;
 -----------------------------------------------------------------
+CREATE 
+	OR REPLACE FUNCTION tc_configure_cnf ( cnf TEXT ) RETURNS BIGINT AS $body$ DECLARE
+	con_cnf_sat_flag BOOLEAN;
+con_cnf_clause_id BIGINT;
+cri_cnf_clause_id BIGINT;
+cri_clause_skip_flag BOOLEAN;
+cri_lit_skip_flag BOOLEAN;
+con_lit_skip_flag BOOLEAN;
+con_cnf_first_cid BIGINT;
+con_cnf_lit VARCHAR ( 500 );
+MATCH BIGINT;
+row_no BIGINT;
+TYPE lookup_decision_map IS TABLE OF BOOLEAN INDEX BY VARCHAR ( 500 );
+cri_lit_sat_map lookup_decision_map;
+query CURSOR FOR SELECT
+lit_vla.pvalu_0 AS lit,
+cid_vla.pval_0 AS con_cnf_clause_id,
+cri.col2 AS cri_cnf_clause_id,
+cri.col3 AS family_mode,
+lit.rfamilyu AS lit_family,
+lit.poperator AS lit_opcode,
+lit.pvalue_text AS lit_text,
+lit.pvalue_numeric AS lit_numeric,
+lit.pvalue_date AS lit_date,
+cri.col0 AS cri_family,
+cri.col4 AS cri_opcode,
+cri.col5 AS cri_text,
+cri.col6 AS cri_numeric,
+cri.col7 AS cri_date,
+cri.col1 AS cri_lit_count 
+FROM
+	PCLAUSEIDS cid_vla
+	JOIN PCLAUSE_LITERALS lit_vla ON cnf = lit_vla.puid 
+	AND cid_vla.pseq = lit_vla.pseq
+	JOIN PCONFIGURATIONEXPRLITERAL lit ON lit_vla.pvalu_0 = lit.puid
+	LEFT OUTER JOIN POMQUERY_UIIIIWGD cri ON lit.rfamilyu = cri.col0 
+WHERE
+	cid_vla.puid = cnf 
+ORDER BY
+	2,
+	1,
+	3;
+BEGIN
+	IF
+		cnf IS NULL THEN
+			RETURN 3;
+		
+	END IF;
+	row_no := 0;
+	con_cnf_clause_id := NULL;
+	con_cnf_sat_flag := TRUE;
+	con_cnf_lit := NULL;
+	cri_cnf_clause_id := NULL;
+	cri_clause_skip_flag := FALSE;
+	cri_lit_skip_flag := FALSE;
+	FOR ROW IN query
+	LOOP
+	row_no := row_no + 1;
+	IF
+		con_cnf_clause_id IS NULL THEN
+			con_cnf_first_cid := ROW.con_cnf_clause_id;
+		
+	END IF;
+	IF
+		con_cnf_clause_id IS NULL 
+		OR con_cnf_clause_id != ROW.con_cnf_clause_id THEN
+		IF
+			con_cnf_sat_flag != TRUE THEN
+				RETURN 0;
+			
+		END IF;
+		con_cnf_clause_id := ROW.con_cnf_clause_id;
+		con_cnf_lit := ROW.lit;
+		con_lit_skip_flag := FALSE;
+		cri_cnf_clause_id := ROW.cri_cnf_clause_id;
+		cri_clause_skip_flag := FALSE;
+		cri_lit_skip_flag := FALSE;
+		
+	END IF;
+	IF
+		con_cnf_clause_id = ROW.con_cnf_clause_id THEN
+		IF
+			con_lit_skip_flag = TRUE THEN
+			IF
+				cri_cnf_clause_id != ROW.cri_cnf_clause_id THEN
+					cri_cnf_clause_id := ROW.cri_cnf_clause_id;
+				
+			END IF;
+			CONTINUE;
+			
+		END IF;
+		IF
+			con_cnf_lit = ROW.lit THEN
+			IF
+				cri_cnf_clause_id != ROW.cri_cnf_clause_id THEN
+					cri_clause_skip_flag := FALSE;
+				cri_cnf_clause_id := ROW.cri_cnf_clause_id;
+				IF
+					con_cnf_sat_flag = FALSE THEN
+						cri_clause_skip_flag := TRUE;
+					CONTINUE;
+					
+				END IF;
+				
+			END IF;
+			IF
+				cri_cnf_clause_id = ROW.cri_cnf_clause_id THEN
+				IF
+					cri_clause_skip_flag = TRUE THEN
+						CONTINUE;
+					
+				END IF;
+				IF
+					ROW.cri_lit_count > 1 
+					AND cri_lit_skip_flag = TRUE 
+					AND con_cnf_sat_flag = TRUE THEN
+						CONTINUE;
+					
+				END IF;
+				IF
+					ROW.cri_lit_count > 1 THEN
+					IF
+						con_cnf_clause_id != con_cnf_first_cid THEN
+						IF
+							ROW.family_mode = 1 THEN
+							IF
+								cri_lit_sat_map.EXISTS ( ROW.cri_numeric :: VARCHAR ) THEN
+								IF
+									cri_lit_sat_map ( ROW.cri_numeric :: VARCHAR ) = FALSE THEN
+										con_cnf_sat_flag := FALSE;
+									CONTINUE;
+									ELSE con_cnf_sat_flag := TRUE;
+									
+								END IF;
+								
+							END IF;
+							ELSIF ROW.family_mode = 2 THEN
+								IF
+									cri_lit_sat_map.EXISTS ( ROW.cri_text ) THEN
+									IF
+										cri_lit_sat_map ( ROW.cri_text ) = FALSE THEN
+											con_cnf_sat_flag := FALSE;
+										CONTINUE;
+										ELSE con_cnf_sat_flag := TRUE;
+										
+									END IF;
+									
+								END IF;
+								ELSIF ROW.family_mode = 3 THEN
+									IF
+										cri_lit_sat_map.EXISTS ( ROW.cri_date :: VARCHAR ) THEN
+										IF
+											cri_lit_sat_map ( ROW.cri_date :: VARCHAR ) = FALSE THEN
+												con_cnf_sat_flag := FALSE;
+											CONTINUE;
+											ELSE con_cnf_sat_flag := TRUE;
+											
+										END IF;
+										
+									END IF;
+									
+								END IF;
+								ELSE
+								IF
+									con_cnf_sat_flag = FALSE THEN
+										con_cnf_sat_flag := TRUE;
+									
+								END IF;
+								
+							END IF;
+							
+						END IF;
+						
+					END IF;
+					ELSE
+					IF
+						con_cnf_sat_flag = TRUE THEN
+							con_lit_skip_flag := TRUE;
+						cri_cnf_clause_id := ROW.cri_cnf_clause_id;
+						con_cnf_lit := ROW.lit;
+						CONTINUE;
+						
+					END IF;
+					IF
+						cri_cnf_clause_id != ROW.cri_cnf_clause_id THEN
+							con_cnf_sat_flag := TRUE;
+						cri_cnf_clause_id := ROW.cri_cnf_clause_id;
+						
+					END IF;
+					
+				END IF;
+				con_cnf_lit := ROW.lit;
+				con_cnf_sat_flag := TRUE;
+				
+			END IF;
+			IF
+				con_cnf_sat_flag = TRUE THEN
+					MATCH := TC_COMPARE_BOOLEAN_EXPR (
+						ROW.cri_family,
+						ROW.family_mode,
+						ROW.cri_opcode,
+						ROW.cri_text,
+						ROW.cri_numeric,
+						ROW.cri_date,
+						ROW.lit_family,
+						ROW.lit_opcode,
+						ROW.lit_text,
+						ROW.lit_numeric,
+						ROW.lit_date 
+					);
+				IF
+					ROW.cri_lit_count > 1 THEN
+					IF
+						ROW.family_mode = 1 THEN
+						IF
+							MATCH <= 0 THEN
+								con_cnf_sat_flag := FALSE;
+							cri_lit_sat_map ( ROW.cri_numeric :: VARCHAR ) := FALSE;
+							ELSE con_cnf_sat_flag := TRUE;
+							IF
+								MATCH >= 1 THEN
+								IF
+									con_cnf_clause_id = con_cnf_first_cid THEN
+										cri_lit_skip_flag := TRUE;
+									cri_lit_sat_map ( ROW.cri_numeric :: VARCHAR ) := TRUE;
+									ELSE cri_lit_skip_flag := TRUE;
+									
+								END IF;
+								
+							END IF;
+							
+						END IF;
+						ELSIF ROW.family_mode = 2 THEN
+							IF
+								MATCH <= 0 THEN
+									con_cnf_sat_flag := FALSE;
+								cri_lit_sat_map ( ROW.cri_text ) := FALSE;
+								ELSE con_cnf_sat_flag := TRUE;
+								IF
+									MATCH >= 1 THEN
+									IF
+										con_cnf_clause_id = con_cnf_first_cid THEN
+											cri_lit_skip_flag := TRUE;
+										cri_lit_sat_map ( ROW.cri_text ) := TRUE;
+										ELSE cri_lit_skip_flag := TRUE;
+										
+									END IF;
+									
+								END IF;
+								
+							END IF;
+							ELSIF ROW.family_mode = 3 THEN
+								IF
+									MATCH <= 0 THEN
+										con_cnf_sat_flag := FALSE;
+									cri_lit_sat_map ( ROW.cri_date :: VARCHAR ) := FALSE;
+									ELSE con_cnf_sat_flag := TRUE;
+									IF
+										MATCH >= 1 THEN
+										IF
+											con_cnf_clause_id = con_cnf_first_cid THEN
+												cri_lit_skip_flag := TRUE;
+											cri_lit_sat_map ( ROW.cri_date :: VARCHAR ) := TRUE;
+											ELSE cri_lit_skip_flag := TRUE;
+											
+										END IF;
+										
+									END IF;
+									
+								END IF;
+								
+							END IF;
+							ELSE
+							IF
+								MATCH <= 0 THEN
+									con_cnf_sat_flag := FALSE;
+								ELSE con_cnf_sat_flag := TRUE;
+								
+							END IF;
+							
+						END IF;
+						
+					END IF;
+					
+				END LOOP;
+IF
+	con_cnf_sat_flag = TRUE 
+	OR MATCH > 0 THEN
+	IF
+		MATCH = 2 THEN
+			RETURN 2;
+		ELSE RETURN 1;
+		
+	END IF;
+	ELSE RETURN 0;
+	
+END IF;
+EXCEPTION 
+WHEN OTHERS THEN
+	RETURN 0;
 
+END;
+$body$ LANGUAGE PLPGSQL SECURITY DEFINER STABLE;
+-- REVOKE ALL ON FUNCTION infodba.tc_configure_cnf ( cnf text ) FROM PUBLIC;
+
+ERROR: syntax error at or near "IS"
+LINE 13:TYPE lookup_decision_map IS table of boolean index by varchar
+context: invalid type name "lookup_decision_map is table of boolean index by varchar(500)"
