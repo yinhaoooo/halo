@@ -32,3 +32,5 @@ WHERE (c.relkind = ANY (ARRAY['r'::"char", 'm'::"char"])) AND i.relkind = 'i'::"
 end loop;
 end;
 $$;
+-----------------------------------------------------------------
+
