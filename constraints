@@ -106,3 +106,13 @@ WHERE
 	PAWP0TILETEMPLATE.puid = PAWP0CONTENTNAMES.puid 
 	AND PAWP0TILETEMPLATE.VLA_1310_9 = 0;
 
+1.存储过程
+  
+CREATE OR REPLACE PROCEDURE tc_indexer_proc () AS $body$
+BEGIN
+  dbms_stats.gather_schema_stats(ownname=>'infodba', estimate_percent=>100, method_opt=>'FOR ALL COLUMNS SIZE AUTO', degree=>32, cascade=>true, no_invalidate=>FALSE);
+END;
+$body$
+LANGUAGE PLPGSQL
+SECURITY DEFINER
+;
