@@ -15,3 +15,94 @@ create index ph6specialoperationreq_0 on ph6specialoperationreq using gin (PVAL_
 select upper(indexname) from pg_indexes where schemaname = 'public' and indexname = 'ph6specialoperationreq_0';  但是没有找到在pg_indexname。
 
 其它索引名都迁移过来了。
+
+
+
+
+查看oracle视图数量：select count(*) from user_views;  284
+查看pg视图数量：select count(*) from information_schema.views where table_schema = CURRENT_SCHEMA;  281
+
+----有相差3个对比一下
+Oracle：select view_name as table_name from user_views;
+把它导入pg，表名为t1
+Pg: select upper(table_name) from information_schema.views where table_schema ='public';
+Select * from t1
+Except
+select upper(table_name) from information_schema.views where table_schema ='public';
+结果为
+VL10N_EINFO
+VL10N_VALUE
+VL10N_AWP0CONTENTNAMS
+
+CREATE 
+	OR REPLACE VIEW VL10N_EINFO AS SELECT
+	puid,
+	SUBSTR( pval_0, 1, 5 ) AS locale,
+	SUBSTR( pval_0, 7, 1 ) AS preference,
+	SUBSTR( pval_0, 9, 1 ) AS status,
+	SUBSTR( pval_0, 11, 4 ) AS sequence_no,
+	SUBSTR( pval_0, 49, 240 ) AS pval_0 
+FROM
+	PL10N_EINFO UNION ALL
+SELECT
+	PEINFO.puid,
+	'NONE' AS locale,
+	'M' AS preference,
+	'M' AS status,
+	lpad( pseq, 4, '0' ) AS sequence_no,
+	pval_0 
+FROM
+	PEINFO,
+	PICML 
+WHERE
+	PICML.puid = PEINFO.puid 
+	AND PICML.VLA_487_5 = 0;
+	
+CREATE 
+	OR REPLACE VIEW VL10N_VALUE AS SELECT
+	puid,
+	SUBSTR( pval_0, 1, 5 ) AS locale,
+	SUBSTR( pval_0, 7, 1 ) AS preference,
+	SUBSTR( pval_0, 9, 1 ) AS status,
+	SUBSTR( pval_0, 11, 4 ) AS sequence_no,
+	SUBSTR( pval_0, 49, 256 ) AS pval_0 
+FROM
+	PL10N_VALUE UNION ALL
+SELECT
+	PVALUE.puid,
+	'NONE' AS locale,
+	'M' AS preference,
+	'M' AS status,
+	lpad( pseq, 4, '0' ) AS sequence_no,
+	pval_0 
+FROM
+	PVALUE,
+	PSTXT 
+WHERE
+	PSTXT.puid = PVALUE.puid 
+	AND PSTXT.VLA_491_19 = 0;
+	
+CREATE 
+	OR REPLACE VIEW VL10N_AWP0CONTENTNAMES AS SELECT
+	puid,
+	SUBSTR( pval_0, 1, 5 ) AS locale,
+	SUBSTR( pval_0, 7, 1 ) AS preference,
+	SUBSTR( pval_0, 9, 1 ) AS status,
+	SUBSTR( pval_0, 11, 4 ) AS sequence_no,
+	SUBSTR( pval_0, 49, 128 ) AS pval_0 
+FROM
+	PL10N_AWP0CONTENTNAMES UNION ALL
+SELECT
+	PAWP0CONTENTNAMES.puid,
+	'NONE' AS locale,
+	'M' AS preference,
+	'M' AS status,
+	lpad( pseq, 4, '0' ) AS sequence_no,
+	pval_0 
+FROM
+	PAWP0CONTENTNAMES,
+	PAWP0TILETEMPLATE 
+WHERE
+	PAWP0TILETEMPLATE.puid = PAWP0CONTENTNAMES.puid 
+	AND PAWP0TILETEMPLATE.VLA_1310_9 = 0;
+
