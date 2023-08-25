@@ -1,0 +1,1635 @@
+CREATE TRIGGER locking_delete_570
+	COMPOUND DELETE ON pfnd0tcifeventstore FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_delete_570();
+
+DROP TRIGGER IF EXISTS locking_insert_1 ON ppom_object CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_1() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PPOM_OBJECT%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.aoid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_1() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_1
+	COMPOUND INSERT ON ppom_object FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_1();
+
+DROP TRIGGER IF EXISTS locking_insert_1039 ON pfnd0fileaccessaudit CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_1039() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0FILEACCESSAUDIT%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_1039() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_1039
+	COMPOUND INSERT ON pfnd0fileaccessaudit FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_1039();
+
+DROP TRIGGER IF EXISTS locking_insert_1319 ON pcae0simprocessjobdetails CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_1319() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PCAE0SIMPROCESSJOBDETAILS%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_1319() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_1319
+	COMPOUND INSERT ON pcae0simprocessjobdetails FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_1319();
+
+DROP TRIGGER IF EXISTS locking_insert_1322 ON pcae0toolaccesscontrol CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_1322() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PCAE0TOOLACCESSCONTROL%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_1322() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_1322
+	COMPOUND INSERT ON pcae0toolaccesscontrol FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_1322();
+
+DROP TRIGGER IF EXISTS locking_insert_1323 ON pcae0toolenvvariabledetails CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_1323() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PCAE0TOOLENVVARIABLEDETAILS%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_1323() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_1323
+	COMPOUND INSERT ON pcae0toolenvvariabledetails FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_1323();
+
+DROP TRIGGER IF EXISTS locking_insert_1324 ON pcae0toolenvvariables CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_1324() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PCAE0TOOLENVVARIABLES%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_1324() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_1324
+	COMPOUND INSERT ON pcae0toolenvvariables FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_1324();
+
+DROP TRIGGER IF EXISTS locking_insert_1325 ON pcae0toolfeedbackconfig CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_1325() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PCAE0TOOLFEEDBACKCONFIG%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_1325() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_1325
+	COMPOUND INSERT ON pcae0toolfeedbackconfig FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_1325();
+
+DROP TRIGGER IF EXISTS locking_insert_1326 ON pcae0toolgeneralconfig CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_1326() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PCAE0TOOLGENERALCONFIG%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_1326() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_1326
+	COMPOUND INSERT ON pcae0toolgeneralconfig FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_1326();
+
+DROP TRIGGER IF EXISTS locking_insert_1327 ON pcae0toolinputparamdetails CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_1327() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PCAE0TOOLINPUTPARAMDETAILS%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_1327() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_1327
+	COMPOUND INSERT ON pcae0toolinputparamdetails FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_1327();
+
+DROP TRIGGER IF EXISTS locking_insert_1329 ON pcae0toollaunchparameters CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_1329() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PCAE0TOOLLAUNCHPARAMETERS%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_1329() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_1329
+	COMPOUND INSERT ON pcae0toollaunchparameters FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_1329();
+
+DROP TRIGGER IF EXISTS locking_insert_1331 ON pcae0tooloutputobjectdetails CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_1331() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PCAE0TOOLOUTPUTOBJECTDETAILS%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_1331() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_1331
+	COMPOUND INSERT ON pcae0tooloutputobjectdetails FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_1331();
+
+DROP TRIGGER IF EXISTS locking_insert_1333 ON pcae0toolruletpdetails CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_1333() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PCAE0TOOLRULETPDETAILS%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_1333() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_1333
+	COMPOUND INSERT ON pcae0toolruletpdetails FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_1333();
+
+DROP TRIGGER IF EXISTS locking_insert_1603 ON pcae0toolrule CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_1603() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PCAE0TOOLRULE%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_1603() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_1603
+	COMPOUND INSERT ON pcae0toolrule FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_1603();
+
+DROP TRIGGER IF EXISTS locking_insert_162 ON pfnd0contextspecificid CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_162() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0CONTEXTSPECIFICID%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_162() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_162
+	COMPOUND INSERT ON pfnd0contextspecificid FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_162();
+
+DROP TRIGGER IF EXISTS locking_insert_1641 ON pcae0toolattributeconfig CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_1641() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PCAE0TOOLATTRIBUTECONFIG%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_1641() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_1641
+	COMPOUND INSERT ON pcae0toolattributeconfig FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_1641();
+
+DROP TRIGGER IF EXISTS locking_insert_1642 ON pcae0toolinputconfig CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_1642() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PCAE0TOOLINPUTCONFIG%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_1642() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_1642
+	COMPOUND INSERT ON pcae0toolinputconfig FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_1642();
+
+DROP TRIGGER IF EXISTS locking_insert_1643 ON pcae0tooloutputconfig CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_1643() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PCAE0TOOLOUTPUTCONFIG%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_1643() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_1643
+	COMPOUND INSERT ON pcae0tooloutputconfig FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_1643();
+
+DROP TRIGGER IF EXISTS locking_insert_170 ON pfnd0digitalsignatureaudit CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_170() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0DIGITALSIGNATUREAUDIT%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_170() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_170
+	COMPOUND INSERT ON pfnd0digitalsignatureaudit FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_170();
+
+DROP TRIGGER IF EXISTS locking_insert_176 ON pfnd0generalaudit CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_176() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0GENERALAUDIT%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_176() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_176
+	COMPOUND INSERT ON pfnd0generalaudit FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_176();
+
+DROP TRIGGER IF EXISTS locking_insert_185 ON pfnd0licensechangeaudit CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_185() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0LICENSECHANGEAUDIT%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_185() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_185
+	COMPOUND INSERT ON pfnd0licensechangeaudit FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_185();
+
+DROP TRIGGER IF EXISTS locking_insert_186 ON pfnd0licenseexportaudit CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_186() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0LICENSEEXPORTAUDIT%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_186() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_186
+	COMPOUND INSERT ON pfnd0licenseexportaudit FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_186();
+
+DROP TRIGGER IF EXISTS locking_insert_187 ON pfnd0licenselogintimes CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_187() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0LICENSELOGINTIMES%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_187() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_187
+	COMPOUND INSERT ON pfnd0licenselogintimes FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_187();
+
+DROP TRIGGER IF EXISTS locking_insert_191 ON pfnd0loginlicenseinfo CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_191() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0LOGINLICENSEINFO%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_191() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_191
+	COMPOUND INSERT ON pfnd0loginlicenseinfo FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_191();
+
+DROP TRIGGER IF EXISTS locking_insert_193 ON pfnd0message_0 CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_193() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0MESSAGE_0%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_193() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_193
+	COMPOUND INSERT ON pfnd0message_0 FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_193();
+
+DROP TRIGGER IF EXISTS locking_insert_1938 ON pcae0tooloptionalinputdetail CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_1938() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PCAE0TOOLOPTIONALINPUTDETAIL%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_1938() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_1938
+	COMPOUND INSERT ON pcae0tooloptionalinputdetail FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_1938();
+
+DROP TRIGGER IF EXISTS locking_insert_199 ON pfnd0organizationaudit CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_199() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0ORGANIZATIONAUDIT%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_199() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_199
+	COMPOUND INSERT ON pfnd0organizationaudit FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_199();
+
+DROP TRIGGER IF EXISTS locking_insert_205 ON pfnd0scheduleaudit CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_205() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0SCHEDULEAUDIT%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_205() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_205
+	COMPOUND INSERT ON pfnd0scheduleaudit FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_205();
+
+DROP TRIGGER IF EXISTS locking_insert_206 ON pfnd0secondaryaudit CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_206() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0SECONDARYAUDIT%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_206() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_206
+	COMPOUND INSERT ON pfnd0secondaryaudit FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_206();
+
+DROP TRIGGER IF EXISTS locking_insert_207 ON pfnd0securityaudit CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_207() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0SECURITYAUDIT%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_207() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_207
+	COMPOUND INSERT ON pfnd0securityaudit FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_207();
+
+DROP TRIGGER IF EXISTS locking_insert_209 ON pfnd0structureaudit CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_209() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0STRUCTUREAUDIT%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_209() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_209
+	COMPOUND INSERT ON pfnd0structureaudit FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_209();
+
+DROP TRIGGER IF EXISTS locking_insert_217 ON pfnd0workflowaudit CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_217() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0WORKFLOWAUDIT%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_217() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_217
+	COMPOUND INSERT ON pfnd0workflowaudit FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_217();
+
+DROP TRIGGER IF EXISTS locking_insert_2260 ON pfnd0preferencecategory CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_2260() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0PREFERENCECATEGORY%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_2260() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_2260
+	COMPOUND INSERT ON pfnd0preferencecategory FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_2260();
+
+DROP TRIGGER IF EXISTS locking_insert_2261 ON pfnd0preferencedefinition CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_2261() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0PREFERENCEDEFINITION%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_2261() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_2261
+	COMPOUND INSERT ON pfnd0preferencedefinition FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_2261();
+
+DROP TRIGGER IF EXISTS locking_insert_2262 ON pfnd0preferencevalue CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_2262() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0PREFERENCEVALUE%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_2262() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_2262
+	COMPOUND INSERT ON pfnd0preferencevalue FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_2262();
+
+DROP TRIGGER IF EXISTS locking_insert_2263 ON pfnd0attrdescriptioninfo CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_2263() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0ATTRDESCRIPTIONINFO%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_2263() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_2263
+	COMPOUND INSERT ON pfnd0attrdescriptioninfo FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_2263();
+
+DROP TRIGGER IF EXISTS locking_insert_2264 ON pawp0favoritesavedsearch CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_2264() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PAWP0FAVORITESAVEDSEARCH%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_2264() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_2264
+	COMPOUND INSERT ON pawp0favoritesavedsearch FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_2264();
+
+DROP TRIGGER IF EXISTS locking_insert_2311 ON pfnd0directedlink CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_2311() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0DIRECTEDLINK%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_2311() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_2311
+	COMPOUND INSERT ON pfnd0directedlink FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_2311();
+
+DROP TRIGGER IF EXISTS locking_insert_2319 ON pfnd0oarelement CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_2319() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0OARELEMENT%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_2319() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_2319
+	COMPOUND INSERT ON pfnd0oarelement FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_2319();
+
+DROP TRIGGER IF EXISTS locking_insert_2320 ON pfnd0oarfunction CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_2320() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0OARFUNCTION%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_2320() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_2320
+	COMPOUND INSERT ON pfnd0oarfunction FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_2320();
+
+DROP TRIGGER IF EXISTS locking_insert_2321 ON pfnd0oaroperation CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_2321() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0OAROPERATION%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_2321() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_2321
+	COMPOUND INSERT ON pfnd0oaroperation FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_2321();
+
+DROP TRIGGER IF EXISTS locking_insert_2322 ON pfnd0oaroperationgroup CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_2322() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0OAROPERATIONGROUP%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_2322() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_2322
+	COMPOUND INSERT ON pfnd0oaroperationgroup FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_2322();
+
+DROP TRIGGER IF EXISTS locking_insert_2323 ON pfnd0oarrule CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_2323() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0OARRULE%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_2323() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_2323
+	COMPOUND INSERT ON pfnd0oarrule FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_2323();
+
+DROP TRIGGER IF EXISTS locking_insert_2357 ON pfnd0consentrecord CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_2357() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0CONSENTRECORD%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_2357() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_2357
+	COMPOUND INSERT ON pfnd0consentrecord FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_2357();
+
+DROP TRIGGER IF EXISTS locking_insert_2359 ON pfnd0oarophistory CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_2359() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0OAROPHISTORY%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_2359() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_2359
+	COMPOUND INSERT ON pfnd0oarophistory FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_2359();
+
+DROP TRIGGER IF EXISTS locking_insert_2362 ON pmci0pmimetadata CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_2362() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PMCI0PMIMETADATA%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_2362() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_2362
+	COMPOUND INSERT ON pmci0pmimetadata FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_2362();
+
+DROP TRIGGER IF EXISTS locking_insert_2363 ON pmci0pmicharacteristic CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_2363() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PMCI0PMICHARACTERISTIC%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_2363() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_2363
+	COMPOUND INSERT ON pmci0pmicharacteristic FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_2363();
+
+DROP TRIGGER IF EXISTS locking_insert_530 ON pfnd0auditlink CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_530() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0AUDITLINK%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_530() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_530
+	COMPOUND INSERT ON pfnd0auditlink FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_530();
+
+DROP TRIGGER IF EXISTS locking_insert_570 ON pfnd0tcifeventstore CASCADE;
+CREATE OR REPLACE FUNCTION trigger_fct_locking_insert_570() RETURNS trigger AS $BODY$
+compound trigger
+    type typ is table of PFND0TCIFEVENTSTORE%rowtype index by integer;
+   recs typ;
+   v_index                  SIMPLE_INTEGER       := 0;
+   PROCEDURE saveLocks
+   AS   v_updates       CONSTANT SIMPLE_INTEGER := recs.count();
+   BEGIN
+   FORALL v_count IN 1..v_updates
+   MERGE INTO  POM_LOCK_KEYS lk USING( SELECT DISTINCT recs[v_count].puid AS puid  ) src ON ( src.puid = lk.puid ) WHEN NOT MATCHED THEN
+   INSERT( lk.puid ) VALUES ( src.puid );
+   recs.delete();
+   v_index := 0;
+   END;
+   after each row is
+   BEGIN
+   v_index := v_index + 1;
+   recs[v_index].puid := NEW.puid;
+   end after each row;
+   AFTER STATEMENT IS
+   BEGIN
+   saveLocks();
+   END AFTER STATEMENT;
+   RETURN NEW;
+END
+$BODY$
+ LANGUAGE 'plpgsql' SECURITY DEFINER;
+-- REVOKE ALL ON FUNCTION trigger_fct_locking_insert_570() FROM PUBLIC;
+
+CREATE TRIGGER locking_insert_570
+	COMPOUND INSERT ON pfnd0tcifeventstore FOR EACH ROW
+	EXECUTE PROCEDURE trigger_fct_locking_insert_570();
