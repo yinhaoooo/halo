@@ -37,3 +37,32 @@ AND i.index_name NOT LIKE 'SYS_%'
 AND i.index_name NOT LIKE 'ISEQ$$_%'
 AND i.index_name NOT LIKE 'SYS_IOT%'
 ORDER BY i.table_name, i.index_name;
+
+
+tc=# create schema eim_uids;
+ERROR:  schema "eim_uids" already exists
+tc=# \d ppom_object
+                                                          Table "public.ppom_object"
+       Column       |            Type             | Collation | Nullable |                               Default
+--------------------+-----------------------------+-----------+----------+---------------------------------------------------------------------
+ puid               | character varying(15)       |           | not null |
+ ptimestamp         | character varying(33)       |           | not null |
+ ppid               | bigint                      |           | not null |
+ rowning_siteu      | character varying(15)       |           |          |
+ rowning_sitec      | bigint                      |           |          |
+ plsd               | timestamp without time zone |           |          |
+ pobject_properties | bigint                      |           | not null |
+ aoid               | character varying(15)       |           | not null |
+ arev_category      | bigint                      |           | not null | 48
+ aspace_uid         | character varying(15)       |           |          |
+ avalid_from        | timestamp without time zone |           | not null | to_date('1900/01/02 00:00:00'::text, 'YYYY/MM/DD HH24:MI:SS'::text)
+ avalid_to          | timestamp without time zone |           |          |
+Indexes:
+    "pippom_object" UNIQUE, btree (puid)
+    "pippom_object_0" btree (aoid)
+    "pippom_object_1" btree (aspace_uid)
+Triggers:
+    fast_sync_add_trigger BEFORE INSERT ON ppom_object FOR EACH ROW EXECUTE FUNCTION trigger_fct_fast_sync_add_trigger()
+    fast_sync_delete_trigger AFTER DELETE ON ppom_object FOR EACH ROW EXECUTE FUNCTION trigger_fct_fast_sync_delete_trigger()
+
+tc=#
