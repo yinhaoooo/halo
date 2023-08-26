@@ -39,4 +39,25 @@ SELECT relname AS table_name,
        pg_size_pretty(pg_total_relation_size(relid)) AS table_size,
        reltuples AS row_count
 FROM pg_catalog.pg_statio_user_tables
-ORDER BY relnam
+ORDER BY relname
+
+
+SELECT CASE
+           WHEN t.row_total = 1 THEN
+            'select * from(' || REPLACE(sql_content, ' union all ', ') a order by 2 desc;')
+           WHEN t.row_total = t.row_seq THEN
+            REPLACE(sql_content, ' union all ', ') a order by 2 desc;')
+           WHEN t.row_seq = 1 THEN
+            'select * from(' || sql_content
+           ELSE
+            sql_content
+       END sql_content
+  FROM (SELECT COUNT(*) over() row_total,
+               row_number() over() row_seq,
+               'SELECT ''' || quote_ident(tablename) ||
+               ''' 表名, count(*) 表行数,pg_size_pretty(pg_total_relation_size(''' ||
+               quote_ident(tablename) || '''::regclass)) 表总大小 from ' || quote_ident(tablename) ||
+               ' union all ' sql_content
+          FROM pg_tables
+         WHERE schemaname = 'public') t
+ ORDER BY t.row_seq;
