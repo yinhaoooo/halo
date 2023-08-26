@@ -35,9 +35,8 @@ SELECT table_name,
        num_rows
 FROM user_tables;
 
-SELECT table_name,
-       pg_size_pretty(pg_total_relation_size(table_name)) AS table_size,
-       pg_total_relation_size(table_name) / pg_relation_size(table_name) AS migration_rows
-FROM information_schema.tables
-WHERE table_schema = 'public'
-ORDER BY table_name;
+SELECT relname AS table_name,
+       pg_size_pretty(pg_total_relation_size(relid)) AS table_size,
+       reltuples AS row_count
+FROM pg_catalog.pg_statio_user_tables
+ORDER BY relnam
