@@ -29,13 +29,8 @@ dbadmin
 
 数据库地址：10.243.171.250  数据库用户密码：dbadmin/Siemens@Tcm@2023
 我创建了一个数据库bopdrill
-PWORKSPACEOBJECT
-PMFG0MEPLANTBOP
-PSTRUCTURE_REVISIONS
-PITEMREVISION
-PPSBOMVIEWREVISION
-PPSOCCURRENCE
-PITEM
-PMEOP
-PMFG0MEPROCSTATN
-PMFG0MEPROCLINE
+SELECT table_name,
+       ROUND((blocks * 8 / 1024), 2) AS table_size_mb,
+       ROUND((blocks * 8 / 1024) + (num_rows * avg_row_len / 1024 / 1024), 2) AS total_size_mb,
+       num_rows
+FROM user_tables;
