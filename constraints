@@ -127,3 +127,24 @@ SELECT
      JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name
      JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name
  WHERE constraint_type in ('UNIQUE','PRIMARY KEY','CHECK','FOREIGN KEY') AND tc.table_name in (select table_name from ) ; 
+
+
+tc=# \d bom_recipe_table
+                      Table "public.bom_recipe_table"
+      Column       |         Type          | Collation | Nullable | Default
+-------------------+-----------------------+-----------+----------+---------
+ bomline_uid       | character varying(15) |           | not null |
+ recipe_uid        | character varying(15) |           | not null |
+ recipe_props_hash | character varying(15) |           |          |
+Indexes:
+    "bom_recipe_table_index" btree (recipe_uid, bomline_uid)
+    "bom_recipe_table_index2" btree (bomline_uid, recipe_uid)
+
+
+
+ALTER TABLE bom_acct_table ALTER COLUMN BOM_LEVEL SET NOT NULL;
+
+ALTER TABLE bom_recipe_table ALTER COLUMN BOMLINE_UID SET NOT NULL;
+ALTER TABLE bom_recipe_table ALTER COLUMN RECIPE_UID SET NOT NULL;
+
+ALTER TABLE eim_uid_generator_root ALTER COLUMN SITE_ID SET NOT NULL;
