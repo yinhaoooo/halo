@@ -49,14 +49,19 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-CREATE OR REPLACE PROCEDURE count_records_dynamically IS
+create table TMP_GET_ACTURAL_TABLE_COUNT(table_name varchar(50),table_cnt int);
+select * from TMP_GET_ACTURAL_TABLE_COUNT;
+
+CREATE OR REPLACE PROCEDURE GET_ACTURAL_TABLE_COUNT(isrun integer) AUTHID CURRENT_USER IS 
   cursor_sql SYS_REFCURSOR;
-  table_name VARCHAR2(100);
-  record_count NUMBER;
+  record_count number;
 BEGIN
-  FOR cursor_sql IN (SELECT table_name FROM all_tables WHERE owner = 'YOUR_SCHEMA_NAME') LOOP
+  FOR cursor_sql IN (SELECT table_name FROM user_tables ) LOOP
     EXECUTE IMMEDIATE 'SELECT COUNT(*) FROM ' || cursor_sql.table_name INTO record_count;
-    INSERT INTO tmp_table_count (table_name, record_count) VALUES (cursor_sql.table_name, record_count);
+    INSERT INTO TMP_GET_ACTURAL_TABLE_COUNT (table_name, table_cnt) VALUES (cursor_sql.table_name, record_count);
+	  DBMS_OUTPUT.PUT_LINE('table '||cursor_sql.table_name || ':' ||record_count);
+      COMMIT;
   END LOOP;
   COMMIT;
 END;
+
