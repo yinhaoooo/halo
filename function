@@ -33,3 +33,17 @@ end loop;
 end;
 $$;
 -----------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION count_records_dynamically() RETURNS VOID AS $$
+DECLARE
+  cursor_sql RECORD;
+  table_count INTEGER;
+BEGIN
+  FOR cursor_sql IN
+    SELECT tablename FROM pg_tables WHERE schemaname = 'public' -- 可以更改为特定的模式或删除该过滤条件以包括所有模式的表
+  LOOP
+    EXECUTE 'SELECT COUNT(*) FROM ' || cursor_sql.tablename INTO table_count;
+    INSERT INTO tmp_table_count (table_name, record_count) VALUES (cursor_sql.tablename, table_count);
+  END LOOP;
+END;
+$$ LANGUAGE plpgsql;
