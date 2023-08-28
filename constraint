@@ -37,3 +37,15 @@ SELECT
      JOIN information_schema.key_column_usage AS kcu ON tc.constraint_name = kcu.constraint_name
      JOIN information_schema.constraint_column_usage AS ccu ON ccu.constraint_name = tc.constraint_name
  WHERE constraint_type = 'FOREIGN KEY' AND tc.table_name = 'your table name';
+
+主键：
+SELECT conname, conrelid::regclass AS table_name, conkey
+FROM pg_constraint
+WHERE contype = 'p'
+AND conrelid = 'table_name'::regclass;
+
+外键：
+SELECT conname, conrelid::regclass AS table_name, confrelid::regclass AS referenced_table
+FROM pg_constraint
+WHERE contype = 'f'
+AND conrelid = 'table_name'::regclass;
