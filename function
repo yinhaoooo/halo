@@ -99,3 +99,80 @@ BEGIN
 END;
 $$ LANGUAGE plpgsql;
 
+
+select * from dblink('dbname=tc_test','select table_name,column_name from information_schema.columns where table_name not in(select table_name from information_schema.views)') as t(table_name varchar(100),
+column_name varchar(30))
+except 
+select * from dblink('dbname=tc','select table_name,column_name from information_schema.columns where table_name not in(select table_name from information_schema.views)') as t(table_name varchar(100),column_name varchar(30)); 
+
+CREATE TABLE col(
+  "table_catalog" "information_schema"."sql_identifier" COLLATE "pg_catalog"."C",
+  "table_schema" "information_schema"."sql_identifier" COLLATE "pg_catalog"."C",
+  "table_name" "information_schema"."sql_identifier" COLLATE "pg_catalog"."C",
+  "column_name" "information_schema"."sql_identifier" COLLATE "pg_catalog"."C",
+  "ordinal_position" "information_schema"."cardinal_number",
+  "column_default" "information_schema"."character_data" COLLATE "pg_catalog"."C",
+  "is_nullable" "information_schema"."yes_or_no" COLLATE "pg_catalog"."C",
+  "data_type" "information_schema"."character_data" COLLATE "pg_catalog"."C",
+  "character_maximum_length" "information_schema"."cardinal_number",
+  "character_octet_length" "information_schema"."cardinal_number",
+  "numeric_precision" "information_schema"."cardinal_number",
+  "numeric_precision_radix" "information_schema"."cardinal_number",
+  "numeric_scale" "information_schema"."cardinal_number",
+  "datetime_precision" "information_schema"."cardinal_number",
+  "interval_type" "information_schema"."character_data" COLLATE "pg_catalog"."C",
+  "interval_precision" "information_schema"."cardinal_number",
+  "character_set_catalog" "information_schema"."sql_identifier" COLLATE "pg_catalog"."C",
+  "character_set_schema" "information_schema"."sql_identifier" COLLATE "pg_catalog"."C",
+  "character_set_name" "information_schema"."sql_identifier" COLLATE "pg_catalog"."C",
+  "collation_catalog" "information_schema"."sql_identifier" COLLATE "pg_catalog"."C",
+  "collation_schema" "information_schema"."sql_identifier" COLLATE "pg_catalog"."C",
+  "collation_name" "information_schema"."sql_identifier" COLLATE "pg_catalog"."C",
+  "domain_catalog" "information_schema"."sql_identifier" COLLATE "pg_catalog"."C",
+  "domain_schema" "information_schema"."sql_identifier" COLLATE "pg_catalog"."C",
+  "domain_name" "information_schema"."sql_identifier" COLLATE "pg_catalog"."C",
+  "udt_catalog" "information_schema"."sql_identifier" COLLATE "pg_catalog"."C",
+  "udt_schema" "information_schema"."sql_identifier" COLLATE "pg_catalog"."C",
+  "udt_name" "information_schema"."sql_identifier" COLLATE "pg_catalog"."C",
+  "scope_catalog" "information_schema"."sql_identifier" COLLATE "pg_catalog"."C",
+  "scope_schema" "information_schema"."sql_identifier" COLLATE "pg_catalog"."C",
+  "scope_name" "information_schema"."sql_identifier" COLLATE "pg_catalog"."C",
+  "maximum_cardinality" "information_schema"."cardinal_number",
+  "dtd_identifier" "information_schema"."sql_identifier" COLLATE "pg_catalog"."C",
+  "is_self_referencing" "information_schema"."yes_or_no" COLLATE "pg_catalog"."C",
+  "is_identity" "information_schema"."yes_or_no" COLLATE "pg_catalog"."C",
+  "identity_generation" "information_schema"."character_data" COLLATE "pg_catalog"."C",
+  "identity_start" "information_schema"."character_data" COLLATE "pg_catalog"."C",
+  "identity_increment" "information_schema"."character_data" COLLATE "pg_catalog"."C",
+  "identity_maximum" "information_schema"."character_data" COLLATE "pg_catalog"."C",
+  "identity_minimum" "information_schema"."character_data" COLLATE "pg_catalog"."C",
+  "identity_cycle" "information_schema"."yes_or_no" COLLATE "pg_catalog"."C",
+  "is_generated" "information_schema"."character_data" COLLATE "pg_catalog"."C",
+  "generation_expression" "information_schema"."character_data" COLLATE "pg_catalog"."C",
+  "is_updatable" "information_schema"."yes_or_no" COLLATE "pg_catalog"."C",
+  add_col varchar(200)
+)
+;
+
+
+CREATE OR REPLACE PROCEDURE GET_TABLE_column(isrun integer) 
+language plpgsql
+AS $$
+declare  
+    cursor_sql record;
+begin
+    for cursor_sql in(	  
+    select * from dblink('dbname=tc_test','select table_name,column_name from information_schema.columns where table_name not in(select table_name from information_schema.views)') as t(table_name varchar(100),
+column_name varchar(30))
+except 
+select * from dblink('dbname=tc','select table_name,column_name from information_schema.columns where table_name not in(select table_name from information_schema.views)') as t(table_name varchar(100),column_name varchar(30))
+	) loop
+	      execute null;
+		  insert into col
+		   select * from dblink('dbname=tc_test','select * where table_name not in(select table_name from information_schema.views)' and table_name=cursor_sql.table_name and table_column=cursor_sql.table_column) as t(table_name varchar(100));
+		  end loop;
+end;
+$$;
+
+GET_TABLE_column(1);
+
