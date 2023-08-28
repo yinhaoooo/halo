@@ -45,3 +45,6 @@ END;
 $BODY$
   LANGUAGE plpgsql VOLATILE
   COST 100
+
+SELECT tgname, tgrelid::regclass AS tablename, tgtype, pg_get_triggerdef(oid) AS definition
+FROM pg_trigger
