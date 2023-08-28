@@ -21,6 +21,10 @@ CREATE OR REPLACE FUNCTION "public"."lock_keys_delete_trigger_func"()
   LANGUAGE plpgsql VOLATILE
   COST 100
 
+SELECT tgname, tgrelid::regclass AS tablename, tgtype, pg_get_triggerdef(oid) AS definition
+FROM pg_trigger
+
+
 CREATE OR REPLACE FUNCTION "public"."lock_keys_insert_trigger_func"()
   RETURNS "pg_catalog"."trigger" AS $BODY$                                   BEGIN                                    INSERT INTO POM_LOCK_KEYS( puid ) VALUES(NEW.puid) ON CONFLICT (puid) DO UPDATE SET puid = EXCLUDED.puid;                                   RETURN NEW;                                   END;                                   $BODY$
   LANGUAGE plpgsql VOLATILE
