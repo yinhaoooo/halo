@@ -44,3 +44,15 @@ except
 select * from dblink('dbname=tc', 'select sequence_name from information_schema.sequences where sequence_schema= ''public'''
 ) as t(table_name varchar(100));  312说明序列没有相同名字
 
+
+tablename               oracle_count      pg_count 
+PFND0MAX_VALUE_REASON	19685             19683
+PPOM_OBJECT	        1691250621        1691250620
+POM_M_LOCK	        2                 1
+POM_LOCK_KEYS	        1737626114        1737626113
+POM_LOCK_LOGGING	20                24
+POM_R_LOCK	        6                 3
+POM_TIMESTAMP	        99597             104141
+SCRATCH_TABLE	        2734189550        2734189543
+
+
