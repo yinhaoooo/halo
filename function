@@ -64,4 +64,38 @@ BEGIN
   END LOOP;
   COMMIT;
 END;
+--------------------------
+CREATE OR REPLACE PROCEDURE compare_all_table_columns(
+  
+)
+AS $$
+DECLARE
+  table_name VARCHAR;
+  column_count1 INTEGER;
+  column_count2 INTEGER;
+  column_name1 VARCHAR;
+  column_name2 VARCHAR;
+BEGIN
+  -- 获取 schema1 中所有表的信息
+  FOR table_name IN (SELECT table_name FROM information_schema.tables WHERE table_schema = schema1) LOOP
+    -- 获取表1的字段数量和字段名
+    EXECUTE format('SELECT COUNT(*), column_name FROM information_schema.columns WHERE table_schema = %L AND table_name = %L GROUP BY column_name', schema1, table_name) INTO column_count1, column_name1;
+
+    -- 获取表2的字段数量和字段名
+    EXECUTE format('SELECT COUNT(*), column_name FROM information_schema.columns WHERE table_schema = %L AND table_name = %L GROUP BY column_name', schema2, table_name) INTO column_count2, column_name2;
+
+    -- 比较字段数量
+    IF column_count1 > column_count2 THEN
+      RAISE NOTICE '表 % 格式字段数量不一致', table_name;
+      CONTINUE;
+    END IF;
+	
+	
+	---获取表名、字段名等信息。插入表中
+
+   
+  END LOOP;
+  ---添加列的信息
+END;
+$$ LANGUAGE plpgsql;
 
