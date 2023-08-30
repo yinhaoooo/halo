@@ -57,3 +57,6 @@ SCRATCH_TABLE	        2734189550        2734189543
 
 
 pg_dump -U YOUR_USERNAME -h YOUR_HOSTNAME -d YOUR_DATABASE_NAME --section=pre-data --section=post-data --section=triggers --file=triggers.sql
+
+create index pipcontents on pcontents using btree("puid" collate "pg_catalog"."default" "pg_catalog"."text_ops" asc nulls last,"pseq" "pg_catalog"."int8_ops" ASC NULLS LAST);
+
