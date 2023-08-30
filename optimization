@@ -1,0 +1,42 @@
+修改服务器内存和信号量						
+echo "kernel.sem = 4096 4194304 32768 1024" >> /etc/sysctl.conf						
+echo "vm_nr_hugepages = 26225" >> /etc/sysctl.conf						
+sysctl -p						
+						
+						
+修改服务器资源限制						
+echo "postgres            soft    nproc           unlimited" >> /etc/security/limits.conf						
+echo "postgres            hard    nproc           unlimited" >> /etc/security/limits.conf						
+echo "postgres            soft    nofile          1024000" >> /etc/security/limits.conf						
+echo "postgres            hard    nofile          1024000" >> /etc/security/limits.conf						
+echo "postgres            soft    stack           unlimited" >> /etc/security/limits.conf						
+echo "postgres            hard    stack           unlimited" >> /etc/security/limits.conf						
+echo "postgres            soft    memlock         unlimited" >> /etc/security/limits.conf						
+echo "postgres            hard    memlock         unlimited" >> /etc/security/limits.conf						
+echo "postgres            soft    core            unlimited" >> /etc/security/limits.conf						
+echo "postgres            hard    core            unlimited" >> /etc/security/limits.conf						
+						
+						
+修改配置文件postgresql.conf --》用/区分：修改前/修改后						
+sed -i "s/#listen_addresses = 'localhost'/listen_addresses = '*'/" /data01/pgsql/postgresql.conf						
+sed -i "s/#port = 5432/port = 5432/" /data01/pgsql/postgresql.conf						
+sed -i "s/max_connections = 100/max_connections = 3000/" /data01/pgsql/postgresql.conf 						
+sed -i "s/#huge_pages = try/huge_pages = on/" /data01/pgsql/postgresql.conf   						
+sed -i "s/shared_buffers = 128MB/shared_buffers = 32GB/" /data01/pgsql/postgresql.conf						
+sed -i "s/#work_mem = 4MB/work_mem = 16MB/" /data01/pgsql/postgresql.conf						
+sed -i "s/#wal_buffers = -1/wal_buffers = 16MB/" /data01/pgsql/postgresql.conf						
+sed -i "s/#checkpoint_completion_target = 0.9/checkpoint_completion_target = 0.9/" /data01/pgsql/postgresql.conf						
+sed -i "s/max_wal_size = 1GB/max_wal_size = 4GB/" /data01/pgsql/postgresql.conf						
+sed -i "s/min_wal_size = 80MB/min_wal_size = 1GB/" /data01/pgsql/postgresql.conf						
+sed -i "s/#default_statistics_target = 100/default_statistics_target = 100/" /data01/pgsql/postgresql.conf						
+sed -i "s/#log_destination = 'stderr'/log_destination = 'csvlog'/" /data01/pgsql/postgresql.conf						
+sed -i "s/#logging_collector = off/logging_collector = on/" /data01/pgsql/postgresql.conf						
+sed -i "s/#effective_cache_size = 4GB/effective_cache_size = 180GB/" /data01/pgsql/postgresql.conf						
+sed -i "s/#random_page_cost = 4.0/random_page_cost = 1.1/" /data01/pgsql/postgresql.conf						
+sed -i "s/#effective_io_concurrency = 10/effective_io_concurrency = 200/" /data01/pgsql/postgresql.conf						
+sed -i "s/#maintenance_io_concurrency = 10/maintenance_io_concurrency = 200/" /data01/pgsql/postgresql.conf						
+sed -i "s/#max_worker_processes = 8/max_worker_processes = 32/" /data01/pgsql/postgresql.conf						
+sed -i "s/#max_parallel_workers_per_gather = 2/max_parallel_workers_per_gather = 4/" /data01/pgsql/postgresql.conf						
+sed -i "s/#max_parallel_maintenance_workers = 2/max_parallel_maintenance_workers = 4/" /data01/pgsql/postgresql.conf						
+sed -i "s/#max_parallel_workers = 8/max_parallel_workers = 32/" /data01/pgsql/postgresql.conf						
+sed -i "s/#wal_log_hints = off/wal_log_hints = on/" /data01/pgsql/postgresql.conf						
