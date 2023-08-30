@@ -48,3 +48,21 @@ $BODY$
 
 SELECT tgname, tgrelid::regclass AS tablename, tgtype, pg_get_triggerdef(oid) AS definition
 FROM pg_trigger
+
+
+SELECT
+    tgname AS trigger_name,
+    tgrelname AS table_name,
+    tgtype::text AS trigger_type,
+    tgdeferrable AS is_deferrable,
+    tginitdeferred AS initially_deferred,
+    pg_get_triggerdef(t.oid) AS trigger_definition
+FROM
+    pg_trigger t
+    INNER JOIN pg_class c ON t.tgrelid = c.oid
+    INNER JOIN pg_namespace n ON c.relnamespace = n.oid
+WHERE
+    n.nspname = 'schema_name' -- 替换为模式名称，例如 'public'
+    AND c.relname = 'table_name' -- 替换为表名
+ORDER BY
+    tgname;
