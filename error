@@ -69,3 +69,6 @@ create index pipcontents on pcontents using btree("puid" collate "pg_catalog"."d
 2023-08-31 14:45:19.139 CST,,,77134,,64f035e4.12d4e,5,,2023-08-31 14:40:36 CST,,0,LOG,00000,"redo done                                                                                                        at 1090/30FFFF98 system usage: CPU: user: 45.69 s, system: 0.00 s, elapsed: 45.75 s",,,,,,,,,"","startu                                                                                                       p",,0
 2023-08-31 14:45:32.635 CST,,,24393,,64c3206c.5f49,44,,2023-07-28 09:57:00 CST,,0,LOG,00000,"database s                                                                                                       ystem is ready to accept connections",,,,,,,,,"","postmaster",,0
 
+SELECT CAST(t3.puid AS VARCHAR(14) ) AS puid  INTO POM_LOCK_KEYS FROM ( SELECT puid FROM PPOM_OBJECT UNION ALL SELECT t1.pobject_uid FROM PPOM_STUB t1 WHERE NOT EXISTS ( SELECT 1 FROM PPOM_OBJECT t2 WHERE t2.puid = t1.pobject_uid)) t3;
+err=0 rows=1691250418 1906.575 secs;
+INFO  - 2023/08/30-07:42:35.354 UTC - NoId - ===>Took 1906.575 seconds to execute that SQL (returning 1691250418 rows) - Teamcenter.POM at /plm/cynas/tce_iproot6/units/tc124015_lnx64/src/foundation/pom/eim/eim_enquire.cxx(6484)
