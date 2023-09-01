@@ -1,0 +1,50 @@
+安装ora2pg
+1.	安装perl
+yum install -y perl perl-ExtUtils-CBuilder perl-ExtUtils-MakeMaker
+perl -v
+2..安装oracle客户端 
+rpm -ivh oracle-instantclient11.2-basic-11.2.0.4.0-1.x86_64.rpm
+rpm -ivh oracle-instantclient11.2-devel-11.2.0.4.0-1.x86_64.rpm
+rpm -ivh oracle-instantclient11.2-jdbc-11.2.0.4.0-1.x86_64.rpm
+rpm -ivh oracle-instantclient11.2-sqlplus-11.2.0.4.0-1.x86_64.rpm
+
+2.	安装DBI模块
+tar zxvf DBI-1.643.tar.gz
+cd DBI-1.643
+perl Makefile.PL
+make
+make install
+
+3．安装DBD::oracle驱动模块
+Vi  /etc/profile
+ export LD_LIBRARY_PATH=/usr/lib/oracle/11.2/client64/lib
+export ORACLE_HOME=/usr/lib/oracle/11.2/client64
+source /etc/profile
+
+tar zxvf DBD-Oracle-1.74.tar.gz
+cd DBD-Oracle-1.74
+perl Makefile.PL
+make
+make install
+
+3.	安装DBD:pg驱动模块
+Vi  /etc/profile
+export POSTGRES_INCLUDE="/data01/app/postgresql/include"
+export POSTGRES_LIB="/data01/app/postgresql/lib"
+export POSTGRES_HOME="/data01/app/postgresql"
+
+/etc/profile
+
+tar zxvf DBD-Pg-3.16.3
+cd DBD-Pg-3.16.3
+perl Makefile.PL
+make
+make install
+
+4.	安装ora2pg
+tar -xvjf ora2pg-24.0.tar.bz2
+cd ora2pg-24.0
+perl Makefile.PL
+make && make install
+
+perl check.pl
