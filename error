@@ -72,3 +72,54 @@ create index pipcontents on pcontents using btree("puid" collate "pg_catalog"."d
 SELECT CAST(t3.puid AS VARCHAR(14) ) AS puid  INTO POM_LOCK_KEYS FROM ( SELECT puid FROM PPOM_OBJECT UNION ALL SELECT t1.pobject_uid FROM PPOM_STUB t1 WHERE NOT EXISTS ( SELECT 1 FROM PPOM_OBJECT t2 WHERE t2.puid = t1.pobject_uid)) t3;
 err=0 rows=1691250418 1906.575 secs;
 INFO  - 2023/08/30-07:42:35.354 UTC - NoId - ===>Took 1906.575 seconds to execute that SQL (returning 1691250418 rows) - Teamcenter.POM at /plm/cynas/tce_iproot6/units/tc124015_lnx64/src/foundation/pom/eim/eim_enquire.cxx(6484)
+
+
+2023-09-05 14:59:48.259 CST,,,40739,,64f6d1e4.9f23,1,,2023-09-05 14:59:48 CST,3/612110,0,FATAL,3D000,"database ""tcclusterdb"" does not exist","The database subdirectory ""pg_tblspc/16390/PG_14_202107181/16391"" is missing.",,,,,,,,"","autovacuum worker",,0
+2023-09-05 15:00:48.280 CST,,,40948,,64f6d220.9ff4,1,,2023-09-05 15:00:48 CST,3/612115,0,FATAL,3D000,"database ""tcclusterdb"" does not exist","The database subdirectory ""pg_tblspc/16390/PG_14_202107181/16391"" is missing.",,,,,,,,"","autovacuum worker",,0
+2023-09-05 15:01:48.301 CST,,,41005,,64f6d25c.a02d,1,,2023-09-05 15:01:48 CST,3/612120,0,FATAL,3D000,"database ""tcclusterdb"" does not exist","The database subdirectory ""pg_tblspc/16390/PG_14_202107181/16391"" is missing.",,,,,,,,"","autovacuum worker",,0
+2023-09-05 15:02:48.321 CST,,,41040,,64f6d298.a050,1,,2023-09-05 15:02:48 CST,3/612125,0,FATAL,3D000,"database ""tcclusterdb"" does not exist","The database subdirectory ""pg_tblspc/16390/PG_14_202107181/16391"" is missing.",,,,,,,,"","autovacuum worker",,0
+2023-09-05 15:03:48.342 CST,,,41085,,64f6d2d4.a07d,1,,2023-09-05 15:03:48 CST,3/612130,0,FATAL,3D000,"database ""tcclusterdb"" does not exist","The database subdirectory ""pg_tblspc/16390/PG_14_202107181/16391"" is missing.",,,,,,,,"","autovacuum worker",,0
+2023-09-05 15:04:48.362 CST,,,41112,,64f6d310.a098,1,,2023-09-05 15:04:48 CST,3/612135,0,FATAL,3D000,"database ""tcclusterdb"" does not exist","The database subdirectory ""pg_tblspc/16390/PG_14_202107181/16391"" is missing.",,,,,,,,"","autovacuum worker",,0
+2023-09-05 15:05:48.382 CST,,,41340,,64f6d34c.a17c,1,,2023-09-05 15:05:48 CST,3/612140,0,FATAL,3D000,"database ""tcclusterdb"" does not exist","The database subdirectory ""pg_tblspc/16390/PG_14_202107181/16391"" is missing.",,,,,,,,"","autovacuum worker",,0
+2023-09-05 15:06:48.403 CST,,,41368,,64f6d388.a198,1,,2023-09-05 15:06:48 CST,3/612145,0,FATAL,3D000,"database ""tcclusterdb"" does not exist","The database subdirectory ""pg_tblspc/16390/PG_14_202107181/16391"" is missing.",,,,,,,,"","autovacuum worker",,0
+2023-09-05 15:07:48.424 CST,,,41473,,64f6d3c4.a201,1,,2023-09-05 15:07:48 CST,3/612150,0,FATAL,3D000,"database ""tcclusterdb"" does not exist","The database subdirectory ""pg_tblspc/16390/PG_14_202107181/16391"" is missing.",,,,,,,,"","autovacuum worker",,0
+[postgres@kwebtmpmgp00003 log]$ psql
+psql (14.8)
+Type "help" for help.
+
+postgres=# \l
+                                       List of databases
+    Name     |    Owner    | Encoding |   Collate   |    Ctype    |      Access privileges
+-------------+-------------+----------+-------------+-------------+-----------------------------
+ postgres    | postgres    | UTF8     | en_US.UTF-8 | en_US.UTF-8 |
+ tc          | infodba     | UTF8     | C           | en_US.UTF-8 | =Tc/infodba                +
+             |             |          |             |             | infodba=CTc/infodba
+ tcclusterdb | tcclusterdb | UTF8     | C           | en_US.UTF-8 | =Tc/tcclusterdb            +
+             |             |          |             |             | tcclusterdb=CTc/tcclusterdb
+ template0   | postgres    | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres                +
+             |             |          |             |             | postgres=CTc/postgres
+ template1   | postgres    | UTF8     | en_US.UTF-8 | en_US.UTF-8 | =c/postgres                +
+             |             |          |             |             | postgres=CTc/postgres
+(5 rows)
+
+postgres=# \db
+                        List of tablespaces
+       Name        |  Owner   |              Location
+-------------------+----------+------------------------------------
+ infodba_idata     | infodba  | /data01/pgsql/tc/infodba_idata
+ infodba_ilog      | infodba  | /data01/pgsql/tc/infodba_ilog
+ infodba_indx      | infodba  | /data01/pgsql/tc/infodba_indx
+ pg_default        | postgres |
+ pg_global         | postgres |
+ tcclusterdb_idata | postgres | /data01/pgsql/tc/tcclusterdb_idata
+(6 rows)
+
+postgres=# \q
+[postgres@kwebtmpmgp00003 log]$ cd /data01/pgsql
+[postgres@kwebtmpmgp00003 pgsql]$ cd tc
+[postgres@kwebtmpmgp00003 tc]$ ll
+total 16
+drwx------ 3 postgres postgres 4096 Sep  4 17:41 infodba_idata
+drwx------ 3 postgres postgres 4096 Sep  4 17:41 infodba_ilog
+drwx------ 3 postgres postgres 4096 Sep  4 17:41 infodba_indx
+drwx------ 2 postgres postgres 4096 Sep  4 17:37 tcclusterdb_idata
