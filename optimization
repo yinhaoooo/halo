@@ -40,3 +40,9 @@ sed -i "s/#max_parallel_workers_per_gather = 2/max_parallel_workers_per_gather =
 sed -i "s/#max_parallel_maintenance_workers = 2/max_parallel_maintenance_workers = 4/" /data01/pgsql/postgresql.conf						
 sed -i "s/#max_parallel_workers = 8/max_parallel_workers = 32/" /data01/pgsql/postgresql.conf						
 sed -i "s/#wal_log_hints = off/wal_log_hints = on/" /data01/pgsql/postgresql.conf						
+
+
+share_preload_libraries = 'auto_explain,pg_stat_statements';
+track_activity_query_size = 4096
+pg_stat_statements.max=10000
+pg_stat_statements.track =all
