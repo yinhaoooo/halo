@@ -40,6 +40,60 @@ AND i.index_name NOT LIKE 'ISEQ$$_%'
 AND i.index_name NOT LIKE 'SYS_IOT%'
 ORDER BY i.table_name, i.index_name;
 
+[postgres@kwebtmpmgp00002 log]$ cat postgresql-2023-09-08_093032.csv
+2023-09-08 09:30:32.042 CST,,,80965,,64fa7934.13c45,1,,2023-09-08 09:30:28 CST,,0,LOG,00000,"ending log output to stderr",,"Future log output will go to log destination ""csvlog"".",,,,,,,"","postmaster",,0
+2023-09-08 09:30:32.042 CST,,,80965,,64fa7934.13c45,2,,2023-09-08 09:30:28 CST,,0,LOG,00000,"starting PostgreSQL 14.8 on x86_64-pc-linux-gnu, compiled by gcc (GCC) 4.4.7 20120313 (Red Hat 4.4.7-23), 64-bit",,,,,,,,,"","postmaster",,0
+2023-09-08 09:30:32.043 CST,,,80965,,64fa7934.13c45,3,,2023-09-08 09:30:28 CST,,0,LOG,00000,"listening on IPv4 address ""0.0.0.0"", port 5432",,,,,,,,,"","postmaster",,0
+2023-09-08 09:30:32.044 CST,,,80965,,64fa7934.13c45,4,,2023-09-08 09:30:28 CST,,0,LOG,XX000,"could not create IPv6 socket for address ""::"": Address family not supported by protocol",,,,,,,,,"","postmaster",,0
+2023-09-08 09:30:32.099 CST,,,80965,,64fa7934.13c45,5,,2023-09-08 09:30:28 CST,,0,LOG,00000,"listening on Unix socket ""/tmp/.s.PGSQL.5432""",,,,,,,,,"","postmaster",,0
+2023-09-08 09:30:32.114 CST,,,80965,,64fa7934.13c45,6,,2023-09-08 09:30:28 CST,,0,LOG,58P01,"could not open directory ""pg_tblspc/330947/PG_14_202107181"": No such file or directory",,,,,,,,,"","postmaster",,0
+2023-09-08 09:30:32.119 CST,,,80973,,64fa7938.13c4d,1,,2023-09-08 09:30:32 CST,,0,LOG,00000,"database system was interrupted while in recovery at 2023-09-07 19:34:46 CST",,"This probably means that some data is corrupted and you will have to use the last backup for recovery.",,,,,,,"","startup",,0
+2023-09-08 09:30:33.294 CST,,,80973,,64fa7938.13c4d,2,,2023-09-08 09:30:32 CST,,0,LOG,58P01,"could not open directory ""pg_tblspc/330947/PG_14_202107181"": No such file or directory",,,,,,,,,"","startup",,0
+2023-09-08 09:30:33.294 CST,,,80973,,64fa7938.13c4d,3,,2023-09-08 09:30:32 CST,,0,LOG,00000,"database system was not properly shut down; automatic recovery in progress",,,,,,,,,"","startup",,0
+2023-09-08 09:30:33.309 CST,,,80973,,64fa7938.13c4d,4,,2023-09-08 09:30:32 CST,,0,LOG,58P01,"could not open directory ""pg_tblspc/330947/PG_14_202107181"": No such file or directory",,,,,,,,,"","startup",,0
+2023-09-08 09:30:33.309 CST,,,80973,,64fa7938.13c4d,5,,2023-09-08 09:30:32 CST,,0,LOG,00000,"redo starts at 12B6/FCF48B58",,,,,,,,,"","startup",,0
+2023-09-08 09:30:33.351 CST,,,80973,,64fa7938.13c4d,6,,2023-09-08 09:30:32 CST,,0,LOG,00000,"redo done at 12B6/FDFFE950 system usage: CPU: user: 0.02 s, system: 0.01 s, elapsed: 0.04 s",,,,,,,,,"","startup",,0
+2023-09-08 09:30:33.382 CST,,,80973,,64fa7938.13c4d,7,,2023-09-08 09:30:32 CST,,0,LOG,58P01,"could not open directory ""pg_tblspc/330947/PG_14_202107181"": No such file or directory",,,,,,,,,"","startup",,0
+2023-09-08 09:30:33.384 CST,,,80973,,64fa7938.13c4d,8,,2023-09-08 09:30:32 CST,,0,PANIC,53100,"could not write to file ""pg_wal/xlogtemp.80973"": No space left on device",,,,,,,,,"","startup",,0
+2023-09-08 09:30:33.387 CST,,,80965,,64fa7934.13c45,7,,2023-09-08 09:30:28 CST,,0,LOG,00000,"startup process (PID 80973) was terminated by signal 6: Aborted",,,,,,,,,"","postmaster",,0
+2023-09-08 09:30:33.387 CST,,,80965,,64fa7934.13c45,8,,2023-09-08 09:30:28 CST,,0,LOG,00000,"aborting startup due to startup process failure",,,,,,,,,"","postmaster",,0
+2023-09-08 09:30:34.463 CST,,,80965,,64fa7934.13c45,9,,2023-09-08 09:30:28 CST,,0,LOG,00000,"database system is shut down",,,,,,,,,"","postmaster",,0
+[postgres@kwebtmpmgp00002 log]$ cd ..
+[postgres@kwebtmpmgp00002 pgsql]$ ll
+total 29596
+drwxrwxr-x 2 postgres postgres  4419584 Sep  7 18:04 archivedir
+-rw------- 1 postgres postgres      221 Sep  6 17:18 backup_label.old
+-rw------- 1 postgres postgres  7540666 Sep  6 17:18 backup_manifest
+drwx------ 6 postgres postgres     4096 Sep  6 17:18 base
+-rw------- 1 postgres postgres 12513280 Sep  7 18:35 core.11646
+-rw------- 1 postgres postgres  2965504 Sep  7 19:34 core.21882
+-rw------- 1 postgres postgres  4747264 Sep  7 19:34 core.22233
+-rw------- 1 postgres postgres    24576 Sep  8 09:30 core.80973
+-rw------- 1 postgres postgres       44 Sep  8 09:30 current_logfiles
+drwx------ 2 postgres postgres     4096 Sep  7 19:34 global
+drwx------ 2 postgres postgres     4096 Sep  8 09:30 log
+drwx------ 2 postgres postgres     4096 Sep  6 17:18 pg_commit_ts
+drwx------ 2 postgres postgres     4096 Sep  6 17:18 pg_dynshmem
+-rw------- 1 postgres postgres     4917 Sep  6 17:18 pg_hba.conf
+-rw------- 1 postgres postgres     1636 Sep  6 17:18 pg_ident.conf
+drwx------ 4 postgres postgres     4096 Sep  7 19:31 pg_logical
+drwx------ 4 postgres postgres     4096 Sep  6 17:18 pg_multixact
+drwx------ 2 postgres postgres     4096 Sep  6 17:18 pg_notify
+drwx------ 2 postgres postgres     4096 Sep  6 17:59 pg_replslot
+drwx------ 2 postgres postgres     4096 Sep  6 17:18 pg_serial
+drwx------ 2 postgres postgres     4096 Sep  6 17:18 pg_snapshots
+drwx------ 2 postgres postgres     4096 Sep  7 19:34 pg_stat
+drwx------ 2 postgres postgres     4096 Sep  8 09:30 pg_stat_tmp
+drwx------ 2 postgres postgres     4096 Sep  6 17:21 pg_subtrans
+drwx------ 2 postgres postgres     4096 Sep  6 17:18 pg_tblspc
+drwx------ 2 postgres postgres     4096 Sep  6 17:18 pg_twophase
+-rw------- 1 postgres postgres        3 Sep  6 17:18 PG_VERSION
+drwx------ 3 postgres postgres   303104 Sep  8 09:30 pg_wal
+drwx------ 2 postgres postgres     4096 Sep  6 17:18 pg_xact
+-rw------- 1 postgres postgres      628 Sep  6 17:18 postgresql.auto.conf
+-rw------- 1 postgres postgres    28867 Sep  6 17:18 postgresql.conf
+-rw------- 1 postgres postgres       36 Sep  8 09:30 postmaster.opts
+drwx------ 6 postgres postgres     4096 Sep  6 14:20 tc
 
   select * from dblink('dbname=tc_test', 'select sequence_name from information_schema.sequences where sequence_schema= ''public''') as t(table_name varchar(100))
 except 
