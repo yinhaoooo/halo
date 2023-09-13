@@ -163,3 +163,19 @@ Predicate Information (identified by operation id):
 * 8 - filter("VLA_691_23"=0)
 * 9 - access(UPPER("POBJECT_NAME")='0302042595产品工艺数据包')
 * 10 - access("T_01"."PUID"="T_02"."PUID")
+
+tc=# \d+ pl10n_object_name
+                                            Table "public.pl10n_object_name"
+ Column |          Type          | Collation | Nullable | Default | Storage  | Compression | Stats target | Description
+--------+------------------------+-----------+----------+---------+----------+-------------+--------------+-------------
+ puid   | character varying(15)  |           | not null |         | extended |             |              |
+ pseq   | bigint                 |           | not null |         | plain    |             |              |
+ pval_0 | character varying(176) |           |          |         | extended |             |              |
+Indexes:
+    "pipl10n_object_name" UNIQUE, btree (puid, pseq)
+    "pipl10n_object_name_0" btree (pval_0)
+    "pipl10n_object_name_1" btree (substr(pval_0::text, 49, 128))
+    "pipl10n_object_name_2" btree (upper(substr(pval_0::text, 49, 128)))
+    "pipl10n_object_name_3" btree (substr(pval_0::text, 1, 5))
+    "pipl10n_object_name_4" btree (upper(substr(pval_0::text, 1, 5)))
+Access method: heap
