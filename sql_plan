@@ -138,3 +138,28 @@ Indexes:
 Access method: heap
 
 
+Plan Hash Value  : 1555470249 
+
+--------------------------------------------------------------------------------------------------------------------
+| Id   | Operation                                  | Name                      | Rows  | Bytes  | Cost | Time     |
+--------------------------------------------------------------------------------------------------------------------
+|    0 | SELECT STATEMENT                           |                           |     4 |    120 |    4 | 00:00:01 |
+|    1 |   HASH UNIQUE                              |                           |     4 |    120 |    4 | 00:00:01 |
+|    2 |    NESTED LOOPS SEMI                       |                           |     4 |    120 |    3 | 00:00:01 |
+|    3 |     VIEW                                   | VL10N_OBJECT_NAME         |     4 |     60 |    2 | 00:00:01 |
+|    4 |      UNION-ALL                             |                           |       |        |      |          |
+|    5 |       INLIST ITERATOR                      |                           |       |        |      |          |
+|  * 6 |        TABLE ACCESS BY INDEX ROWID BATCHED | PL10N_OBJECT_NAME         |     1 |     93 |    1 | 00:00:01 |
+|  * 7 |         INDEX RANGE SCAN                   | PIPL10N_OBJECT_NAME_3     |    36 |        |    1 | 00:00:01 |
+|  * 8 |       TABLE ACCESS BY INDEX ROWID BATCHED  | PWORKSPACEOBJECT          |     3 |    138 |    1 | 00:00:01 |
+|  * 9 |        INDEX RANGE SCAN                    | PIPWORKSPACEOBJECT_2      |     3 |        |    1 | 00:00:01 |
+| * 10 |     INDEX UNIQUE SCAN                      | PIPMECOLLABORATIONCONTEXT | 21794 | 326910 |    1 | 00:00:01 |
+--------------------------------------------------------------------------------------------------------------------
+
+Predicate Information (identified by operation id):
+------------------------------------------
+* 6 - filter(UPPER(SUBSTR("PVAL_0",49,128))='0302042595产品工艺数据包' AND (SUBSTR("PVAL_0",9,1)='A' OR SUBSTR("PVAL_0",9,1)='M'))
+* 7 - access(SUBSTR("PVAL_0",1,5)='NONE' OR SUBSTR("PVAL_0",1,5)='zh_CN')
+* 8 - filter("VLA_691_23"=0)
+* 9 - access(UPPER("POBJECT_NAME")='0302042595产品工艺数据包')
+* 10 - access("T_01"."PUID"="T_02"."PUID")
