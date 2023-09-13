@@ -232,3 +232,21 @@ ows=114165353 loops=1)
  Planning Time: 0.276 ms
  Execution Time: 147916.323 ms
 (26 rows)
+
+create view VL10N_OBJECT_NAME2 as
+ SELECT pworkspaceobject.puid,
+    'NONE'::text AS locale,
+    'M'::text AS preference,
+    'M'::text AS status,
+    '0000'::text AS sequence_no,
+    pworkspaceobject.pobject_name AS pval_0
+   FROM pworkspaceobject
+  WHERE pworkspaceobject.pobject_name IS NOT NULL AND pworkspaceobject.vla_691_23 = 0
+UNION ALL
+ SELECT pl10n_object_name.puid,
+    substr(pl10n_object_name.pval_0::text, 1, 5) AS locale,
+    substr(pl10n_object_name.pval_0::text, 7, 1) AS preference,
+    substr(pl10n_object_name.pval_0::text, 9, 1) AS status,
+    substr(pl10n_object_name.pval_0::text, 11, 4) AS sequence_no,
+    substr(pl10n_object_name.pval_0::text, 49, 128) AS pval_0
+   FROM pl10n_object_name;
