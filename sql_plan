@@ -250,3 +250,56 @@ UNION ALL
     substr(pl10n_object_name.pval_0::text, 11, 4) AS sequence_no,
     substr(pl10n_object_name.pval_0::text, 49, 128) AS pval_0
    FROM pl10n_object_name;
+
+tc=# explain analyse
+SELECT DISTINCT
+t_01.puid
+FROM
+PMECOLLABORATIONCONTEXT t_01,
+VL10N_OBJECT_NAME2 t_02
+WHERE
+(
+( UPPER ( t_02.pval_0 ) = UPPER ( '0302042595产品工艺数据包' ) )
+AND (
+t_02.locale IN ( 'NONE', 'zh_CN' )
+AND ( ( t_01.puid = t_02.puid ) AND t_02.status IN ( 'A', 'M' ) )
+)
+);
+
+
+                                                                                           QUERY PLAN
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------
+----------------------------
+ Unique  (cost=10010719.05..10013572.88 rows=21794 width=15) (actual time=120135.992..120135.996 rows=0 loops=1)
+   ->  Sort  (cost=10010719.05..10012145.96 rows=570767 width=15) (actual time=120135.992..120135.995 rows=0 loops=1)
+         Sort Key: t_01.puid
+         Sort Method: quicksort  Memory: 25kB
+         ->  Hash Join  (cost=1199736.90..9950433.12 rows=570767 width=15) (actual time=120135.986..120135.990 rows=0 loops=1)
+               Hash Cond: ((t_02.puid)::text = (t_01.puid)::text)
+               ->  Subquery Scan on t_02  (cost=1199025.08..9948222.74 rows=570767 width=48) (actual time=120130.292..120130.293 rows=0 loops=1)
+                     Filter: (upper((t_02.pval_0)::text) = '0302042595产品工艺数据包'::text)
+                     Rows Removed by Filter: 114165391
+                     ->  Append  (cost=1199025.08..8235920.26 rows=114153499 width=208) (actual time=3887.527..61791.085 rows=114165391 loops=1)
+                           ->  Bitmap Heap Scan on pworkspaceobject  (cost=1199025.08..6523612.80 rows=114153498 width=169) (actual time=3887.527..52227.888 rows=11
+4165355 loops=1)
+                                 Recheck Cond: (pobject_name IS NOT NULL)
+                                 Filter: (vla_691_23 = 0)
+                                 Rows Removed by Filter: 269
+                                 Heap Blocks: exact=198201 lossy=3699439
+                                 ->  Bitmap Index Scan on pipworkspaceobject_4  (cost=0.00..1170486.70 rows=114153498 width=0) (actual time=3831.714..3831.715 rows=
+114169075 loops=1)
+                                       Index Cond: (pobject_name IS NOT NULL)
+                           ->  Subquery Scan on "*SELECT* 2"  (cost=0.15..4.98 rows=1 width=175) (actual time=0.028..0.105 rows=36 loops=1)
+                                 ->  Index Scan using pipl10n_object_name_3 on pl10n_object_name  (cost=0.15..4.97 rows=1 width=175) (actual time=0.027..0.099 rows=
+36 loops=1)
+                                       Index Cond: (substr((pval_0)::text, 1, 5) = ANY ('{NONE,zh_CN}'::text[]))
+                                       Filter: (substr((pval_0)::text, 9, 1) = ANY ('{A,M}'::text[]))
+               ->  Hash  (cost=439.40..439.40 rows=21794 width=15) (actual time=5.665..5.666 rows=21799 loops=1)
+                     Buckets: 32768  Batches: 1  Memory Usage: 1257kB
+                     ->  Index Only Scan using pipmecollaborationcontext on pmecollaborationcontext t_01  (cost=0.29..439.40 rows=21794 width=15) (actual time=0.017
+..2.514 rows=21799 loops=1)
+                           Heap Fetches: 167
+ Planning Time: 0.297 ms
+ Execution Time: 120136.292 ms
+(27 rows)
