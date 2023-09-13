@@ -44,3 +44,97 @@ UNION ALL
     pworkspaceobject.pobject_name AS pval_0
    FROM pworkspaceobject
   WHERE pworkspaceobject.pobject_name IS NOT NULL AND pworkspaceobject.vla_691_23 = 0;
+
+
+tc=# \d+ pworkspaceobject
+                                                                                       Table "public.pworkspaceobject"
+           Column            |            Type             | Collation | Nullable |                               Default                               | Storage  |
+ Compression | Stats target | Description
+-----------------------------+-----------------------------+-----------+----------+---------------------------------------------------------------------+----------+
+-------------+--------------+-------------
+ puid                        | character varying(15)       |           | not null |                                                                     | extended |
+             |              |
+ pobject_name                | character varying(128)      |           | not null |                                                                     | extended |
+             |              |
+ pobject_desc                | character varying(240)      |           |          |                                                                     | extended |
+             |              |
+ pobject_type                | character varying(32)       |           | not null |                                                                     | extended |
+             |              |
+ pobject_application         | character varying(32)       |           | not null |                                                                     | extended |
+             |              |
+ vla_691_7                   | bigint                      |           | not null |                                                                     | plain    |
+             |              |
+ pip_classification          | character varying(128)      |           |          |                                                                     | extended |
+             |              |
+ vla_691_10                  | bigint                      |           | not null |                                                                     | plain    |
+             |              |
+ pgov_classification         | character varying(128)      |           |          |                                                                     | extended |
+             |              |
+ vla_691_12                  | bigint                      |           | not null |                                                                     | plain    |
+             |              |
+ pfnd0revisionid             | character varying(32)       |           |          |                                                                     | extended |
+             |              |
+ vla_691_18                  | bigint                      |           | not null |                                                                     | plain    |
+             |              |
+ vla_691_20                  | bigint                      |           | not null |                                                                     | plain    |
+             |              |
+ rwso_threadu                | character varying(15)       |           |          |                                                                     | extended |
+             |              |
+ rwso_threadc                | bigint                      |           |          |                                                                     | plain    |
+             |              |
+ prevision_limit             | bigint                      |           | not null |                                                                     | plain    |
+             |              |
+ prevision_number            | bigint                      |           | not null |                                                                     | plain    |
+             |              |
+ rowning_organizationu       | character varying(15)       |           |          |                                                                     | extended |
+             |              |
+ rowning_organizationc       | bigint                      |           |          |                                                                     | plain    |
+             |              |
+ pactive_seq                 | bigint                      |           |          |                                                                     | plain    |
+             |              |
+ rowning_projectu            | character varying(15)       |           |          |                                                                     | extended |
+             |              |
+ rowning_projectc            | bigint                      |           |          |                                                                     | plain    |
+             |              |
+ pdate_released              | timestamp without time zone |           |          |                                                                     | plain    |
+             |              |
+ pfnd0inprocess              | bigint                      |           |          |                                                                     | plain    |
+             |              |
+ pfnd0isrevisiondiscontinued | bigint                      |           |          |                                                                     | plain    |
+             |              |
+ aoid                        | character varying(15)       |           | not null |                                                                     | extended |
+             |              |
+ arev_category               | bigint                      |           | not null | 48                                                                  | plain    |
+             |              |
+ aspace_uid                  | character varying(15)       |           |          |                                                                     | extended |
+             |              |
+ avalid_from                 | timestamp without time zone |           | not null | to_date('1900/01/02 00:00:00'::text, 'YYYY/MM/DD HH24:MI:SS'::text) | plain    |
+             |              |
+ avalid_to                   | timestamp without time zone |           |          |                                                                     | plain    |
+             |              |
+ vla_691_22                  | bigint                      |           | not null | 0                                                                   | plain    |
+             |              |
+ vla_691_23                  | bigint                      |           | not null | 0                                                                   | plain    |
+             |              |
+ pawp0issuspect              | bigint                      |           |          |                                                                     | plain    |
+             |              |
+ vla_691_28                  | bigint                      |           | not null | 0                                                                   | plain    |
+             |              |
+ vla_691_27                  | bigint                      |           | not null | 0                                                                   | plain    |
+             |              |
+ vla_691_26                  | bigint                      |           | not null | 0                                                                   | plain    |
+             |              |
+ vla_691_25                  | bigint                      |           | not null | 0                                                                   | plain    |
+             |              |
+Indexes:
+    "pipworkspaceobject" UNIQUE, btree (puid)
+    "pipworkspaceobject_0" btree (aoid)
+    "pipworkspaceobject_1" btree (upper(pobject_type::text))
+    "pipworkspaceobject_2" btree (upper(pobject_name::text))
+    "pipworkspaceobject_3" btree (pobject_type)
+    "pipworkspaceobject_4" btree (pobject_name)
+    "pipworkspaceobject_5" btree (rwso_threadu)
+    "pipworkspaceobject_6" btree (rowning_projectu)
+Access method: heap
+
+
