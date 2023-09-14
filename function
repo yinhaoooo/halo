@@ -176,3 +176,15 @@ $$;
 
 GET_TABLE_column(1);
 
+CREATE OR REPLACE FUNCTION login_hook.login() RETURNS VOID LANGUAGE PLPGSQL AS $$
+DECLARE
+ex_state TEXT;
+ex_message TEXT;
+ex_detail TEXT;
+ex_hint TEXT;
+ex_context TEXT;
+BEGIN
+LOAD '$libdir/plugins/pgtt';
+END
+$$;
+GRANT EXECUTE ON FUNCTION login_hook.login() TO PUBLIC;
