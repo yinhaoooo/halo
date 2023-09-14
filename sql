@@ -18,41 +18,6 @@ WITH CTE_1 AS (SELECT t_03.puid, t_03.rparent_bvru FROM PPSALTERNATELIST t_01 , 
 SELECT  DISTINCT t_01.puid FROM PMECOLLABORATIONCONTEXT t_01 , VL10N_OBJECT_NAME t_02 WHERE (  ( UPPER(t_02.pval_0)  =  UPPER( '0302042595图纸版本A产品工艺数据包' )  ) AND ( t_02.locale IN  ('NONE', 'zh_CN' ) AND ( ( t_01.puid = t_02.puid ) AND t_02.status IN  ('A', 'M' ) ) ) ) ;
 
 SELECT /*+DYNAMIC_SAMPLING( tt 4)*/  DISTINCT po.puid, po.ppid, ps.ascope_uid FROM PPOM_OBJECT po LEFT OUTER JOIN POM_SCOPE ps ON po.aoid = ps.aoid , POM_uid_scratch2 tt WHERE po.puid = tt.auid;
+SELECT t_02.pvalu_0, t_02.pvalu_0,t_02.pvalc_0 FROM PREVISIONANCHOR t_01 , PREVISIONS t_02 WHERE ( ( t_02.puid IN  ( SELECT t_03.rrev_chain_anchoru FROM PDATASET t_03,PString1TT WHERE t_03.puid = PString1TT.astring  AND (t_03.arev_category IN (48,40)) ) AND ( t_02.pseq = 0 ) ) AND ( t_01.puid = t_02.puid ) ) ;
 
-create global temporary table POM_UID_SCRATCH2
-(
-  auid VARCHAR2(15)
-)
-on commit delete rows;
 
-==================================================================
-
-tc=# create  table POM_UID_SCRATCH2
-(
-  auid VARCHAR(15)
-)
-on commit delete rows;
-ERROR:  ON COMMIT can only be used on temporary table
-
-------------------------------------------------------------
-tc=# create  temporary table public.POM_UID_SCRATCH2
-(
-  auid VARCHAR(15)
-)
-on commit delete rows;
-ERROR:  cannot create temporary relation in non-temporary schema
-LINE 1: create  temporary table public.POM_UID_SCRATCH2
-                                ^
-tc=# create   table POM_UID_SCRATCH2
-(
-  auid VARCHAR(15)
-)
-on commit delete rows;
-ERROR:  ON COMMIT can only be used on temporary tables
-----------------------------------------------------------
-tc=# create   table POM_UID_SCRATCH2
-(
-  auid VARCHAR(15)
-)
-;
-CREATE TABLE
