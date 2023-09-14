@@ -21,3 +21,20 @@ INFO  - 2023/09/13-09:29:21.091 UTC - kwetsit00054.71507.06.Anonymous.00001.Svr 
 INFO  - 2023/09/13-09:29:21.091 UTC - kwetsit00054.71507.06.Anonymous.00001.Svr - Got a retry. Sleeping 5 - Teamcenter.POM at /plm/cynas/tce_iproot6/units/tc124015_lnx64/src/foundation/pom/pom/pom_interface.cxx(564)
 INFO  - 2023/09/13-09:29:26.091 UTC - kwetsit00054.71507.06.Anonymous.00001.Svr - POM__handle_db_interface_fail 577 unknown timeout 4001 now 5 - Teamcenter.POM at /plm/cynas/tce_iproot6/units/tc124015_lnx64/src/foundation/pom/pom/pom_interface.cxx(577)
 INFO  - 2023/09/13-09:29:26.091 UTC - kwetsit00054.71507.06.Anonymous.00001.Svr - POM__handle_db_interface_fail 591 retry, restarted transaction - Teamcenter.POM at /plm/cynas/tce_iproot6/units/tc124015_lnx64/src/foundation/pom/pom/pom_interface.cxx(591)"
+
+
+tc=# \d+ pom_m_lock
+                                                 Table "public.pom_m_lock"
+   Column   |         Type          | Collation | Nullable | Default | Storage  | Compression | Stats target | Description
+------------+-----------------------+-----------+----------+---------+----------+-------------+--------------+-------------
+ ref_uid    | character varying(14) |           | not null |         | extended |             |              |
+ vuid       | character varying(14) |           | not null |         | extended |             |              |
+ process    | character varying(14) |           | not null |         | extended |             |              |
+ ref_class  | bigint                |           | not null |         | plain    |             |              |
+ type       | bigint                |           | not null |         | plain    |             |              |
+ aspace_uid | character varying(15) |           | not null |         | extended |             |              |
+ lock_mode  | character varying(32) |           |          |         | extended |             |              |
+Indexes:
+    "pipom_m_lock" UNIQUE, btree (ref_uid, aspace_uid)
+    "pipom_m_lock_process" btree (process, aspace_uid, ref_uid)
+Access method: heap
