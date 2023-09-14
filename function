@@ -188,3 +188,6 @@ LOAD '$libdir/plugins/pgtt';
 END
 $$;
 GRANT EXECUTE ON FUNCTION login_hook.login() TO PUBLIC;
+
+SELECT t_02.pvalu_0, t_02.pvalu_0,t_02.pvalc_0 FROM PREVISIONANCHOR t_01 , PREVISIONS t_02 WHERE ( ( t_02.puid IN  ( SELECT t_03.rrev_chain_anchoru FROM PDATASET t_03,PString1TT WHERE t_03.puid = PString1TT.astring  AND (t_03.arev_category IN (48,40)) ) AND ( t_02.pseq = 0 ) ) AND ( t_01.puid = t_02.puid ) ) ;
+
