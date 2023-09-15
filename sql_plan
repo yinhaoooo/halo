@@ -1,305 +1,83 @@
-Unique  (cost=8811592.22..8814446.05 rows=21794 width=15)
-  ->  Sort  (cost=8811592.22..8813019.13 rows=570766 width=15)
-        Sort Key: t_01.puid
-        ->  Hash Join  (cost=639.51..8751306.39 rows=570766 width=15)
-              Hash Cond: ((t_02.puid)::text = (t_01.puid)::text)
-              ->  Subquery Scan on t_02  (cost=0.15..8749168.47 rows=570766 width=48)
-                    Filter: (upper(t_02.pval_0) = '0302042595产品工艺数据包'::text)
-                    ->  Append  (cost=0.15..7036871.70 rows=114153118 width=208)
-                          ->  Index Scan using pipl10n_object_name_3 on pl10n_object_name  (cost=0.15..4.97 rows=1 width=175)
-                                Index Cond: (substr((pval_0)::text, 1, 5) = ANY ('{NONE,zh_CN}'::text[]))
-                                Filter: (substr((pval_0)::text, 9, 1) = ANY ('{A,M}'::text[]))
-                          ->  Subquery Scan on "*SELECT* 2"  (cost=0.00..6466101.13 rows=114153117 width=175)
-                                ->  Seq Scan on pworkspaceobject  (cost=0.00..5324569.96 rows=114153117 width=169)
+
+SELECT DISTINCT
+	t_01.aoid AS puid 
+FROM
+	PWORKSPACEOBJECT t_01,
+	PPOM_APPLICATION_OBJECT t_02,
+	VL10N_OBJECT_NAME t_03 
+WHERE
+	(
+		(
+			(
+				( UPPER ( t_03.pval_0 ) = UPPER ( 'BOP质量检查模板' ) ) 
+				AND (
+					t_03.locale IN ( 'NONE', 'zh_CN' ) 
+					AND ( ( t_01.puid = t_03.puid ) AND t_03.status IN ( 'A', 'M' ) ) 
+				) 
+			) 
+			AND ( ( UPPER ( t_01.pobject_type ) = UPPER ( 'Folder' ) ) AND t_02.rowning_useru = 'BkYlBa4TY3sEeA' ) 
+		) 
+		AND ( t_01.puid = t_02.puid ) 
+	) 
+	AND ( t_01.arev_category IN ( 48, 40 ) ) 
+	AND t_02.arev_category IN ( 48, 40 );
+
+PG:
+Unique  (cost=8807091.13..8807091.14 rows=1 width=15)
+  ->  Sort  (cost=8807091.13..8807091.13 rows=1 width=15)
+        Sort Key: t_01.aoid
+        ->  Nested Loop  (cost=55562.34..8807091.12 rows=1 width=15)
+              Join Filter: ((t_01.puid)::text = (t_02.puid)::text)
+              ->  Hash Join  (cost=55561.77..8806473.25 rows=247 width=78)
+                    Hash Cond: ((t_03.puid)::text = (t_01.puid)::text)
+                    ->  Subquery Scan on t_03  (cost=0.00..8749413.17 rows=570782 width=48)
+                          Filter: (upper((t_03.pval_0)::text) = 'BOP质量检查模板'::text)
+                          ->  Append  (cost=0.00..7037068.51 rows=114156311 width=208)
+                                ->  Seq Scan on pworkspaceobject  (cost=0.00..5324718.88 rows=114156310 width=169)
                                       Filter: ((pobject_name IS NOT NULL) AND (vla_691_23 = 0))
-              ->  Hash  (cost=366.94..366.94 rows=21794 width=15)
-                    ->  Seq Scan on pmecollaborationcontext t_01  (cost=0.00..366.94 rows=21794 width=15)
-
-
-
-tc=# \d+ VL10N_OBJECT_NAME
-                                View "public.vl10n_object_name"
-   Column    |         Type          | Collation | Nullable | Default | Storage  | Description
--------------+-----------------------+-----------+----------+---------+----------+-------------
- puid        | character varying(15) |           |          |         | extended |
- locale      | text                  |           |          |         | extended |
- preference  | text                  |           |          |         | extended |
- status      | text                  |           |          |         | extended |
- sequence_no | text                  |           |          |         | extended |
- pval_0      | text                  |           |          |         | extended |
-View definition:
- SELECT pl10n_object_name.puid,
-    substr(pl10n_object_name.pval_0::text, 1, 5) AS locale,
-    substr(pl10n_object_name.pval_0::text, 7, 1) AS preference,
-    substr(pl10n_object_name.pval_0::text, 9, 1) AS status,
-    substr(pl10n_object_name.pval_0::text, 11, 4) AS sequence_no,
-    substr(pl10n_object_name.pval_0::text, 49, 128) AS pval_0
-   FROM pl10n_object_name
-UNION ALL
- SELECT pworkspaceobject.puid,
-    'NONE'::text AS locale,
-    'M'::text AS preference,
-    'M'::text AS status,
-    '0000'::text AS sequence_no,
-    pworkspaceobject.pobject_name AS pval_0
-   FROM pworkspaceobject
-  WHERE pworkspaceobject.pobject_name IS NOT NULL AND pworkspaceobject.vla_691_23 = 0;
-
-
-tc=# \d+ pworkspaceobject
-                                                                                       Table "public.pworkspaceobject"
-           Column            |            Type             | Collation | Nullable |                               Default                               | Storage  |
- Compression | Stats target | Description
------------------------------+-----------------------------+-----------+----------+---------------------------------------------------------------------+----------+
--------------+--------------+-------------
- puid                        | character varying(15)       |           | not null |                                                                     | extended |
-             |              |
- pobject_name                | character varying(128)      |           | not null |                                                                     | extended |
-             |              |
- pobject_desc                | character varying(240)      |           |          |                                                                     | extended |
-             |              |
- pobject_type                | character varying(32)       |           | not null |                                                                     | extended |
-             |              |
- pobject_application         | character varying(32)       |           | not null |                                                                     | extended |
-             |              |
- vla_691_7                   | bigint                      |           | not null |                                                                     | plain    |
-             |              |
- pip_classification          | character varying(128)      |           |          |                                                                     | extended |
-             |              |
- vla_691_10                  | bigint                      |           | not null |                                                                     | plain    |
-             |              |
- pgov_classification         | character varying(128)      |           |          |                                                                     | extended |
-             |              |
- vla_691_12                  | bigint                      |           | not null |                                                                     | plain    |
-             |              |
- pfnd0revisionid             | character varying(32)       |           |          |                                                                     | extended |
-             |              |
- vla_691_18                  | bigint                      |           | not null |                                                                     | plain    |
-             |              |
- vla_691_20                  | bigint                      |           | not null |                                                                     | plain    |
-             |              |
- rwso_threadu                | character varying(15)       |           |          |                                                                     | extended |
-             |              |
- rwso_threadc                | bigint                      |           |          |                                                                     | plain    |
-             |              |
- prevision_limit             | bigint                      |           | not null |                                                                     | plain    |
-             |              |
- prevision_number            | bigint                      |           | not null |                                                                     | plain    |
-             |              |
- rowning_organizationu       | character varying(15)       |           |          |                                                                     | extended |
-             |              |
- rowning_organizationc       | bigint                      |           |          |                                                                     | plain    |
-             |              |
- pactive_seq                 | bigint                      |           |          |                                                                     | plain    |
-             |              |
- rowning_projectu            | character varying(15)       |           |          |                                                                     | extended |
-             |              |
- rowning_projectc            | bigint                      |           |          |                                                                     | plain    |
-             |              |
- pdate_released              | timestamp without time zone |           |          |                                                                     | plain    |
-             |              |
- pfnd0inprocess              | bigint                      |           |          |                                                                     | plain    |
-             |              |
- pfnd0isrevisiondiscontinued | bigint                      |           |          |                                                                     | plain    |
-             |              |
- aoid                        | character varying(15)       |           | not null |                                                                     | extended |
-             |              |
- arev_category               | bigint                      |           | not null | 48                                                                  | plain    |
-             |              |
- aspace_uid                  | character varying(15)       |           |          |                                                                     | extended |
-             |              |
- avalid_from                 | timestamp without time zone |           | not null | to_date('1900/01/02 00:00:00'::text, 'YYYY/MM/DD HH24:MI:SS'::text) | plain    |
-             |              |
- avalid_to                   | timestamp without time zone |           |          |                                                                     | plain    |
-             |              |
- vla_691_22                  | bigint                      |           | not null | 0                                                                   | plain    |
-             |              |
- vla_691_23                  | bigint                      |           | not null | 0                                                                   | plain    |
-             |              |
- pawp0issuspect              | bigint                      |           |          |                                                                     | plain    |
-             |              |
- vla_691_28                  | bigint                      |           | not null | 0                                                                   | plain    |
-             |              |
- vla_691_27                  | bigint                      |           | not null | 0                                                                   | plain    |
-             |              |
- vla_691_26                  | bigint                      |           | not null | 0                                                                   | plain    |
-             |              |
- vla_691_25                  | bigint                      |           | not null | 0                                                                   | plain    |
-             |              |
-Indexes:
-    "pipworkspaceobject" UNIQUE, btree (puid)
-    "pipworkspaceobject_0" btree (aoid)
-    "pipworkspaceobject_1" btree (upper(pobject_type::text))
-    "pipworkspaceobject_2" btree (upper(pobject_name::text))
-    "pipworkspaceobject_3" btree (pobject_type)
-    "pipworkspaceobject_4" btree (pobject_name)
-    "pipworkspaceobject_5" btree (rwso_threadu)
-    "pipworkspaceobject_6" btree (rowning_projectu)
-Access method: heap
-
-
-Plan Hash Value  : 1555470249 
+                                ->  Subquery Scan on "*SELECT* 2"  (cost=0.15..4.98 rows=1 width=175)
+                                      ->  Index Scan using pipl10n_object_name_3 on pl10n_object_name  (cost=0.15..4.97 rows=1 width=175)
+                                            Index Cond: (substr((pval_0)::text, 1, 5) = ANY ('{NONE,zh_CN}'::text[]))
+                                            Filter: (substr((pval_0)::text, 9, 1) = ANY ('{A,M}'::text[]))
+                    ->  Hash  (cost=54943.42..54943.42 rows=49468 width=30)
+                          ->  Index Scan using pipworkspaceobject_1 on pworkspaceobject t_01  (cost=0.57..54943.42 rows=49468 width=30)
+                                Index Cond: (upper((pobject_type)::text) = 'FOLDER'::text)
+                                Filter: (arev_category = ANY ('{48,40}'::bigint[]))
+              ->  Index Scan using pippom_application_object on ppom_application_object t_02  (cost=0.57..2.49 rows=1 width=15)
+                    Index Cond: ((puid)::text = (t_03.puid)::text)
+                    Filter: ((arev_category = ANY ('{48,40}'::bigint[])) AND ((rowning_useru)::text = 'BkYlBa4TY3sEeA'::text))
+					
+oracle:
+ Plan Hash Value  : 4086223698 
 
 --------------------------------------------------------------------------------------------------------------------
-| Id   | Operation                                  | Name                      | Rows  | Bytes  | Cost | Time     |
+| Id   | Operation                                    | Name                      | Rows | Bytes | Cost | Time     |
 --------------------------------------------------------------------------------------------------------------------
-|    0 | SELECT STATEMENT                           |                           |     4 |    120 |    4 | 00:00:01 |
-|    1 |   HASH UNIQUE                              |                           |     4 |    120 |    4 | 00:00:01 |
-|    2 |    NESTED LOOPS SEMI                       |                           |     4 |    120 |    3 | 00:00:01 |
-|    3 |     VIEW                                   | VL10N_OBJECT_NAME         |     4 |     60 |    2 | 00:00:01 |
-|    4 |      UNION-ALL                             |                           |       |        |      |          |
-|    5 |       INLIST ITERATOR                      |                           |       |        |      |          |
-|  * 6 |        TABLE ACCESS BY INDEX ROWID BATCHED | PL10N_OBJECT_NAME         |     1 |     93 |    1 | 00:00:01 |
-|  * 7 |         INDEX RANGE SCAN                   | PIPL10N_OBJECT_NAME_3     |    36 |        |    1 | 00:00:01 |
-|  * 8 |       TABLE ACCESS BY INDEX ROWID BATCHED  | PWORKSPACEOBJECT          |     3 |    138 |    1 | 00:00:01 |
-|  * 9 |        INDEX RANGE SCAN                    | PIPWORKSPACEOBJECT_2      |     3 |        |    1 | 00:00:01 |
-| * 10 |     INDEX UNIQUE SCAN                      | PIPMECOLLABORATIONCONTEXT | 21794 | 326910 |    1 | 00:00:01 |
+|    0 | SELECT STATEMENT                             |                           |    2 |   188 |    5 | 00:00:01 |
+|    1 |   HASH UNIQUE                                |                           |    2 |   188 |    5 | 00:00:01 |
+|    2 |    NESTED LOOPS                              |                           |    2 |   188 |    4 | 00:00:01 |
+|    3 |     NESTED LOOPS                             |                           |    4 |   188 |    4 | 00:00:01 |
+|    4 |      NESTED LOOPS                            |                           |    4 |   244 |    3 | 00:00:01 |
+|    5 |       VIEW                                   | VL10N_OBJECT_NAME         |    4 |    60 |    2 | 00:00:01 |
+|    6 |        UNION-ALL                             |                           |      |       |      |          |
+|    7 |         INLIST ITERATOR                      |                           |      |       |      |          |
+|  * 8 |          TABLE ACCESS BY INDEX ROWID BATCHED | PL10N_OBJECT_NAME         |    1 |    93 |    1 | 00:00:01 |
+|  * 9 |           INDEX RANGE SCAN                   | PIPL10N_OBJECT_NAME_3     |   36 |       |    1 | 00:00:01 |
+| * 10 |         TABLE ACCESS BY INDEX ROWID BATCHED  | PWORKSPACEOBJECT          |    3 |   138 |    1 | 00:00:01 |
+| * 11 |          INDEX RANGE SCAN                    | PIPWORKSPACEOBJECT_2      |    3 |       |    1 | 00:00:01 |
+| * 12 |       TABLE ACCESS BY INDEX ROWID            | PWORKSPACEOBJECT          |    1 |    46 |    1 | 00:00:01 |
+| * 13 |        INDEX UNIQUE SCAN                     | PIPWORKSPACEOBJECT        |    1 |       |    1 | 00:00:01 |
+| * 14 |      INDEX UNIQUE SCAN                       | PIPPOM_APPLICATION_OBJECT |    1 |       |    1 | 00:00:01 |
+| * 15 |     TABLE ACCESS BY INDEX ROWID              | PPOM_APPLICATION_OBJECT   |    1 |    33 |    1 | 00:00:01 |
 --------------------------------------------------------------------------------------------------------------------
 
 Predicate Information (identified by operation id):
 ------------------------------------------
-* 6 - filter(UPPER(SUBSTR("PVAL_0",49,128))='0302042595产品工艺数据包' AND (SUBSTR("PVAL_0",9,1)='A' OR SUBSTR("PVAL_0",9,1)='M'))
-* 7 - access(SUBSTR("PVAL_0",1,5)='NONE' OR SUBSTR("PVAL_0",1,5)='zh_CN')
-* 8 - filter("VLA_691_23"=0)
-* 9 - access(UPPER("POBJECT_NAME")='0302042595产品工艺数据包')
-* 10 - access("T_01"."PUID"="T_02"."PUID")
-
-tc=# \d+ pl10n_object_name
-                                            Table "public.pl10n_object_name"
- Column |          Type          | Collation | Nullable | Default | Storage  | Compression | Stats target | Description
---------+------------------------+-----------+----------+---------+----------+-------------+--------------+-------------
- puid   | character varying(15)  |           | not null |         | extended |             |              |
- pseq   | bigint                 |           | not null |         | plain    |             |              |
- pval_0 | character varying(176) |           |          |         | extended |             |              |
-Indexes:
-    "pipl10n_object_name" UNIQUE, btree (puid, pseq)
-    "pipl10n_object_name_0" btree (pval_0)
-    "pipl10n_object_name_1" btree (substr(pval_0::text, 49, 128))
-    "pipl10n_object_name_2" btree (upper(substr(pval_0::text, 49, 128)))
-    "pipl10n_object_name_3" btree (substr(pval_0::text, 1, 5))
-    "pipl10n_object_name_4" btree (upper(substr(pval_0::text, 1, 5)))
-Access method: heap
-
-
-tc=# explain analyze
-SELECT DISTINCT
-t_01.puid
-FROM
-PMECOLLABORATIONCONTEXT t_01,
-VL10N_OBJECT_NAME t_02
-WHERE
-(
-( UPPER ( t_02.pval_0 ) = UPPER ( '0302042595产品工艺数据包' ) )
-AND (
-t_02.locale IN ( 'NONE', 'zh_CN' )
-AND ( ( t_01.puid = t_02.puid ) AND t_02.status IN ( 'A', 'M' ) )
-)
-);
-
-
-                                                                                         QUERY PLAN
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------
--------------------------
- Unique  (cost=10010719.05..10013572.88 rows=21794 width=15) (actual time=147915.934..147915.939 rows=0 loops=1)
-   ->  Sort  (cost=10010719.05..10012145.96 rows=570767 width=15) (actual time=147915.932..147915.936 rows=0 loops=1)
-         Sort Key: t_01.puid
-         Sort Method: quicksort  Memory: 25kB
-         ->  Hash Join  (cost=711.97..9950433.12 rows=570767 width=15) (actual time=147915.926..147915.930 rows=0 loops=1)
-               Hash Cond: ((t_02.puid)::text = (t_01.puid)::text)
-               ->  Subquery Scan on t_02  (cost=0.15..9948222.74 rows=570767 width=48) (actual time=147915.925..147915.927 rows=0 loops=1)
-                     Filter: (upper(t_02.pval_0) = '0302042595产品工艺数据包'::text)
-                     Rows Removed by Filter: 114165389
-                     ->  Append  (cost=0.15..8235920.26 rows=114153499 width=208) (actual time=0.076..88415.737 rows=114165389 loops=1)
-                           ->  Index Scan using pipl10n_object_name_3 on pl10n_object_name  (cost=0.15..4.97 rows=1 width=175) (actual time=0.076..0.167 rows=36 loo
-ps=1)
-                                 Index Cond: (substr((pval_0)::text, 1, 5) = ANY ('{NONE,zh_CN}'::text[]))
-                                 Filter: (substr((pval_0)::text, 9, 1) = ANY ('{A,M}'::text[]))
-                           ->  Subquery Scan on "*SELECT* 2"  (cost=1199025.08..7665147.78 rows=114153498 width=175) (actual time=6313.845..78658.801 rows=114165353
- loops=1)
-                                 ->  Bitmap Heap Scan on pworkspaceobject  (cost=1199025.08..6523612.80 rows=114153498 width=169) (actual time=6313.843..63082.273 r
-ows=114165353 loops=1)
-                                       Recheck Cond: (pobject_name IS NOT NULL)
-                                       Filter: (vla_691_23 = 0)
-                                       Rows Removed by Filter: 269
-                                       Heap Blocks: exact=198201 lossy=3699439
-                                       ->  Bitmap Index Scan on pipworkspaceobject_4  (cost=0.00..1170486.70 rows=114153498 width=0) (actual time=6257.459..6257.459
- rows=114169072 loops=1)
-                                             Index Cond: (pobject_name IS NOT NULL)
-               ->  Hash  (cost=439.40..439.40 rows=21794 width=15) (never executed)
-                     ->  Index Only Scan using pipmecollaborationcontext on pmecollaborationcontext t_01  (cost=0.29..439.40 rows=21794 width=15) (never executed)
-                           Heap Fetches: 0
- Planning Time: 0.276 ms
- Execution Time: 147916.323 ms
-(26 rows)
-
-create view VL10N_OBJECT_NAME2 as
- SELECT pworkspaceobject.puid,
-    'NONE'::text AS locale,
-    'M'::text AS preference,
-    'M'::text AS status,
-    '0000'::text AS sequence_no,
-    pworkspaceobject.pobject_name AS pval_0
-   FROM pworkspaceobject
-  WHERE pworkspaceobject.pobject_name IS NOT NULL AND pworkspaceobject.vla_691_23 = 0
-UNION ALL
- SELECT pl10n_object_name.puid,
-    substr(pl10n_object_name.pval_0::text, 1, 5) AS locale,
-    substr(pl10n_object_name.pval_0::text, 7, 1) AS preference,
-    substr(pl10n_object_name.pval_0::text, 9, 1) AS status,
-    substr(pl10n_object_name.pval_0::text, 11, 4) AS sequence_no,
-    substr(pl10n_object_name.pval_0::text, 49, 128) AS pval_0
-   FROM pl10n_object_name;
-
-tc=# explain analyse
-SELECT DISTINCT
-t_01.puid
-FROM
-PMECOLLABORATIONCONTEXT t_01,
-VL10N_OBJECT_NAME2 t_02
-WHERE
-(
-( UPPER ( t_02.pval_0 ) = UPPER ( '0302042595产品工艺数据包' ) )
-AND (
-t_02.locale IN ( 'NONE', 'zh_CN' )
-AND ( ( t_01.puid = t_02.puid ) AND t_02.status IN ( 'A', 'M' ) )
-)
-);
-
-
-                                                                                           QUERY PLAN
-
---------------------------------------------------------------------------------------------------------------------------------------------------------------------
-----------------------------
- Unique  (cost=10010719.05..10013572.88 rows=21794 width=15) (actual time=120135.992..120135.996 rows=0 loops=1)
-   ->  Sort  (cost=10010719.05..10012145.96 rows=570767 width=15) (actual time=120135.992..120135.995 rows=0 loops=1)
-         Sort Key: t_01.puid
-         Sort Method: quicksort  Memory: 25kB
-         ->  Hash Join  (cost=1199736.90..9950433.12 rows=570767 width=15) (actual time=120135.986..120135.990 rows=0 loops=1)
-               Hash Cond: ((t_02.puid)::text = (t_01.puid)::text)
-               ->  Subquery Scan on t_02  (cost=1199025.08..9948222.74 rows=570767 width=48) (actual time=120130.292..120130.293 rows=0 loops=1)
-                     Filter: (upper((t_02.pval_0)::text) = '0302042595产品工艺数据包'::text)
-                     Rows Removed by Filter: 114165391
-                     ->  Append  (cost=1199025.08..8235920.26 rows=114153499 width=208) (actual time=3887.527..61791.085 rows=114165391 loops=1)
-                           ->  Bitmap Heap Scan on pworkspaceobject  (cost=1199025.08..6523612.80 rows=114153498 width=169) (actual time=3887.527..52227.888 rows=11
-4165355 loops=1)
-                                 Recheck Cond: (pobject_name IS NOT NULL)
-                                 Filter: (vla_691_23 = 0)
-                                 Rows Removed by Filter: 269
-                                 Heap Blocks: exact=198201 lossy=3699439
-                                 ->  Bitmap Index Scan on pipworkspaceobject_4  (cost=0.00..1170486.70 rows=114153498 width=0) (actual time=3831.714..3831.715 rows=
-114169075 loops=1)
-                                       Index Cond: (pobject_name IS NOT NULL)
-                           ->  Subquery Scan on "*SELECT* 2"  (cost=0.15..4.98 rows=1 width=175) (actual time=0.028..0.105 rows=36 loops=1)
-                                 ->  Index Scan using pipl10n_object_name_3 on pl10n_object_name  (cost=0.15..4.97 rows=1 width=175) (actual time=0.027..0.099 rows=
-36 loops=1)
-                                       Index Cond: (substr((pval_0)::text, 1, 5) = ANY ('{NONE,zh_CN}'::text[]))
-                                       Filter: (substr((pval_0)::text, 9, 1) = ANY ('{A,M}'::text[]))
-               ->  Hash  (cost=439.40..439.40 rows=21794 width=15) (actual time=5.665..5.666 rows=21799 loops=1)
-                     Buckets: 32768  Batches: 1  Memory Usage: 1257kB
-                     ->  Index Only Scan using pipmecollaborationcontext on pmecollaborationcontext t_01  (cost=0.29..439.40 rows=21794 width=15) (actual time=0.017
-..2.514 rows=21799 loops=1)
-                           Heap Fetches: 167
- Planning Time: 0.297 ms
- Execution Time: 120136.292 ms
-(27 rows)
+* 8 - filter(UPPER(SUBSTR("PVAL_0",49,128))='BOP质量检查模板' AND (SUBSTR("PVAL_0",9,1)='A' OR SUBSTR("PVAL_0",9,1)='M'))
+* 9 - access(SUBSTR("PVAL_0",1,5)='NONE' OR SUBSTR("PVAL_0",1,5)='zh_CN')
+* 10 - filter("VLA_691_23"=0)
+* 11 - access(UPPER("POBJECT_NAME")='BOP质量检查模板')
+* 12 - filter(UPPER("POBJECT_TYPE")='FOLDER' AND ("T_01"."AREV_CATEGORY"=40 OR "T_01"."AREV_CATEGORY"=48))
+* 13 - access("T_01"."PUID"="T_03"."PUID")
+* 14 - access("T_01"."PUID"="T_02"."PUID")
+* 15 - filter("T_02"."ROWNING_USERU"='BkYlBa4TY3sEeA' AND ("T_02"."AREV_CATEGORY"=40 OR "T_02"."AREV_CATEGORY"=48))
