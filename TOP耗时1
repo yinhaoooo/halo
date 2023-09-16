@@ -1,0 +1,125 @@
+explain analyze
+select
+	distinct t_01.puid
+from
+	PMECOLLABORATIONCONTEXT t_01 ,
+	VL10N_OBJECT_NAME t_02
+where
+	( ( upper(t_02.pval_0) = upper('0302042595产品工艺数据包') )
+	and ( t_02.locale in ('NONE',
+	'zh_CN' )
+	and ( ( t_01.puid = t_02.puid )
+	and t_02.status in ('A',
+	'M' ) ) ) ) ;
+
+Unique  (cost=8812550.05..8815404.32 rows=21794 width=15) (actual time=114545.061..114545.065 rows=0 loops=1)
+  ->  Sort  (cost=8812550.05..8813977.19 rows=570854 width=15) (actual time=114545.060..114545.064 rows=0 loops=1)
+        Sort Key: t_01.puid
+        Sort Method: quicksort  Memory: 25kB
+        ->  Hash Join  (cost=639.37..8752253.13 rows=570854 width=15) (actual time=114545.055..114545.058 rows=0 loops=1)
+              Hash Cond: ((t_02.puid)::text = (t_01.puid)::text)
+              ->  Subquery Scan on t_02  (cost=0.00..8750114.98 rows=570854 width=48) (actual time=114545.054..114545.056 rows=0 loops=1)
+                    Filter: (upper((t_02.pval_0)::text) = '0302042595产品工艺数据包'::text)
+                    Rows Removed by Filter: 114170558
+                    ->  Append  (cost=0.00..7037553.32 rows=114170777 width=208) (actual time=0.009..55614.989 rows=114170558 loops=1)
+                          ->  Seq Scan on pworkspaceobject  (cost=0.00..5324986.70 rows=114170776 width=169) (actual time=0.009..45535.364 rows=114170522 loops=1)
+                                Filter: ((pobject_name IS NOT NULL) AND (vla_691_23 = 0))
+                                Rows Removed by Filter: 269
+                          ->  Subquery Scan on "*SELECT* 2"  (cost=0.15..4.98 rows=1 width=175) (actual time=0.029..0.105 rows=36 loops=1)
+                                ->  Index Scan using pipl10n_object_name_3 on pl10n_object_name  (cost=0.15..4.97 rows=1 width=175) (actual time=0.028..0.099 rows=36 loops=1)
+                                      Index Cond: (substr((pval_0)::text, 1, 5) = ANY ('{NONE,zh_CN}'::text[]))
+                                      Filter: (substr((pval_0)::text, 9, 1) = ANY ('{A,M}'::text[]))
+              ->  Hash  (cost=366.94..366.94 rows=21794 width=15) (never executed)
+                    ->  Seq Scan on pmecollaborationcontext t_01  (cost=0.00..366.94 rows=21794 width=15) (never executed)
+Planning Time: 0.252 ms
+Execution Time: 114545.105 ms
+
+
+
+CREATE OR REPLACE VIEW public.vl10n_object_name
+AS SELECT pworkspaceobject.puid,
+    'NONE'::text AS locale,
+    'M'::text AS preference,
+    'M'::text AS status,
+    '0000'::text AS sequence_no,
+    pworkspaceobject.pobject_name AS pval_0
+   FROM pworkspaceobject
+  WHERE pworkspaceobject.pobject_name IS NOT NULL AND pworkspaceobject.vla_691_23 = 0
+UNION ALL
+ SELECT pl10n_object_name.puid,
+    substr(pl10n_object_name.pval_0::text, 1, 5) AS locale,
+    substr(pl10n_object_name.pval_0::text, 7, 1) AS preference,
+    substr(pl10n_object_name.pval_0::text, 9, 1) AS status,
+    substr(pl10n_object_name.pval_0::text, 11, 4) AS sequence_no,
+    substr(pl10n_object_name.pval_0::text, 49, 128) AS pval_0
+   FROM pl10n_object_name;
+   
+ 
+CREATE TABLE public.pmecollaborationcontext (
+	puid varchar(15) NOT NULL,
+	ph6pcb0301code varchar(128) NULL
+);
+CREATE UNIQUE INDEX pipmecollaborationcontext ON public.pmecollaborationcontext USING btree (puid);
+
+CREATE TABLE public.pworkspaceobject (
+	puid varchar(15) NOT NULL,
+	pobject_name varchar(128) NOT NULL,
+	pobject_desc varchar(240) NULL,
+	pobject_type varchar(32) NOT NULL,
+	pobject_application varchar(32) NOT NULL,
+	vla_691_7 int8 NOT NULL,
+	pip_classification varchar(128) NULL,
+	vla_691_10 int8 NOT NULL,
+	pgov_classification varchar(128) NULL,
+	vla_691_12 int8 NOT NULL,
+	pfnd0revisionid varchar(32) NULL,
+	vla_691_18 int8 NOT NULL,
+	vla_691_20 int8 NOT NULL,
+	rwso_threadu varchar(15) NULL,
+	rwso_threadc int8 NULL,
+	prevision_limit int8 NOT NULL,
+	prevision_number int8 NOT NULL,
+	rowning_organizationu varchar(15) NULL,
+	rowning_organizationc int8 NULL,
+	pactive_seq int8 NULL,
+	rowning_projectu varchar(15) NULL,
+	rowning_projectc int8 NULL,
+	pdate_released timestamp NULL,
+	pfnd0inprocess int8 NULL,
+	pfnd0isrevisiondiscontinued int8 NULL,
+	aoid varchar(15) NOT NULL,
+	arev_category int8 NOT NULL DEFAULT 48,
+	aspace_uid varchar(15) NULL,
+	avalid_from timestamp NOT NULL DEFAULT to_date('1900/01/02 00:00:00'::text, 'YYYY/MM/DD HH24:MI:SS'::text),
+	avalid_to timestamp NULL,
+	vla_691_22 int8 NOT NULL DEFAULT 0,
+	vla_691_23 int8 NOT NULL DEFAULT 0,
+	pawp0issuspect int8 NULL,
+	vla_691_28 int8 NOT NULL DEFAULT 0,
+	vla_691_27 int8 NOT NULL DEFAULT 0,
+	vla_691_26 int8 NOT NULL DEFAULT 0,
+	vla_691_25 int8 NOT NULL DEFAULT 0
+);
+CREATE UNIQUE INDEX pipworkspaceobject ON public.pworkspaceobject USING btree (puid);
+CREATE INDEX pipworkspaceobject_0 ON public.pworkspaceobject USING btree (aoid);
+CREATE INDEX pipworkspaceobject_1 ON public.pworkspaceobject USING btree (upper((pobject_type)::text));
+CREATE INDEX pipworkspaceobject_2 ON public.pworkspaceobject USING btree (upper((pobject_name)::text));
+CREATE INDEX pipworkspaceobject_3 ON public.pworkspaceobject USING btree (pobject_type);
+CREATE INDEX pipworkspaceobject_4 ON public.pworkspaceobject USING btree (pobject_name);
+CREATE INDEX pipworkspaceobject_5 ON public.pworkspaceobject USING btree (rwso_threadu);
+CREATE INDEX pipworkspaceobject_6 ON public.pworkspaceobject USING btree (rowning_projectu);
+--自建没起效果 pworkspaceobject_7
+CREATE INDEX pworkspaceobject_7 ON public.pworkspaceobject USING btree (vla_691_23);
+
+
+CREATE TABLE public.pl10n_object_name (
+	puid varchar(15) NOT NULL,
+	pseq int8 NOT NULL,
+	pval_0 varchar(176) NULL
+);
+CREATE UNIQUE INDEX pipl10n_object_name ON public.pl10n_object_name USING btree (puid, pseq);
+CREATE INDEX pipl10n_object_name_0 ON public.pl10n_object_name USING btree (pval_0);
+CREATE INDEX pipl10n_object_name_1 ON public.pl10n_object_name USING btree (substr((pval_0)::text, 49, 128));
+CREATE INDEX pipl10n_object_name_2 ON public.pl10n_object_name USING btree (upper(substr((pval_0)::text, 49, 128)));
+CREATE INDEX pipl10n_object_name_3 ON public.pl10n_object_name USING btree (substr((pval_0)::text, 1, 5));
+CREATE INDEX pipl10n_object_name_4 ON public.pl10n_object_name USING btree (upper(substr((pval_0)::text, 1, 5)));
