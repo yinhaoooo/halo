@@ -1,0 +1,33 @@
+SQL> select * from table(dbms_xplan.display);
+
+PLAN_TABLE_OUTPUT
+--------------------------------------------------------------------------------
+Plan hash value: 1555470249
+--------------------------------------------------------------------------------
+| Id  | Operation                                | Name                      | R
+--------------------------------------------------------------------------------
+|   0 | SELECT STATEMENT                         |                           |
+|   1 |  HASH UNIQUE                             |                           |
+|   2 |   NESTED LOOPS SEMI                      |                           |
+|   3 |    VIEW                                  | VL10N_OBJECT_NAME         |
+|   4 |     UNION-ALL                            |                           |
+|   5 |      INLIST ITERATOR                     |                           |
+|*  6 |       TABLE ACCESS BY INDEX ROWID BATCHED| PL10N_OBJECT_NAME         |
+|*  7 |        INDEX RANGE SCAN                  | PIPL10N_OBJECT_NAME_3     |
+|*  8 |      TABLE ACCESS BY INDEX ROWID BATCHED | PWORKSPACEOBJECT          |
+|*  9 |       INDEX RANGE SCAN                   | PIPWORKSPACEOBJECT_2      |
+|* 10 |    INDEX UNIQUE SCAN                     | PIPMECOLLABORATIONCONTEXT | 2
+--------------------------------------------------------------------------------
+Predicate Information (identified by operation id):
+---------------------------------------------------
+
+PLAN_TABLE_OUTPUT
+--------------------------------------------------------------------------------
+   6 - filter(UPPER(SUBSTR("PVAL_0",49,128))='0302042595靠靠靠? AND (SUBSTR("PV
+              SUBSTR("PVAL_0",9,1)='M'))
+   7 - access(SUBSTR("PVAL_0",1,5)='NONE' OR SUBSTR("PVAL_0",1,5)='zh_CN')
+   8 - filter("VLA_691_23"=0)
+   9 - access(UPPER("POBJECT_NAME")='0302042595靠靠靠?)
+  10 - access("T_01"."PUID"="T_02"."PUID")
+
+27 rows selected
