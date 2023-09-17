@@ -27,3 +27,15 @@ WHERE
     AND c.relname NOT LIKE 'sql_%'
 ORDER BY 
     c.relname, a.attname;
+
+PATH=$PATH:$HOME/.local/bin:$HOME/bin
+
+export PATH
+export ORACLE_HOME=/usr/lib/oracle/11.2/client64
+export PG_HOME=/data01/app/postgresql
+export LD_LIBRARY_PATH=$PG_HOME/lib:$ORACLE_HOME/lib:$LD_LIBRARY_PATH
+export PGDATA=/data01/pgsql
+export PATH=$PG_HOME/bin:$ORACLE_HOME/bin:$ORACLE_HOME/lib:$PATH
+PATH=$PATH:$PG_HOME/.local/bin:$PG_HOME/bin:$ORACLE_HOME/lib:$LD_LIBRARY_PATH
+export LD_LIBRARY_PATH=$ORACLE_HOME/lib:$LD_LIBRARY_PATH
+export PATH
