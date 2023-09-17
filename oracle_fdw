@@ -1,0 +1,39 @@
+create FOREIGN TABLE COURSE
+(
+  course_no     NUMBER(8),
+  description   VARCHAR2(50),
+  cost          NUMBER(9,2),
+  prerequisite  NUMBER(8),
+  created_by    VARCHAR2(30),
+  created_date  DATE,
+  modified_by   VARCHAR2(30),
+  modified_date DATE
+)SERVER ser_oracle_fdw
+OPTIONS (schema 'STUDENT',table 'COURSE' );
+
+CREATE SERVER ser_oracle_fdw  
+        FOREIGN DATA WRAPPER oracle_fdw  
+        OPTIONS (dbserver '10.16.16.212:1521/orcl');
+		
+Grant usage on foreign server ser_oracle_fdw to btcloud;
+
+CREATE USER MAPPING FOR btcloud  
+        SERVER ser_oracle_fdw  
+        OPTIONS (user 'student', password 'Dba2022!');  
+
+select * from pg_user_mappings;
+--------------------------------------
+1.
+ CREATE SERVER oradb FOREIGN DATA WRAPPER oracle_fdw
+          OPTIONS (dbserver '//dbserver.mydomain.com:1521/ORADB');
+2
+GRANT USAGE ON FOREIGN SERVER oradb TO pguser;
+3
+CREATE USER MAPPING FOR pguser SERVER oradb
+          OPTIONS (user 'orauser', password 'orapwd');
+4
+CREATE FOREIGN TABLE oratab (
+          id        integer           OPTIONS (key 'true')  NOT NULL,
+          text      character varying(30),
+          floating  double precision  NOT NULL
+       ) SERVER oradb OPTIONS (schema 'ORAUSER', table 'ORATAB');
