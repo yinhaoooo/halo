@@ -38,3 +38,10 @@ Indexes:
     "pipom_m_lock" UNIQUE, btree (ref_uid, aspace_uid)
     "pipom_m_lock_process" btree (process, aspace_uid, ref_uid)
 Access method: heap
+
+insert into testunique1(puid,pseq) values('aaabbb','0');
+insert into testunique1(puid,pseq) values('aaabbb','1');
+insert into testunique1(puid,pseq) values('aaabbb','2');
+
+
+update testunique1 set pseq=pseq+1 where puid = 'aaabbb';
