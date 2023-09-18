@@ -102,17 +102,13 @@ CREATE INDEX "pipom_m_lock_process" ON "public"."pom_m_lock" USING btree (
 =========================================================================
 oracle:
 -- Create table
-create table POM_M_LOCK
+create table PFND0STRINGVALUES
 (
-  ref_uid    VARCHAR2(14) not null,
-  vuid       VARCHAR2(14) not null,
-  process    VARCHAR2(14) not null,
-  ref_class  INTEGER not null,
-  type       INTEGER not null,
-  aspace_uid VARCHAR2(15) not null,
-  lock_mode  VARCHAR2(32)
+  puid   VARCHAR2(15) not null,
+  pseq   INTEGER not null,
+  pval_0 VARCHAR2(4000)
 )
-tablespace IDATA
+tablespace APPDATA
   pctfree 10
   initrans 1
   maxtrans 255
@@ -124,8 +120,8 @@ tablespace IDATA
     maxextents unlimited
   );
 -- Create/Recreate indexes 
-create unique index PIPOM_M_LOCK on POM_M_LOCK (REF_UID, ASPACE_UID)
-  tablespace IDATA
+create unique index PIPFND0STRINGVALUES on PFND0STRINGVALUES (PUID, PSEQ)
+  tablespace APPDATA
   pctfree 10
   initrans 2
   maxtrans 255
@@ -136,11 +132,11 @@ create unique index PIPOM_M_LOCK on POM_M_LOCK (REF_UID, ASPACE_UID)
     minextents 1
     maxextents unlimited
   );
-create index PIPOM_M_LOCK_PROCESS on POM_M_LOCK (PROCESS, ASPACE_UID, REF_UID)
-  tablespace IDATA
+create index PIPFND0STRINGVALUES_0 on PFND0STRINGVALUES (PVAL_0)
+  tablespace APPDATA
   pctfree 10
   initrans 2
-  maxtrans 255
+  maxtrans 167
   storage
   (
     initial 64K
@@ -148,6 +144,27 @@ create index PIPOM_M_LOCK_PROCESS on POM_M_LOCK (PROCESS, ASPACE_UID, REF_UID)
     minextents 1
     maxextents unlimited
   );
+
+=========================================================================
+pg:
+
+  "puid" varchar(15) COLLATE "pg_catalog"."default" NOT NULL,
+  "pseq" int8 NOT NULL,
+  "pval_0" varchar(4000) COLLATE "pg_catalog"."default"
+)
+;
+
+-- ----------------------------
+-- Indexes structure for table pfnd0stringvalues
+-- ----------------------------
+CREATE UNIQUE INDEX "pipfnd0stringvalues" ON "public"."pfnd0stringvalues" USING btree (
+  "puid" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
+  "pseq" "pg_catalog"."int8_ops" ASC NULLS LAST
+);
+CREATE INDEX "pipfnd0stringvalues_0" ON "public"."pfnd0stringvalues" USING btree (
+  "pval_0" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST
+);
+
 
 
 
