@@ -45,5 +45,9 @@ insert into testunique1(puid,pseq) values('aaabbb',0);
 insert into testunique1(puid,pseq) values('aaabbb',1);
 insert into testunique1(puid,pseq) values('aaabbb',2);
 
-
 update testunique1 set pseq=pseq+1 where puid = 'aaabbb';
+
+解决方案：
+drop index it_unique;
+ALTER TABLE testunique1 ADD CONSTRAINT testunique1_uniq unique(puid,pseq) DEFERRABLE INITIALLY DEFERRED;
+建了唯一约束之后，自动加上唯一索引了
