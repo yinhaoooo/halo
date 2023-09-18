@@ -68,3 +68,86 @@ Indexes:
     "pipom_m_lock_process" btree (process, aspace_uid, ref_uid)
 Access method: heap
 
+
+================================
+-- ----------------------------
+-- Table structure for pom_m_lock
+-- ----------------------------
+DROP TABLE IF EXISTS "public"."pom_m_lock";
+CREATE TABLE "public"."pom_m_lock" (
+  "ref_uid" varchar(14) COLLATE "pg_catalog"."default" NOT NULL,
+  "vuid" varchar(14) COLLATE "pg_catalog"."default" NOT NULL,
+  "process" varchar(14) COLLATE "pg_catalog"."default" NOT NULL,
+  "ref_class" int8 NOT NULL,
+  "type" int8 NOT NULL,
+  "aspace_uid" varchar(15) COLLATE "pg_catalog"."default" NOT NULL,
+  "lock_mode" varchar(32) COLLATE "pg_catalog"."default"
+)
+;
+
+-- ----------------------------
+-- Indexes structure for table pom_m_lock
+-- ----------------------------
+CREATE UNIQUE INDEX "pipom_m_lock" ON "public"."pom_m_lock" USING btree (
+  "ref_uid" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
+  "aspace_uid" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST
+);
+CREATE INDEX "pipom_m_lock_process" ON "public"."pom_m_lock" USING btree (
+  "process" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
+  "aspace_uid" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST,
+  "ref_uid" COLLATE "pg_catalog"."default" "pg_catalog"."text_ops" ASC NULLS LAST
+);
+
+
+=========================================================================
+oracle:
+-- Create table
+create table POM_M_LOCK
+(
+  ref_uid    VARCHAR2(14) not null,
+  vuid       VARCHAR2(14) not null,
+  process    VARCHAR2(14) not null,
+  ref_class  INTEGER not null,
+  type       INTEGER not null,
+  aspace_uid VARCHAR2(15) not null,
+  lock_mode  VARCHAR2(32)
+)
+tablespace IDATA
+  pctfree 10
+  initrans 1
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+-- Create/Recreate indexes 
+create unique index PIPOM_M_LOCK on POM_M_LOCK (REF_UID, ASPACE_UID)
+  tablespace IDATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+create index PIPOM_M_LOCK_PROCESS on POM_M_LOCK (PROCESS, ASPACE_UID, REF_UID)
+  tablespace IDATA
+  pctfree 10
+  initrans 2
+  maxtrans 255
+  storage
+  (
+    initial 64K
+    next 1M
+    minextents 1
+    maxextents unlimited
+  );
+
+
+
