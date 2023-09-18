@@ -51,3 +51,20 @@ update testunique1 set pseq=pseq+1 where puid = 'aaabbb';
 drop index it_unique;
 ALTER TABLE testunique1 ADD CONSTRAINT testunique1_uniq unique(puid,pseq) DEFERRABLE INITIALLY DEFERRED;
 建了唯一约束之后，自动加上唯一索引了
+
+tc=#  \d+ pom_m_lock
+                                                 Table "public.pom_m_lock"
+   Column   |         Type          | Collation | Nullable | Default | Storage
+------------+-----------------------+-----------+----------+---------+----------
+ ref_uid    | character varying(14) |           | not null |         | extended
+ vuid       | character varying(14) |           | not null |         | extended
+ process    | character varying(14) |           | not null |         | extended
+ ref_class  | bigint                |           | not null |         | plain
+ type       | bigint                |           | not null |         | plain
+ aspace_uid | character varying(15) |           | not null |         | extended
+ lock_mode  | character varying(32) |           |          |         | extended
+Indexes:
+    "pipom_m_lock" UNIQUE, btree (ref_uid, aspace_uid)
+    "pipom_m_lock_process" btree (process, aspace_uid, ref_uid)
+Access method: heap
+
