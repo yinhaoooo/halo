@@ -1,0 +1,26 @@
+
+-- PG
+CREATE OR REPLACE PROCEDURE GET_ACTURAL_TABLE_COUNT() 
+IS $$ 
+  i int;
+  sqlstr text;
+  cursor_sql record;
+begin
+    i:=0;
+    execute 'DROP TABLE IF EXISTS TMP_GET_ACTURAL_TABLE_COUNT';
+    for cursor_sql in (select 'select '''||tablename||''' as table_name,count(1) as table_cnt from public.'||tablename as sqlstr1 from pg_tables where schemaname='public' and tablename not like 'sref_con_%' ) loop
+        if (i = 0) then 
+            sqlstr='CREATE TABLE TMP_GET_ACTURAL_TABLE_COUNT AS ' || cursor_sql.sqlstr1;
+        else 
+             sqlstr:= sqlstr || ' UNION ' || cursor_sql.sqlstr1 ;
+        end if;
+        i:=i+1;
+    end loop;
+    execute sqlstr;
+    -- RAISE NOTICE '%',sqlstr;
+end;
+$$;
+
+
+call GET_ACTURAL_TABLE_COUNT();
+/
