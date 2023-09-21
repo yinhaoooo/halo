@@ -1,0 +1,147 @@
+WITH CTE_1 AS (SELECT t_03.puid, t_03.rparent_bvru FROM PPSALTERNATELIST t_01 , PALT_ITEMS t_02 , PPSOCCURRENCE t_03 WHERE ( ( t_02.pvalu_0 IN  ('l2JAAIFh47UIUC' ) AND ( t_01.puid = t_03.ralternate_etc_refu ) ) AND ( t_01.puid = t_02.puid ) ) UNION SELECT t_04.puid, t_04.rparent_bvru FROM PPSOCCURRENCE t_04 WHERE t_04.rchild_itemu IN  ('l2JAAIFh47UIUC', 'l2JAAIFh47UIUC' ) )  SELECT t_07.puid FROM CTE_1 t_05 , PSTRUCTURE_REVISIONS t_06 , PITEMREVISION t_07 WHERE ( ( ( t_05.rparent_bvru = t_06.pvalu_0 ) AND ( t_07.puid = t_06.puid ) ) AND ( t_06.puid = t_07.puid ) ) UNION  ( SELECT t_010.puid FROM CTE_1 t_08 , PSTRUCTURE_REVISIONS t_09 , PITEMREVISION t_010 , PWORKSPACEOBJECT t_011 , PFND0ABSTRACTOCCREVISION t_012 , PFND0RELEVANTBVR t_013 WHERE ( ( ( ( ( t_08.rparent_bvru = t_012.puid ) AND ( t_011.rwso_threadu = t_013.rfnd0Occurrenceu ) ) AND ( t_013.rfnd0Bvru = t_09.pvalu_0 ) ) AND ( t_010.puid = t_09.puid ) ) AND ( t_011.puid = t_012.puid AND t_09.puid = t_010.puid ) ) UNION SELECT t_020.puid FROM CTE_1 t_014 , PWORKSPACEOBJECT t_015 , PFND0ABSTRACTOCCREVISION t_016 , PFND0ABSTRACTOCC t_017 , PPSBOMVIEWREVISION t_018 , PSTRUCTURE_REVISIONS t_019 , PITEMREVISION t_020 , PPSBOMVIEW t_021 WHERE ( ( ( ( ( ( ( ( t_014.rparent_bvru = t_016.puid ) AND ( t_015.rwso_threadu = t_017.puid ) ) AND ( t_017.rfnd0BOMViewu = t_018.rbom_viewu ) ) AND ( t_018.puid = t_019.pvalu_0 ) ) AND ( t_019.puid = t_020.puid ) ) AND ( t_018.rbom_viewu = t_021.puid ) ) AND ( t_021.pfnd0StructManagementMode = 1 ) ) AND ( t_015.puid = t_016.puid AND t_019.puid = t_020.puid ) ) )  ;
+
+
+Unique  (cost=45320824.54..45621538.40 rows=60142772 width=48)
+  CTE cte_1
+    ->  Unique  (cost=30261675.63..30489138.46 rows=30328378 width=96)
+          ->  Sort  (cost=30261675.63..30337496.57 rows=30328378 width=96)
+                Sort Key: t_03.puid, t_03.rparent_bvru
+                ->  Append  (cost=2.88..24671260.67 rows=30328378 width=96)
+                      ->  Nested Loop  (cost=2.88..24067425.81 rows=30194971 width=30)
+                            ->  Hash Join  (cost=2.30..3.68 rows=1 width=63)
+                                  Hash Cond: ((t_01.puid)::text = (t_02.puid)::text)
+                                  ->  Seq Scan on ppsalternatelist t_01  (cost=0.00..1.27 rows=27 width=48)
+                                  ->  Hash  (cost=2.29..2.29 rows=1 width=15)
+                                        ->  Seq Scan on palt_items t_02  (cost=0.00..2.29 rows=1 width=15)
+                                              Filter: ((pvalu_0)::text = 'l2JAAIFh47UIUC'::text)
+                            ->  Index Scan using pippsoccurrence_3 on ppsoccurrence t_03  (cost=0.57..15914780.06 rows=815264207 width=45)
+                                  Index Cond: ((ralternate_etc_refu)::text = (t_01.puid)::text)
+                      ->  Index Scan using pippsoccurrence_1 on ppsoccurrence t_04  (cost=0.57..148909.19 rows=133407 width=30)
+                            Index Cond: ((rchild_itemu)::text = ANY ('{l2JAAIFh47UIUC,l2JAAIFh47UIUC}'::text[]))
+  ->  Sort  (cost=14831686.07..14982043.00 rows=60142772 width=48)
+        Sort Key: t_07.puid
+        ->  Append  (cost=503920.16..4893416.27 rows=60142772 width=48)
+              ->  Hash Join  (cost=503920.16..2244775.81 rows=30328378 width=15)
+                    Hash Cond: ((t_05.rparent_bvru)::text = (t_06.pvalu_0)::text)
+                    ->  CTE Scan on cte_1 t_05  (cost=0.00..606567.56 rows=30328378 width=48)
+                    ->  Hash  (cost=411955.06..411955.06 rows=4756168 width=30)
+                          ->  Merge Join  (cost=1.23..411955.06 rows=4756168 width=30)
+                                Merge Cond: ((t_06.puid)::text = (t_07.puid)::text)
+                                ->  Index Scan using pipstructure_revisions on pstructure_revisions t_06  (cost=0.43..146143.88 rows=4756168 width=30)
+                                ->  Index Only Scan using pipitemrevision on pitemrevision t_07  (cost=0.43..182642.99 rows=9488137 width=15)
+              ->  Hash Join  (cost=3893.66..1022306.81 rows=29814361 width=15)
+                    Hash Cond: ((t_08.rparent_bvru)::text = (t_012.puid)::text)
+                    ->  CTE Scan on cte_1 t_08  (cost=0.00..606567.56 rows=30328378 width=48)
+                    ->  Hash  (cost=3882.85..3882.85 rows=865 width=78)
+                          ->  Hash Join  (cost=1355.66..3882.85 rows=865 width=78)
+                                Hash Cond: ((t_011.rwso_threadu)::text = (t_013.rfnd0occurrenceu)::text)
+                                ->  Nested Loop  (cost=0.57..2469.60 rows=880 width=78)
+                                      ->  Seq Scan on pfnd0abstractoccrevision t_012  (cost=0.00..18.80 rows=880 width=48)
+                                      ->  Index Scan using pipworkspaceobject on pworkspaceobject t_011  (cost=0.57..2.79 rows=1 width=30)
+                                            Index Cond: ((puid)::text = (t_012.puid)::text)
+                                ->  Hash  (cost=1349.72..1349.72 rows=430 width=63)
+                                      ->  Nested Loop  (cost=0.87..1349.72 rows=430 width=63)
+                                            ->  Nested Loop  (cost=0.43..1151.50 rows=430 width=63)
+                                                  ->  Seq Scan on pfnd0relevantbvr t_013  (cost=0.00..14.30 rows=430 width=96)
+                                                  ->  Index Scan using pipstructure_revisions_0 on pstructure_revisions t_09  (cost=0.43..2.63 rows=1 width=30)
+                                                        Index Cond: ((pvalu_0)::text = (t_013.rfnd0bvru)::text)
+                                            ->  Index Only Scan using pipitemrevision on pitemrevision t_010  (cost=0.43..0.46 rows=1 width=15)
+                                                  Index Cond: (puid = (t_09.puid)::text)
+              ->  Hash Join  (cost=3548.46..724192.08 rows=33 width=15)
+                    Hash Cond: ((t_014.rparent_bvru)::text = (t_016.puid)::text)
+                    ->  CTE Scan on cte_1 t_014  (cost=0.00..606567.56 rows=30328378 width=48)
+                    ->  Hash  (cost=3548.45..3548.45 rows=1 width=78)
+                          ->  Nested Loop  (cost=2.46..3548.45 rows=1 width=78)
+                                ->  Nested Loop  (cost=2.02..3547.99 rows=1 width=78)
+                                      ->  Nested Loop  (cost=1.59..3547.52 rows=1 width=78)
+                                            ->  Nested Loop  (cost=1.16..3540.54 rows=1 width=126)
+                                                  ->  Nested Loop  (cost=0.73..2491.91 rows=402 width=111)
+                                                        ->  Nested Loop  (cost=0.57..2469.60 rows=880 width=78)
+                                                              ->  Seq Scan on pfnd0abstractoccrevision t_016  (cost=0.00..18.80 rows=880 width=48)
+                                                              ->  Index Scan using pipworkspaceobject on pworkspaceobject t_015  (cost=0.57..2.79 rows=1 width=30)
+                                                                    Index Cond: ((puid)::text = (t_016.puid)::text)
+                                                        ->  Memoize  (cost=0.16..0.18 rows=1 width=96)
+                                                              Cache Key: t_015.rwso_threadu
+                                                              Cache Mode: logical
+                                                              ->  Index Scan using pipfnd0abstractocc on pfnd0abstractocc t_017  (cost=0.15..0.17 rows=1 width=96)
+                                                                    Index Cond: ((puid)::text = (t_015.rwso_threadu)::text)
+                                                  ->  Index Scan using pippsbomview on ppsbomview t_021  (cost=0.43..2.60 rows=1 width=15)
+                                                        Index Cond: ((puid)::text = (t_017.rfnd0bomviewu)::text)
+                                                        Filter: (pfnd0structmanagementmode = 1)
+                                            ->  Index Scan using pippsbomviewrevision_0 on ppsbomviewrevision t_018  (cost=0.43..6.93 rows=5 width=30)
+                                                  Index Cond: ((rbom_viewu)::text = (t_017.rfnd0bomviewu)::text)
+                                      ->  Index Scan using pipstructure_revisions_0 on pstructure_revisions t_019  (cost=0.43..0.46 rows=1 width=30)
+                                            Index Cond: ((pvalu_0)::text = (t_018.puid)::text)
+                                ->  Index Only Scan using pipitemrevision on pitemrevision t_020  (cost=0.43..0.46 rows=1 width=15)
+                                      Index Cond: (puid = (t_019.puid)::text)
+
+7949ms
+
+oralce
+---------------------------------------------------------------------------------------------------------------------------------
+| Id   | Operation                                    | Name                        | Rows     | Bytes      | Cost   | Time     |
+---------------------------------------------------------------------------------------------------------------------------------
+|    0 | SELECT STATEMENT                             |                             |        2 |        195 | 173607 | 00:00:07 |
+|    1 |   TEMP TABLE TRANSFORMATION                  |                             |          |            |        |          |
+|    2 |    LOAD AS SELECT                            | SYS_TEMP_0FD9F058E_317DB14B |          |            |        |          |
+|    3 |     SORT UNIQUE                              |                             | 14558089 | 2620440270 | 413577 | 00:00:17 |
+|    4 |      UNION-ALL                               |                             |          |            |        |          |
+|    5 |       NESTED LOOPS                           |                             | 14557914 | 1310212260 | 113553 | 00:00:05 |
+|    6 |        NESTED LOOPS                          |                             | 29115828 | 1310212260 | 113553 | 00:00:05 |
+|    7 |         NESTED LOOPS                         |                             |        1 |         45 |      2 | 00:00:01 |
+|    8 |          TABLE ACCESS BY INDEX ROWID BATCHED | PALT_ITEMS                  |        1 |         30 |      1 | 00:00:01 |
+|  * 9 |           INDEX RANGE SCAN                   | PIPALT_ITEMS_0              |        1 |            |      1 | 00:00:01 |
+| * 10 |          INDEX UNIQUE SCAN                   | PIPPSALTERNATELIST          |        1 |         15 |      1 | 00:00:01 |
+| * 11 |         INDEX RANGE SCAN                     | PIPPSOCCURRENCE_3           | 29115828 |            |     15 | 00:00:01 |
+|   12 |        TABLE ACCESS BY INDEX ROWID           | PPSOCCURRENCE               | 29115828 | 1310212260 | 113551 | 00:00:05 |
+|   13 |       TABLE ACCESS BY INDEX ROWID BATCHED    | PPSOCCURRENCE               |      175 |       7875 |      3 | 00:00:01 |
+| * 14 |        INDEX RANGE SCAN                      | PIPPSOCCURRENCE_1           |      175 |            |      1 | 00:00:01 |
+|   15 |    SORT UNIQUE                               |                             |        2 |        195 | 173607 | 00:00:07 |
+|   16 |     UNION-ALL                                |                             |          |            |        |          |
+|   17 |      NESTED LOOPS SEMI                       |                             |        1 |        162 |  48270 | 00:00:02 |
+|   18 |       NESTED LOOPS                           |                             |        1 |        147 |  48269 | 00:00:02 |
+|   19 |        NESTED LOOPS SEMI                     |                             |        1 |        117 |  48268 | 00:00:02 |
+|   20 |         NESTED LOOPS                         |                             |        1 |         89 |  48267 | 00:00:02 |
+|   21 |          NESTED LOOPS                        |                             |        1 |         59 |  48266 | 00:00:02 |
+|   22 |           NESTED LOOPS                       |                             |        1 |         41 |  48265 | 00:00:02 |
+| * 23 |            HASH JOIN SEMI                    |                             |        1 |         18 |  48264 | 00:00:02 |
+|   24 |             INDEX FULL SCAN                  | PIPFND0ABSTRACTOCCREVISION  |        1 |          9 |      1 | 00:00:01 |
+|   25 |             VIEW                             |                             | 14558089 |  131022801 |  48226 | 00:00:02 |
+|   26 |              TABLE ACCESS FULL               | SYS_TEMP_0FD9F058E_317DB14B | 14558089 |  262045602 |  48226 | 00:00:02 |
+| * 27 |            TABLE ACCESS BY INDEX ROWID       | PWORKSPACEOBJECT            |        1 |         23 |      1 | 00:00:01 |
+| * 28 |             INDEX UNIQUE SCAN                | PIPWORKSPACEOBJECT          |        1 |            |      1 | 00:00:01 |
+|   29 |           TABLE ACCESS BY INDEX ROWID        | PFND0ABSTRACTOCC            |        1 |         18 |      1 | 00:00:01 |
+| * 30 |            INDEX UNIQUE SCAN                 | PIPFND0ABSTRACTOCC          |        1 |            |      1 | 00:00:01 |
+|   31 |          TABLE ACCESS BY INDEX ROWID BATCHED | PPSBOMVIEWREVISION          |        1 |         30 |      1 | 00:00:01 |
+| * 32 |           INDEX RANGE SCAN                   | PIPPSBOMVIEWREVISION_0      |        2 |            |      1 | 00:00:01 |
+| * 33 |         TABLE ACCESS BY INDEX ROWID          | PPSBOMVIEW                  |        1 |         28 |      1 | 00:00:01 |
+| * 34 |          INDEX UNIQUE SCAN                   | PIPPSBOMVIEW                |        1 |            |      1 | 00:00:01 |
+|   35 |        TABLE ACCESS BY INDEX ROWID BATCHED   | PSTRUCTURE_REVISIONS        |        1 |         30 |      1 | 00:00:01 |
+| * 36 |         INDEX RANGE SCAN                     | PIPSTRUCTURE_REVISIONS_0    |        1 |            |      1 | 00:00:01 |
+| * 37 |       INDEX UNIQUE SCAN                      | PIPITEMREVISION             |  9484304 |  142264560 |      1 | 00:00:01 |
+|   38 |      NESTED LOOPS SEMI                       |                             |        1 |         33 | 125335 | 00:00:05 |
+|   39 |       VIEW                                   | VW_JF_SET$F9EC397A          |        2 |         36 | 125334 | 00:00:05 |
+|   40 |        SORT UNIQUE                           |                             |        2 |        128 | 125334 | 00:00:05 |
+|   41 |         UNION-ALL                            |                             |          |            |        |          |
+| * 42 |          HASH JOIN SEMI                      |                             |        1 |         39 |  77103 | 00:00:04 |
+|   43 |           TABLE ACCESS FULL                  | PSTRUCTURE_REVISIONS        |  4754389 |  142631670 |   7403 | 00:00:01 |
+|   44 |           VIEW                               |                             | 14558089 |  131022801 |  48226 | 00:00:02 |
+|   45 |            TABLE ACCESS FULL                 | SYS_TEMP_0FD9F058E_317DB14B | 14558089 |  262045602 |  48226 | 00:00:02 |
+|   46 |          NESTED LOOPS SEMI                   |                             |        1 |         89 |  48231 | 00:00:02 |
+|   47 |           NESTED LOOPS                       |                             |        1 |         66 |  48230 | 00:00:02 |
+|   48 |            MERGE JOIN CARTESIAN              |                             |        1 |         57 |  48229 | 00:00:02 |
+|   49 |             NESTED LOOPS                     |                             |        1 |         48 |      3 | 00:00:01 |
+|   50 |              NESTED LOOPS                    |                             |        1 |         48 |      3 | 00:00:01 |
+|   51 |               TABLE ACCESS FULL              | PFND0RELEVANTBVR            |        1 |         18 |      2 | 00:00:01 |
+| * 52 |               INDEX RANGE SCAN               | PIPSTRUCTURE_REVISIONS_0    |        1 |            |      1 | 00:00:01 |
+|   53 |              TABLE ACCESS BY INDEX ROWID     | PSTRUCTURE_REVISIONS        |        1 |         30 |      1 | 00:00:01 |
+|   54 |             BUFFER SORT                      |                             | 14558089 |  131022801 |  48228 | 00:00:02 |
+|   55 |              VIEW                            |                             | 14558089 |  131022801 |  48226 | 00:00:02 |
+|   56 |               TABLE ACCESS FULL              | SYS_TEMP_0FD9F058E_317DB14B | 14558089 |  262045602 |  48226 | 00:00:02 |
+| * 57 |            INDEX UNIQUE SCAN                 | PIPFND0ABSTRACTOCCREVISION  |        1 |          9 |      1 | 00:00:01 |
+| * 58 |           TABLE ACCESS BY INDEX ROWID        | PWORKSPACEOBJECT            | 51760518 | 1190491914 |      1 | 00:00:01 |
+| * 59 |            INDEX UNIQUE SCAN                 | PIPWORKSPACEOBJECT          |        1 |            |      1 | 00:00:01 |
+| * 60 |       INDEX UNIQUE SCAN                      | PIPITEMREVISION             |        1 |         15 |      1 | 00:00:01 |
+---------------------------------------------------------------------------------------------------------------------------------
+2627ms
+
