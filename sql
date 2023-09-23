@@ -8,12 +8,13 @@ create user TcClusterDB password 'tcclusterdb';
 -- infodba_idata   /data01/pgsql/tc/infodba_idata
 -- infodba_ilog    /data01/pgsql/tc/infodba_ilog
 -- infodba_indx   /data01/pgsql/tc/infodba_index
+  --tcclusterdb_idata  /data01/pgsql/tc/tcclusterdb_idata
   mkdir -p /data01/pgsql/tc/infodba_idata
   mkdir -p /data01/pgsql/tc/infodba_ilog
   mkdir -p /data01/pgsql/tc/infodba_index
   mkdir -p /data01/pgsql/tc/tcclusterdb_idata
   
-tcclusterdb_idata  /data01/pgsql/tc/tcclusterdb_idata
+
 CREATE TABLESPACE infodba_idate LOCATION '/data01/pgsql/tc/infodba_idata';
 CREATE TABLESPACE infodba_ilog LOCATION '/data01/pgsql/tc/infodba_ilog';
 CREATE TABLESPACE infodba_indx LOCATION '/data01/pgsql/tc/infodba_index';
