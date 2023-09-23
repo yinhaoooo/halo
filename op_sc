@@ -1,22 +1,130 @@
 对比oracle-pg
-表函数
-drop foreign table op_user_views;
+函数
+-------------------------------------------------------------------------
+ create schema comp;
+ 
+ create table comp.TMP1(table_name varchar(150)); 
+ 
+ CREATE SERVER oradb FOREIGN DATA WRAPPER oracle_fdw
+          OPTIONS (dbserver 'test_oracle');  
 
-CREATE FOREIGN TABLE op_user_views (
-          
-          VIEW_NAME      character varying(50)
-          
-       ) SERVER oradb OPTIONS (schema 'SYS', table 'USER_VIEWS');
+ GRANT USAGE ON FOREIGN SERVER oradb TO infodba;
+
+CREATE USER MAPPING FOR infodba SERVER oradb
+          OPTIONS (user 'infodba', password 'infodba');
+
+-------------------------------------------------------------------------
+ 
+	   
+	   
+	   
+	   
 	   
 --1. oracle pg 表函数创建和表
-create table TMP1(table_name varchar(150));
 
-CREATE FOREIGN TABLE op_user_tables (   
+CREATE FOREIGN TABLE comp.op_user_tables (   
          OWNER varchar(30),
-          TABLE_NAME     varchar (150)                   
-       ) SERVER oradb OPTIONS (schema 'SYS', table 'DBA_TABLES');
+          TABLE_NAME     varchar (150),
+          temporary varchar(4)		  
+       ) SERVER oradb OPTIONS (schema 'SYS', table 'USER_TABLES');
+
+CREATE OR REPLACE PROCEDURE comp.op_user_tables()  
+  LANGUAGE plpgsql
+AS $$
+declare
+   table_name1 varchar(150);
+BEGIN 
+  truncate table tmp1;
+  for table_name1 in( SELECT upper(t1.table_name) FROM op_user_tables t1 where t1.owner='INFODBA' and t1.temporary='N' except SELECT upper(table_name)
+          FROM information_schema.tables 
+          WHERE table_schema = 'PUBLIC' and table_type = 'BASE TABLE'
+		  )
+		loop
+        insert into comp.TMP1(table_name) values(table_name1);        	
+		end loop;  
+		raise notice 'successfull';
+END;
+$$; 
+
+--2.oracle pg 视图
+CREATE FOREIGN TABLE comp.op_user_views (          
+          TABLE_NAME     varchar (150)          
+       ) SERVER oradb OPTIONS (schema 'SYS', table 'USER_VIEWS');
 
 
+CREATE OR REPLACE PROCEDURE comp.op_user_views()  
+  LANGUAGE plpgsql
+AS $$
+declare
+   table_name1 varchar(150);
+BEGIN 
+  truncate table tmp1;
+  for table_name1 in( SELECT t1.table_name FROM comp.op_user_views t1 except SELECT upper(table_name)
+      FROM information_schema.views
+      WHERE table_schema = 'public'
+		  )
+		loop
+        insert into comp.TMP1(table_name) values(table_name1);        	
+		end loop;  
+		raise notice 'successfull';
+END;
+$$; 
+
+--3.oracle pg 索引
+CREATE FOREIGN TABLE comp.op_user_indexes (   
+          OWNER   varchar(50),       
+          INDEX_NAME     varchar (150)                    
+       ) SERVER oradb OPTIONS (schema 'SYS', table 'DBA_INDEXES');
+
+
+CREATE OR REPLACE PROCEDURE comp.op_user_indexes()  
+  LANGUAGE plpgsql
+AS $$
+declare
+   table_name1 varchar(150);
+BEGIN 
+  truncate table comp.tmp1;
+  for table_name1 in(select INDEX_NAME from comp.op_user_indexes where index_name not like 'SYS_%' and OWNER='INFODBA' except 
+           select upper(indexname) from pg_indexes where schemaname = 'public' and indexname not like 'sys_%' 
+		  )
+		loop
+        insert into comp.TMP1(table_name) values(table_name1);        	
+		end loop;  
+		raise notice 'successfull';
+END;
+$$; 
+
+--4.oracle pg 序列
+oracle:
+SELECT count(*) FROM user_sequences; 318
+pg：
+SELECT count(*) FROM information_schema.sequences WHERE sequence_schema = current_schema; 0
+
+CREATE FOREIGN TABLE comp.op_user_seq(          
+          sequence_NAME     varchar (150),
+          sequence_owner    varchar(50)         
+       ) SERVER oradb OPTIONS (schema 'SYS', table 'DBA_SEQUENCES');
+
+
+CREATE OR REPLACE PROCEDURE comp.op_user_seq()  
+  LANGUAGE plpgsql
+AS $$
+declare
+   table_name1 varchar(150);
+BEGIN 
+  truncate table comp.tmp1;
+  for table_name1 in(select sequence_NAME from comp.op_user_seq where sequence_owner='INFODBA' except 
+           SELECT upper(sequence_name) FROM information_schema.sequences WHERE sequence_schema = 'public'
+		  )
+		loop
+        insert into comp.TMP1(table_name) values(table_name1);        	
+		end loop;  
+		raise notice 'successfull';
+END;
+$$; 
+----------------------------
+ create table TMP1(table_name varchar(150)); 
+--1.pg pg 表
 CREATE OR REPLACE PROCEDURE op_user_tables()  
   LANGUAGE plpgsql
 AS $$
@@ -24,9 +132,10 @@ declare
    table_name1 varchar(150);
 BEGIN 
   truncate table tmp1;
-  for table_name1 in( SELECT t1.table_name FROM op_user_tables t1 where t1.OWNER='INFODBA' except SELECT upper(table_name)
-          FROM information_schema.tables 
-          WHERE table_schema = 'public' and table_type = 'BASE TABLE'
+  for table_name1 in(select * from dblink('dbname=tc_test','Select table_name from information_schema.tables where table_schema= ''public'' and table_type =''BASE TABLE''') as t(table_name varchar(150))
+except 
+select * from dblink('dbname=tc','Select table_name from information_schema.tables where table_schema=''public'' and table_type =''BASE TABLE''') as t(table_name varchar(150))
+
 		  )
 		loop
         insert into TMP1(table_name) values(table_name1);        	
@@ -34,55 +143,6 @@ BEGIN
 		raise notice 'successfull';
 END;
 $$; 
-
---2.oracle pg 视图
-CREATE FOREIGN TABLE op_user_views (          
-          TABLE_NAME     varchar (150)          
-       ) SERVER oradb OPTIONS (schema 'SYS', table 'USER_VIEWS');
-
-
-CREATE OR REPLACE PROCEDURE op_user_views()  
-  LANGUAGE plpgsql
-AS $$
-declare
-   table_name1 varchar(150);
-BEGIN 
-  truncate table tmp1;
-  for table_name1 in( SELECT t1.table_name FROM op_user_views t1 except SELECT upper(table_name)
-      FROM information_schema.views
-      WHERE table_schema = 'public'
-		  )
-		loop
-        insert into TMP1(table_name) values(table_name1);        	
-		end loop;  
-		raise notice 'successfull';
-END;
-$$; 
-
---3.oracle pg 索引
-CREATE FOREIGN TABLE op_user_indexes (          
-          INDEX_NAME     varchar (150)          
-       ) SERVER oradb OPTIONS (schema 'SYS', table 'USER_INDEXES');
-
-
-CREATE OR REPLACE PROCEDURE op_user_indexes()  
-  LANGUAGE plpgsql
-AS $$
-declare
-   table_name1 varchar(150);
-BEGIN 
-  truncate table tmp1;
-  for table_name1 in(select INDEX_NAME from op_user_indexes where index_name not like 'SYS_%' except 
-           select upper(indexname) from pg_indexes where schemaname = 'public' and indexname not like 'sys_%' 
-		  )
-		loop
-        insert into TMP1(table_name) values(table_name1);        	
-		end loop;  
-		raise notice 'successfull';
-END;
-$$; 
-
-
 
 
 
