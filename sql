@@ -22,7 +22,6 @@ CREATE TABLESPACE tcclusterdb_idata LOCATION '/data01/pgsql/tc/tcclusterdb_idata
 
 2.3新建库
 CREATE DATABASE tc WITH  owner infodba  encoding 'UTF8' template template0 LC_COLLATE='C'  tablespace infodba_idata ;
-create tablespace TcClusterDB_idata owner TcClusterDB location '/data01/pgsql/tc/tcclusterdb_idata';
 create database TcClusterDB with owner TcClusterDB encoding 'UTF8' template template0 lc_collate 'C' tablespace TcClusterDB_idata;
 grant all privileges on database TcClusterDB to TcClusterDB;
 grant CREATE ON TABLESPACE TcClusterDB_idata to TcClusterDB;
