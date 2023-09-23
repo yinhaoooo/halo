@@ -15,7 +15,7 @@ create user TcClusterDB password 'tcclusterdb';
   mkdir -p /data01/pgsql/tc/tcclusterdb_idata
   
 
-CREATE TABLESPACE infodba_idate LOCATION '/data01/pgsql/tc/infodba_idata';
+CREATE TABLESPACE infodba_idata LOCATION '/data01/pgsql/tc/infodba_idata';
 CREATE TABLESPACE infodba_ilog LOCATION '/data01/pgsql/tc/infodba_ilog';
 CREATE TABLESPACE infodba_indx LOCATION '/data01/pgsql/tc/infodba_index';
 CREATE TABLESPACE tcclusterdb_idata LOCATION '/data01/pgsql/tc/tcclusterdb_idata';
