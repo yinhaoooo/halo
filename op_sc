@@ -14,7 +14,7 @@ CREATE USER MAPPING FOR infodba SERVER oradb
           OPTIONS (user 'infodba', password 'infodba');
 
 -------------------------------------------------------------------------
- 
+ --在数据库tc下
 	   
 	   
 	   
@@ -95,10 +95,6 @@ END;
 $$; 
 
 --4.oracle pg 序列
-oracle:
-SELECT count(*) FROM user_sequences; 318
-pg：
-SELECT count(*) FROM information_schema.sequences WHERE sequence_schema = current_schema; 0
 
 CREATE FOREIGN TABLE comp.op_user_seq(          
           sequence_NAME     varchar (150),
@@ -123,9 +119,10 @@ BEGIN
 END;
 $$; 
 ----------------------------
+---在数据库postgres下
  create table TMP1(table_name varchar(150)); 
 --1.pg pg 表
-CREATE OR REPLACE PROCEDURE op_user_tables()  
+CREATE OR REPLACE PROCEDURE pp_user_tables()  
   LANGUAGE plpgsql
 AS $$
 declare
@@ -144,17 +141,69 @@ select * from dblink('dbname=tc','Select table_name from information_schema.tabl
 END;
 $$; 
 
+--2.pg_pg索引
+CREATE OR REPLACE PROCEDURE pp_user_index()  
+  LANGUAGE plpgsql
+AS $$
+declare
+   table_name1 varchar(150);
+BEGIN 
+  truncate table tmp1;
+  for table_name1 in(select * from dblink('dbname=tc_test','select indexname from pg_indexes where schemaname=''public'' and indexname not like ''sys_%''') as t(table_name varchar(100))
+except 
+select * from dblink('dbname=tc','Select indexname from pg_indexes where schemaname=''public'' and indexname not like ''sys_%''') as t(table_name varchar(100)))
+		loop
+        insert into TMP1(table_name) values(table_name1);        	
+		end loop;  
+		raise notice 'successfull';
+END;
+$$; 
+
+--3.序列pg pg
+CREATE OR REPLACE PROCEDURE pp_user_seq()  
+  LANGUAGE plpgsql
+AS $$
+declare
+   table_name1 varchar(150);
+BEGIN 
+  truncate table tmp1;
+  for table_name1 in(select * from dblink('dbname=tc_test', 'select sequence_name from information_schema.sequences where sequence_schema= ''public''') as t(table_name varchar(100))
+except 
+select * from dblink('dbname=tc', 'select sequence_name from information_schema.sequences where sequence_schema= ''public'''
+) as t(table_name varchar(100)))
+		loop
+        insert into TMP1(table_name) values(table_name1);        	
+		end loop;  
+		raise notice 'successfull';
+END;
+$$; 
+
+--4.视图pg-pg
+CREATE OR REPLACE PROCEDURE pp_user_views()  
+  LANGUAGE plpgsql
+AS $$
+declare
+   table_name1 varchar(150);
+BEGIN 
+  truncate table tmp1;
+  for table_name1 in(select * from dblink('dbname=tc_test','select table_name from information_schema.views where table_schema = ''public''') as t(table_name varchar(100))
+except 
+select * from dblink('dbname=tc',' select table_name from information_schema.views where table_schema = ''public''') as t(table_name varchar(100)))
+		loop
+        insert into TMP1(table_name) values(table_name1);        	
+		end loop;  
+		raise notice 'successfull';
+END;
+$$;
 
 
 
-
-
---1.oracle pg 表函数删除
- drop  FOREIGN TABLE op_user_tables;
- drop  PROCEDURE op_user_tables();
---2.oracle pg 视图
- drop FOREIGN TABLE op_user_views; 
- drop PROCEDURE op_user_views;
- --3.oracle pg 索引
-  drop FOREIGN TABLE op_user_indexes; 
-  drop PROCEDURE op_user_indexes;
+--oracle_pg  在数据库tc下
+drop schema comp cascade;
+drop SERVER oradb FOREIGN DATA WRAPPER oracle_fdw cascade;
+--pg_pg  在数据库postgres下
+drop table TMP1;
+drop PROCEDURE pp_user_tables();
+drop PROCEDURE pp_user_index();
+drop PROCEDURE pp_user_seq();
+drop PROCEDURE pp_user_views();
